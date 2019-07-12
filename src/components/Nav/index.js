@@ -13,7 +13,7 @@ function Nav() {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
                         <li className="nav-item active nav-title">
-                            <Link href="/" to="/">O'CINÉ</Link>
+                            <Link href="/" to="/">O'Films</Link>
                         </li>
                         <li className="nav-item">
                             <Link href="/films" to="/films">Films</Link>

@@ -6,7 +6,7 @@ import Nav from '../../components/Nav';
 
 function Series() {
     useEffect(() => {
-        document.title = "O'Ciné | Séries";
+        document.title = "O'Films | Séries";
     })
 
     return (

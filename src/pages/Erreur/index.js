@@ -15,7 +15,7 @@ function Erreur() {
     }
 
     useEffect(() => {
-        document.title = "O'Ciné | 404";
+        document.title = "O'Films | 404";
     })
 
     return (

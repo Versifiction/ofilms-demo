@@ -7,7 +7,7 @@ import HeaderBanner from '../../components/HeaderBanner';
 
 function Accueil() {
   useEffect(() => {
-        document.title = "O'Ciné | Accueil";
+        document.title = "O'Films | Accueil";
   })
 
   return (
