@@ -17,7 +17,7 @@ function Films() {
                 <p style={{ paddingTop: "100px" }}>Pour l'instant, vous pouvez :</p>
                 <ul>
                     <li class="nav-item">
-                        <Link href="/films/all" to="/films/all">Tous les films</Link>
+                        <Link href="/films/affiche" to="/films/affiche">Les films à l'affiche</Link>
                     </li>
                     <li class="nav-item">
                         <Link href="/films/populaires" to="/films/populaires">Les films les mieux notés</Link>

@@ -2,6 +2,10 @@
   text-align: center;
 }
 
+h1, h2, h3, h4, h5 {
+  text-align: center;
+}
+
 ul, ol { 
   margin-block-start: 0;
   margin-block-end: 0;
@@ -141,4 +145,9 @@ ul li {
 
 .erreur-content a {
   color: white;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+  color: #414141;
+  border-bottom: #414141 5px solid;
 }
