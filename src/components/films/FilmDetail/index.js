@@ -215,7 +215,7 @@ function FilmDetail({ match }) {
                         >
                             {similarFilms && similarFilms.map((film) => (
                                 <div className="col-xs-12" key={film.id}>
-                                    <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} style={{ textDecoration: "none" }}>
+                                    <a href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} style={{ textDecoration: "none" }}>
                                         <img src={`http://image.tmdb.org/t/p/w500${film.poster_path}`} alt={`Poster du film ${film.title}`} style={{ height: "200px", display: "block", margin: "0 auto" }} />
                                         <br />
                                         <p style={{ textAlign: "center" }}>{film.title}</p>
@@ -226,7 +226,7 @@ function FilmDetail({ match }) {
                                                 value={film.vote_average}
                                             />
                                         </div>
-                                    </Link>
+                                    </a>
                                 </div>
                             ))}
                         </ItemsCarousel>
