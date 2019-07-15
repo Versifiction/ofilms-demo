@@ -93,6 +93,7 @@ function FilmDetail({ match }) {
             <Nav />
             <div className="container">
                 <div className="content" style={{ padding: "20px" }}>
+                    <h2 style={{ textAlign: "center", color: "#343a40", marginTop: "100px", marginBottom: "40px", textTransform: "uppercase" }}>{filmDetail.title}</h2>
                     <div className="movies" style={{ marginTop: "40px" }}>
                     {pending ? <i className="fas fa-spinner fa-spin" style={{ color: "rgb(52, 58, 64)" }}></i> :
                         <div className="row detail-film" key={filmDetail.id} style={{ marginBottom: "10px", boxShadow: "grey 0 0 10px 2px", padding: "20px" }}>
@@ -101,16 +102,13 @@ function FilmDetail({ match }) {
                             </div>
                             <div className="col-xs-12 col-md-9">
                                 <ul className="nav nav-tabs" id="nav-tab" role="tablist">
-                                    <a className="nav-item nav-link active" id="nav-infos-tab" data-toggle="tab" href="#nav-infos" role="tab" aria-controls="nav-infos" aria-selected="true">Infos</a>
-                                    {videosFilm && videosFilm.length > 0 && <a className="nav-item nav-link" id="nav-bandesannonces-tab" data-toggle="tab" href="#nav-bandesannonces" role="tab" aria-controls="nav-bandesannonces" aria-selected="false">Bandes annonces</a>}
-                                    <a className="nav-item nav-link" id="nav-photos-tab" data-toggle="tab" href="#nav-photos" role="tab" aria-controls="nav-photos" aria-selected="false">Photos</a>
+                                    <a className="nav-item nav-link active" id="nav-infos-tab" data-toggle="tab" href="#nav-infos" role="tab" aria-controls="nav-infos" aria-selected="true" style={{ color: "rgb(52, 58, 64)", textTransform: "uppercase", fontWeight: "bold" }}>Infos</a>
+                                    {videosFilm && videosFilm.length > 0 && <a className="nav-item nav-link" id="nav-bandesannonces-tab" data-toggle="tab" href="#nav-bandesannonces" role="tab" aria-controls="nav-bandesannonces" aria-selected="false" style={{ color: "rgb(52, 58, 64)", textTransform: "uppercase", fontWeight: "bold" }}>Bandes annonces</a>}
+                                    <a className="nav-item nav-link" id="nav-photos-tab" data-toggle="tab" href="#nav-photos" role="tab" aria-controls="nav-photos" aria-selected="false" style={{ color: "rgb(52, 58, 64)", textTransform: "uppercase", fontWeight: "bold" }}>Photos</a>
                                 </ul>
                                 <div className="tab-content" id="nav-tabContent">
                                     <div className="tab-pane fade show active" id="nav-infos" role="tabpanel" aria-labelledby="nav-infos-tab">
                                         <div className="card-body">
-                                            <p className="card-title" style={{ fontSize: "26px", textTransform: "uppercase" }}>
-                                                {filmDetail.title}
-                                            </p>
                                             {filmDetail && filmDetail.production_countries.map((country) => (
                                                 <Flag code={`${country.iso_3166_1}`} key={country.name} style={{ width: "30px", marginBottom: "10px", marginRight: "10px", display: "inline-block" }} />
                                             ))}
@@ -121,43 +119,43 @@ function FilmDetail({ match }) {
                                                 value={filmDetail.vote_average}
                                             />
                                             <p><i className="fas fa-thumbs-up" style={{ color: "green" }}></i>&nbsp;{filmDetail.vote_count}</p>
-                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "grey", textTransform: "uppercase", fontWeight: "bold" }}>
+                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold" }}>
                                                 Titre original 
                                                 <span style={{ color: "black", fontWeight: "initial" }}>
                                                 &nbsp;{filmDetail.original_title}
                                                 </span>
                                             </p>
-                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "grey", textTransform: "uppercase", fontWeight: "bold" }}>
+                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold" }}>
                                                 Date de sortie 
                                                 <span style={{ color: "black", fontWeight: "initial" }}>
                                                 &nbsp;{moment(filmDetail.release_date).format('DD/MM/YYYY')}
                                                 </span>
                                             </p>
-                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "grey", textTransform: "uppercase", fontWeight: "bold" }}>
+                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold" }}>
                                                 Genres 
                                                 <span style={{ color: "black", fontWeight: "initial" }}>
                                                     &nbsp;{filmDetail && filmDetail.genres.map((genre, index) => <p key={index} style={{ display: "inline-block", textTransform: "capitalize", marginBottom: "0" }}>{index !== 0 ? `/ ${genre.name}` : genre.name}&nbsp;</p>)}
                                                 </span>
                                             </p>
-                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "grey", textTransform: "uppercase", fontWeight: "bold" }}>
+                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold" }}>
                                                 Durée du film 
                                                 <span style={{ color: "black", fontWeight: "initial", textTransform: "lowercase" }}>
                                                     &nbsp;{filmDetail.runtime} minutes
                                                 </span>
                                             </p>
-                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "grey", textTransform: "uppercase", fontWeight: "bold", display: "inline-block" }}>
+                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold", display: "inline-block" }}>
                                                 Production 
                                                 <span style={{ color: "black", fontWeight: "initial", textTransform: "capitalize" }}>
                                                     &nbsp;{filmDetail && filmDetail.production_companies.map((company, index) => <p key={index} style={{ display: "inline-block", marginBottom: "0" }}>{index !== 0 ? `/ ${company.name}` : company.name}&nbsp;</p>)}
                                                 </span>
                                             </p>
-                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "grey", textTransform: "uppercase", fontWeight: "bold" }}>
+                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold" }}>
                                                 Budget 
                                                 <span style={{ color: "black", fontWeight: "initial", textTransform: "lowercase" }}>
                                                     &nbsp;{filmDetail.budget.toLocaleString()} $
                                                 </span>
                                             </p>
-                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "grey", textTransform: "uppercase", fontWeight: "bold" }}>
+                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold" }}>
                                                 Recette
                                                 <span style={{ color: "black", fontWeight: "initial", textTransform: "lowercase" }}>
                                                     &nbsp;{filmDetail.revenue.toLocaleString()} $
@@ -165,7 +163,7 @@ function FilmDetail({ match }) {
                                             </p>
                                             <br />
                                             <p className="card-text">
-                                                <span style={{ color: "grey", textTransform: "uppercase", fontWeight: "bold", fontSize: "14px" }}>
+                                                <span style={{ color: "#cdad76", textTransform: "uppercase", fontWeight: "bold", fontSize: "14px" }}>
                                                     Synopsis
                                                 </span>
                                                 &nbsp;{filmDetail.overview}

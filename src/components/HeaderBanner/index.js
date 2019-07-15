@@ -17,7 +17,7 @@ function Nav() {
             <h1 className="accueil-title">O'Films</h1>
             <p className="accueil-text">Les meilleurs films. Les meilleures séries.</p>
             <Link href="/inscription" to="/inscription" className="btn btn-primary">S'inscrire</Link>
-            <i class="fas fa-angle-double-down fa-3x"></i>
+            <i class="fas fa-angle-double-down fa-2x"></i>
         </div>
     )
 }

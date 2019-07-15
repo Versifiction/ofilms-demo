@@ -53,7 +53,7 @@ function BestRatedFilms() {
             <Nav />
             <div className="container">
                 <div className="content" style={{ padding: "20px" }}>
-                    <h2 style={{ textAlign: "center", color: "#343a40", marginTop: "40px", marginBottom: "40px" }}>Les films les mieux notés</h2>
+                    <h2 style={{ textAlign: "center", color: "#343a40", marginTop: "100px", marginBottom: "40px" }}>Les films les mieux notés</h2>
                     <div className="movies" style={{ marginTop: "40px" }}>
                     {pending ? <i className="fas fa-spinner fa-spin" style={{ color: "rgb(52, 58, 64)" }}></i> : topRatedFilms && topRatedFilms.map((film, index) => (
                         <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} style={{ textDecoration: "none" }}>
