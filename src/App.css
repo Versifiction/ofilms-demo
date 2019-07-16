@@ -116,12 +116,16 @@ ul li {
   border: 1px solid #bf9751;
 }
 
-.accueil-banniere .fa-angle-double-down {
+.accueil-banniere .bounce {
   color: #faecc0;
   position: absolute;
   bottom: 10px;
   left: calc(50% - 10px);
   text-shadow: 3px 3px 16px #272634;
+}
+
+.fas {
+  cursor: pointer;
 }
 
 .erreur-content {
@@ -146,4 +150,22 @@ ul li {
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
   color: #414141;
   border-bottom: #414141 5px solid;
+}
+
+.bounce {
+  -moz-animation: bounce 2s infinite;
+  -webkit-animation: bounce 2s infinite;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  60% {
+    transform: translateY(-15px);
+  }
 }

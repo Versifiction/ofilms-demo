@@ -22,6 +22,9 @@ function Films() {
                     <li class="nav-item">
                         <Link href="/films/populaires" to="/films/populaires">Les films les mieux notés</Link>
                     </li>
+                    <li class="nav-item">
+                        <Link href="/films/tendances" to="/films/tendances">Les films en tendances</Link>
+                    </li>
                 </ul>
                 </div>
         </>

@@ -7,6 +7,7 @@ import useForceUpdate from 'use-force-update';
 
 //import { genres } from '../../utils/genres';
 import Nav from '../../Nav';
+import Spinner from '../../Molecules/Spinner';
 
 function AfficheFilms() {
     const [afficheFilms, setAfficheFilms] = useState([]);
@@ -39,7 +40,7 @@ function AfficheFilms() {
                 <div className="content" style={{ padding: "20px" }}>
                     <h2 style={{ textAlign: "center", color: "#343a40", marginTop: "100px", marginBottom: "40px" }}>Les films à l'affiche</h2>
                     <div className="movies" style={{ marginTop: "40px" }}>
-                    {pending ? <i className="fas fa-spinner fa-spin" style={{ color: "rgb(52, 58, 64)" }}></i> : afficheFilms && afficheFilms.map((film, index) => (
+                    {pending ? <Spinner /> : afficheFilms && afficheFilms.map((film, index) => (
                         <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} style={{ textDecoration: "none" }}>
                             <div className="row" style={{ marginBottom: "10px", boxShadow: "grey 0 0 10px 2px", padding: "20px" }}>
                                 <div className="col-xs-12 col-md-3" style={{ padding: "20px" }}>
@@ -48,37 +49,37 @@ function AfficheFilms() {
                                 <div className="col-xs-12 col-md-9">
                                     <div className="card-body">
                                         <p className="card-title" style={{ fontSize: "26px", textTransform: "uppercase" }}>
-                                            {film.title}
+                                            {film && film.title}
                                         </p>
                                         <StarRatingComponent 
                                             name="rate1" 
                                             starCount={10}
-                                            value={film.vote_average}
+                                            value={film && film.vote_average}
                                         />
-                                        <p><i className="fas fa-thumbs-up" style={{ color: "green" }}></i>&nbsp;{film.vote_count}</p>
-                                        <p style={{ fontSize: "14px", marginBottom: "0", color: "grey", textTransform: "uppercase", fontWeight: "bold" }}>
+                                        <p><i className="fas fa-thumbs-up" style={{ color: "green" }}></i>&nbsp;{film && film.vote_count}</p>
+                                        <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold" }}>
                                             Titre original 
                                             <span style={{ color: "black", fontWeight: "initial" }}>
-                                            &nbsp;{film.original_title}
+                                            &nbsp;{film && film.original_title}
                                             </span>
                                         </p>
-                                        <p style={{ fontSize: "14px", marginBottom: "0", color: "grey", textTransform: "uppercase", fontWeight: "bold" }}>
+                                        <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold" }}>
                                             Date de sortie 
                                             <span style={{ color: "black", fontWeight: "initial" }}>
-                                            &nbsp;{moment(film.release_date).format('DD/MM/YYYY')}
+                                            &nbsp;{moment(film && film.release_date).format('DD/MM/YYYY')}
                                             </span>
                                         </p>
-                                        <p style={{ fontSize: "14px", marginBottom: "0", color: "grey", textTransform: "uppercase", fontWeight: "bold" }}>
+                                        <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold" }}>
                                             Genres 
                                             <span style={{ color: "black", fontWeight: "initial" }}>
-                                                &nbsp;{film.genre_ids}
+                                                &nbsp;{film && film.genre_ids}
                                             </span>
                                         </p>
                                         <p className="card-text">
-                                            <span style={{ color: "grey", textTransform: "uppercase", fontWeight: "bold", fontSize: "14px" }}>
+                                            <span style={{ color: "#cdad76", textTransform: "uppercase", fontWeight: "bold", fontSize: "14px" }}>
                                                 Synopsis
                                             </span>
-                                            &nbsp;{film.overview}
+                                            &nbsp;{film && film.overview}
                                         </p>
                                     </div>
                                 </div>
