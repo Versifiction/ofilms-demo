@@ -10,25 +10,25 @@ import Nav from '../../Nav';
 import Spinner from '../../Molecules/Spinner'
 
 function BestRatedFilms() {
-    const [topRatedFilms, setTopRatedFilms] = useState([]);
+    const [bestRatedFilms, setBestRatedFilms] = useState([]);
     const [allGenres, setAllGenres] = useState([]);
     const [pending, setPending] = useState(true);
-    const [activePage, setActivePage] = useState(1)
-    const topRatedFilmsUrl = `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=${activePage}`;
+    const [activePage, setActivePage] = useState(1);
+    const bestRatedFilmsUrl = `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=${activePage}`;
     const allGenresUrl = `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
     const forceUpdate = useForceUpdate();
 
     useEffect(() => {
-        loadTopRatedFilms();
+        loadBestRatedFilms();
         loadAllGenres();
     }, []);
 
-    async function loadTopRatedFilms() {
+    async function loadBestRatedFilms() {
         try {
-            const dataTopRatedFilms = await axios.get(topRatedFilmsUrl);
-            console.log("data ", dataTopRatedFilms);
-            setTopRatedFilms(dataTopRatedFilms.data.results);
-            console.log("topRatedFilms ", topRatedFilms);
+            const dataBestRatedFilms = await axios.get(bestRatedFilmsUrl);
+            console.log("data ", dataBestRatedFilms);
+            setBestRatedFilms(dataBestRatedFilms.data.results);
+            console.log("bestRatedFilms ", bestRatedFilms);
             setPending(false);
             forceUpdate();
         } catch (error) {
@@ -56,7 +56,7 @@ function BestRatedFilms() {
                 <div className="content" style={{ padding: "20px" }}>
                     <h2 style={{ textAlign: "center", color: "#343a40", marginTop: "100px", marginBottom: "40px" }}>Les films les mieux notés</h2>
                     <div className="movies" style={{ marginTop: "40px" }}>
-                    {pending ? <Spinner /> : topRatedFilms && topRatedFilms.map((film, index) => (
+                    {pending ? <Spinner /> : bestRatedFilms && bestRatedFilms.map((film, index) => (
                         <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} style={{ textDecoration: "none" }}>
                             <div className="row" style={{ marginBottom: "10px", boxShadow: "grey 0 0 10px 2px", padding: "20px" }}>
                                 <div className="col-xs-12 col-md-3" style={{ padding: "20px" }}>

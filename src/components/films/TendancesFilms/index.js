@@ -18,10 +18,10 @@ function TendancesFilms() {
     const forceUpdate = useForceUpdate();
 
     useEffect(() => {
-        loadAfficheFilms();
+        loadTendancesFilms();
     }, []);
 
-    async function loadAfficheFilms() {
+    async function loadTendancesFilms() {
         try {
             const dataTendancesFilms = await axios.get(tendancesFilmsUrl);
             console.log("data ", dataTendancesFilms);
@@ -38,18 +38,18 @@ function TendancesFilms() {
         <>
             <Nav />
             <div className="container">
-                <div className="content" style={{ padding: "20px" }}>
-                    <h2 style={{ textAlign: "center", color: "#343a40", marginTop: "100px", marginBottom: "40px" }}>Les films en tendances</h2>
-                    <div className="movies" style={{ marginTop: "40px" }}>
+                <div className="content">
+                    <h2>Les films en tendances</h2>
+                    <div className="movies">
                     {pending ? <Spinner /> : tendancesFilms && tendancesFilms.map((film, index) => (
-                        <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} style={{ textDecoration: "none" }}>
-                            <div className="row" style={{ marginBottom: "10px", boxShadow: "grey 0 0 10px 2px", padding: "20px" }}>
-                                <div className="col-xs-12 col-md-3" style={{ padding: "20px" }}>
-                                    <img src={`http://image.tmdb.org/t/p/w500${film.poster_path}`} className="card-img-top" alt={`Poster du film ${film.title}`} style={{ width: "100%" }} />
+                        <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} className="text-decoration-none">
+                            <div className="row detail-film">
+                                <div className="col-xs-12 col-md-3 detail-film-poster">
+                                    <img src={`http://image.tmdb.org/t/p/w500${film.poster_path}`} className="card-img-top" alt={`Poster du film ${film.title}`} />
                                 </div>
                                 <div className="col-xs-12 col-md-9">
                                     <div className="card-body">
-                                        <p className="card-title" style={{ fontSize: "26px", textTransform: "uppercase" }}>
+                                        <p className="card-title film-detail-title">
                                             {film && film.title}
                                         </p>
                                         <StarRatingComponent 
@@ -57,27 +57,27 @@ function TendancesFilms() {
                                             starCount={10}
                                             value={film && film.vote_average}
                                         />
-                                        <p><i className="fas fa-thumbs-up" style={{ color: "green" }}></i>&nbsp;{film && film.vote_count}</p>
-                                        <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold" }}>
+                                        <p><i className="fas fa-thumbs-up"></i>&nbsp;{film && film.vote_count}</p>
+                                        <p className="film-detail">
                                             Titre original 
-                                            <span style={{ color: "black", fontWeight: "initial" }}>
+                                            <span>
                                             &nbsp;{film && film.original_title}
                                             </span>
                                         </p>
-                                        <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold" }}>
+                                        <p className="film-detail">
                                             Date de sortie 
-                                            <span style={{ color: "black", fontWeight: "initial" }}>
+                                            <span>
                                             &nbsp;{moment(film && film.release_date).format('DD/MM/YYYY')}
                                             </span>
                                         </p>
-                                        <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold" }}>
+                                        <p className="film-detail">
                                             Genres 
-                                            <span style={{ color: "black", fontWeight: "initial" }}>
+                                            <span>
                                                 &nbsp;{film && film.genre_ids}
                                             </span>
                                         </p>
                                         <p className="card-text">
-                                            <span style={{ color: "#cdad76", textTransform: "uppercase", fontWeight: "bold", fontSize: "14px" }}>
+                                            <span className="film-detail">
                                                 Synopsis
                                             </span>
                                             &nbsp;{film && film.overview}

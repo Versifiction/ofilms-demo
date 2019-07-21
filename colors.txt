@@ -1,0 +1,5 @@
+Blanc : #FFFFFF
+Jaune : #faecc0
+Gris-violet : #99AAB5
+Gris mi-sombre : #2C2F33
+Gris sombre : #23272A

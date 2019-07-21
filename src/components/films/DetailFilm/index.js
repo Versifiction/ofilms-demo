@@ -9,10 +9,13 @@ import $ from 'jquery';
 import moment from 'moment';
 
 import Nav from '../../Nav';
-import Spinner from '../../Molecules/Spinner'
+import Spinner from '../../Molecules/Spinner';
+//import placeholder from '../../../images/placeholder.png';
 
 function DetailFilm({ match }) {
     const [filmDetail, setFilmDetail] = useState([]);
+    const [castFilm, setCastFilm] = useState([]);
+    const [crewFilm, setCrewFilm] = useState([]);
     const [similarFilms, setSimilarFilms] = useState([]);
     const [videosFilm, setVideosFilm] = useState([]);
     const [photosFilm, setPhotosFilm] = useState([]);
@@ -21,14 +24,16 @@ function DetailFilm({ match }) {
     const [activeItemIndex, setActiveItemIndex] = useState(0);
     const [pending, setPending] = useState(true);
     const filmDetailUrl = `https://api.themoviedb.org/3/movie/${match.params.id}?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
+    const creditsFilmUrl = `https://api.themoviedb.org/3/movie/${match.params.id}/credits?api_key=${process.env.REACT_APP_API_KEY}`;
     const similarFilmsUrl = `https://api.themoviedb.org/3/movie/${match.params.id}/similar?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=1`;
     const videosFilmUrl = `https://api.themoviedb.org/3/movie/${match.params.id}/videos?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
     const photosFilmUrl = `https://api.themoviedb.org/3/movie/${match.params.id}/images?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
-    const keywordsFilmUrl = `https://api.themoviedb.org/3/movie/${match.params.id}/keywords?api_key=${process.env.REACT_APP_API_KEY}`
+    const keywordsFilmUrl = `https://api.themoviedb.org/3/movie/${match.params.id}/keywords?api_key=${process.env.REACT_APP_API_KEY}`;
     const forceUpdate = useForceUpdate();
 
     useEffect(() => {
         loadFilmDetail();
+        loadCreditsFilm();
         loadSimilarFilms();
         loadVideosFilm();
         loadPhotosFilm();
@@ -38,9 +43,22 @@ function DetailFilm({ match }) {
     async function loadFilmDetail() {
         try {
             const dataFilmDetail = await axios.get(filmDetailUrl);
-            console.log("data ", dataFilmDetail);
+            console.log("filmDetail ", dataFilmDetail);
             setFilmDetail(dataFilmDetail.data);
-            console.log("filmDetail ", filmDetail);
+               setPending(false);
+            forceUpdate();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    async function loadCreditsFilm() {
+        try {
+            const dataCreditsFilm = await axios.get(creditsFilmUrl);
+            console.log("castFilm ", dataCreditsFilm.data.cast);
+            console.log("crewFilm ", dataCreditsFilm.data.crew);
+            setCastFilm(dataCreditsFilm.data.cast);
+            setCrewFilm(dataCreditsFilm.data.crew);
             setPending(false);
             forceUpdate();
         } catch (error) {
@@ -51,7 +69,7 @@ function DetailFilm({ match }) {
     async function loadSimilarFilms() {
         try {
             const dataSimilarFilms = await axios.get(similarFilmsUrl);
-            console.log("data ", dataSimilarFilms);
+            console.log("similarFilms ", dataSimilarFilms);
             setSimilarFilms(dataSimilarFilms.data.results);
             setPending(false);
             document.getElementsByClassName('sc-bdVaJa')[0].style.width = "100%";
@@ -61,7 +79,8 @@ function DetailFilm({ match }) {
                 $(this).attr('aria-selected', true).siblings().attr('aria-selected', false);
                 event.target.id === "nav-photos-tab" ? $('#nav-photos').show() : $('#nav-photos').hide();
                 $("body").find(`[aria-labelledby="${event.target.id}"`).addClass('show active').siblings().removeClass('show active');
-            }); 
+            });
+            $('.sc-bxivhb').css({display: 'flex', justifyContent: 'center', alignItems: 'center'});
             forceUpdate();
         } catch (error) {
             console.error(error);
@@ -71,7 +90,7 @@ function DetailFilm({ match }) {
     async function loadVideosFilm() {
         try {
             const dataVideosFilm = await axios.get(videosFilmUrl);
-            console.log("data ", dataVideosFilm);
+            console.log("videosFilm ", dataVideosFilm);
             setVideosFilm(dataVideosFilm.data.results);
             setPending(false);
             forceUpdate();
@@ -83,7 +102,7 @@ function DetailFilm({ match }) {
     async function loadPhotosFilm() {
         try {
             const dataPhotosFilm = await axios.get(photosFilmUrl);
-            console.log("data ", dataPhotosFilm);
+            console.log("photosFilm ", dataPhotosFilm);
             setPhotosFilm(dataPhotosFilm.data.posters);
             setPending(false);
             forceUpdate();
@@ -95,7 +114,7 @@ function DetailFilm({ match }) {
     async function loadKeywordsFilm() {
         try {
             const dataKeywordsFilm = await axios.get(keywordsFilmUrl);
-            console.log("data ", dataKeywordsFilm);
+            console.log("keywordsFilm ", dataKeywordsFilm);
             setKeywordsFilm(dataKeywordsFilm.data.keywords);
             setPending(false);
             forceUpdate();
@@ -108,25 +127,25 @@ function DetailFilm({ match }) {
         <>
             <Nav />
             <div className="container">
-                <div className="content" style={{ padding: "20px" }}>
-                    <h2 style={{ textAlign: "center", color: "#343a40", marginTop: "100px", marginBottom: "40px", textTransform: "uppercase" }}>{filmDetail.title}</h2>
-                    <div className="movies" style={{ marginTop: "40px" }}>
+                <div className="content">
+                    <h2>{filmDetail && filmDetail.title}</h2>
+                    <div className="movies">
                     {pending ? <Spinner /> :
-                        <div className="row detail-film" key={filmDetail.id} style={{ marginBottom: "10px", boxShadow: "grey 0 0 10px 2px", padding: "20px" }}>
-                            <div className="col-xs-12 col-md-3" style={{ padding: "20px" }}>
-                                <img src={`http://image.tmdb.org/t/p/w500${filmDetail.poster_path}`} className="card-img-top" alt={`Poster du film ${filmDetail.title}`} style={{ width: "100%" }} />
+                        <div className="row detail-film" key={filmDetail && filmDetail.id}>
+                            <div className="col-xs-12 col-md-3 detail-film-poster">
+                                <img src={`http://image.tmdb.org/t/p/w500${filmDetail && filmDetail.poster_path}`} className="card-img-top" alt={`Poster du film ${filmDetail && filmDetail.title}`} />
                             </div>
                             <div className="col-xs-12 col-md-9">
-                                <ul className="nav nav-tabs" id="nav-tab" role="tablist">
-                                    <a className="nav-item nav-link active" id="nav-infos-tab" data-toggle="tab" href="#nav-infos" role="tab" aria-controls="nav-infos" aria-selected="true" style={{ color: "rgb(52, 58, 64)", textTransform: "uppercase", fontWeight: "bold" }}>Infos</a>
-                                    {videosFilm && videosFilm.length > 0 && <a className="nav-item nav-link" id="nav-bandesannonces-tab" data-toggle="tab" href="#nav-bandesannonces" role="tab" aria-controls="nav-bandesannonces" aria-selected="false" style={{ color: "rgb(52, 58, 64)", textTransform: "uppercase", fontWeight: "bold" }}>Bandes annonces</a>}
-                                    <a className="nav-item nav-link" id="nav-photos-tab" data-toggle="tab" href="#nav-photos" role="tab" aria-controls="nav-photos" aria-selected="false" style={{ color: "rgb(52, 58, 64)", textTransform: "uppercase", fontWeight: "bold" }}>Photos</a>
+                                <ul className="nav nav-tabs detail-film-videos" id="nav-tab" role="tablist">
+                                    <a className="nav-item nav-link active" id="nav-infos-tab" data-toggle="tab" href="#nav-infos" role="tab" aria-controls="nav-infos" aria-selected="true">Infos</a>
+                                    {videosFilm && videosFilm.length > 0 && <a className="nav-item nav-link" id="nav-bandesannonces-tab" data-toggle="tab" href="#nav-bandesannonces" role="tab" aria-controls="nav-bandesannonces" aria-selected="false">Bandes annonces</a>}
+                                    <a className="nav-item nav-link" id="nav-photos-tab" data-toggle="tab" href="#nav-photos" role="tab" aria-controls="nav-photos" aria-selected="false">Photos</a>
                                 </ul>
                                 <div className="tab-content" id="nav-tabContent">
                                     <div className="tab-pane fade show active" id="nav-infos" role="tabpanel" aria-labelledby="nav-infos-tab">
                                         <div className="card-body">
-                                            {filmDetail.production_countries && filmDetail.production_countries.map((country) => (
-                                                <Flag code={`${country.iso_3166_1}`} key={country.name} style={{ width: "30px", marginBottom: "10px", marginRight: "10px", display: "inline-block" }} />
+                                            {filmDetail && filmDetail.production_countries && filmDetail.production_countries.map((country) => (
+                                                <Flag code={`${country.iso_3166_1}`} key={country.name} className="film-production-flag" />
                                             ))}
                                             <br />
                                             <StarRatingComponent 
@@ -134,74 +153,90 @@ function DetailFilm({ match }) {
                                                 starCount={10}
                                                 value={filmDetail && filmDetail.vote_average}
                                             />
-                                            <p><i className="fas fa-thumbs-up" style={{ color: "green" }}></i>&nbsp;{filmDetail.vote_count}</p>
-                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold" }}>
+                                            <p><i className="fas fa-thumbs-up"></i>&nbsp;{filmDetail && filmDetail.vote_count}</p>
+                                            <p className="film-detail">
                                                 Titre original 
-                                                <span style={{ color: "black", fontWeight: "initial" }}>
+                                                <span>
                                                 &nbsp;{filmDetail && filmDetail.original_title}
                                                 </span>
                                             </p>
-                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold" }}>
+                                            <p className="film-detail">
                                                 Date de sortie 
-                                                <span style={{ color: "black", fontWeight: "initial" }}>
+                                                <span>
                                                 &nbsp;{moment(filmDetail && filmDetail.release_date).format('DD/MM/YYYY')}
                                                 </span>
                                             </p>
-                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold" }}>
+                                            <p className="film-detail">
                                                 Genres 
-                                                <span style={{ color: "black", fontWeight: "initial" }}>
-                                                    &nbsp;{filmDetail.genres && filmDetail.genres.map((genre, index) => <p key={index} style={{ display: "inline-block", textTransform: "capitalize", marginBottom: "0" }}>{index !== 0 ? `/ ${genre.name}` : genre.name}&nbsp;</p>)}
+                                                <span>
+                                                    &nbsp;{filmDetail && filmDetail.genres.map((genre, index) => <p key={index} className="no-margin-bottom text-capitalize">{index !== 0 ? `/ ${genre.name}` : genre.name}&nbsp;</p>)}
                                                 </span>
                                             </p>
-                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold" }}>
+                                            <p className="film-detail film-detail-duree">
                                                 Durée du film 
-                                                <span style={{ color: "black", fontWeight: "initial", textTransform: "lowercase" }}>
+                                                <span>
                                                     &nbsp;{filmDetail && filmDetail.runtime} minutes
                                                 </span>
                                             </p>
-                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold", display: "inline-block" }}>
+                                            <p className="film-detail">
                                                 Production 
-                                                <span style={{ color: "black", fontWeight: "initial", textTransform: "capitalize" }}>
-                                                    &nbsp;{filmDetail.production_companies && filmDetail.production_companies.map((company, index) => <p key={index} style={{ display: "inline-block", marginBottom: "0" }}>{index !== 0 ? `/ ${company.name}` : company.name}&nbsp;</p>)}
+                                                <span>
+                                                    &nbsp;{filmDetail && filmDetail.production_companies && filmDetail.production_companies.map((company, index) => <p key={index} className="no-margin-bottom">{index !== 0 ? `/ ${company.name}` : company.name}&nbsp;</p>)}
                                                 </span>
                                             </p>
-                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold" }}>
+                                            <p className="film-detail">
                                                 Budget 
-                                                <span style={{ color: "black", fontWeight: "initial", textTransform: "lowercase" }}>
-                                                    &nbsp;{filmDetail.budget && filmDetail.budget.toLocaleString()} $
+                                                <span>
+                                                    &nbsp;{filmDetail && filmDetail.budget.toLocaleString()} $
                                                 </span>
                                             </p>
-                                            <p style={{ fontSize: "14px", marginBottom: "0", color: "#cdad76", textTransform: "uppercase", fontWeight: "bold" }}>
+                                            <p className="film-detail">
                                                 Recette
-                                                <span style={{ color: "black", fontWeight: "initial", textTransform: "lowercase" }}>
-                                                    &nbsp;{filmDetail.revenue && filmDetail.revenue.toLocaleString()} $
+                                                <span>
+                                                    &nbsp;{filmDetail && filmDetail.revenue.toLocaleString()} $
                                                 </span>
                                             </p>
                                             <br />
                                             <p className="card-text">
-                                                <span style={{ color: "#cdad76", textTransform: "uppercase", fontWeight: "bold", fontSize: "14px" }}>
+                                                <span className="film-detail">
                                                     Synopsis
                                                 </span>
                                                 &nbsp;{filmDetail && filmDetail.overview}
                                             </p>
-                                            <div>{keywordsFilm && keywordsFilm.map((keyword) => <p style={{ textTransform: "uppercase", display: "inline-block", marginRight: "10px", backgroundColor: "lightgrey", padding: "10px", fontSize: "10px", fontWeight: "bold" }}>{keyword.name}</p>)}</div>
+                                            <p className="card-text">
+                                                <span className="film-detail">
+                                                    Casting
+                                                </span>
+                                                <div className="film-detail-cast film-detail-cast-photos">
+                                                    {castFilm && castFilm.slice(0, 6).map((cast) => <div key={cast.id}><img src={cast.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${cast.profile_path}`} className="card-img-top" alt={cast.name} /><br /><p className="film-detail-cast-name">{cast.name}</p></div>)}
+                                                </div>
+                                            </p>
+                                            <p className="card-text">
+                                                <span className="film-detail">
+                                                    Crew
+                                                </span>
+                                                <div className="film-detail-cast film-detail-cast-photos">
+                                                    {crewFilm && crewFilm.slice(0, 6).map((crew) => <div key={crew.id}><img src={crew.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${crew.profile_path}`} className="card-img-top" alt={crew.name} /><br />{crew.name}</div>)}
+                                                </div>
+                                            </p>
+                                            <div className="film-detail-keywords">{keywordsFilm && keywordsFilm.map((keyword) => <p>{keyword.name}</p>)}</div>
                                         </div>
                                     </div>
                                     {videosFilm && videosFilm.length > 0 && (
-                                        <div className="tab-pane fade" id="nav-bandesannonces" role="tabpanel" aria-labelledby="nav-bandesannonces-tab">
+                                        <div className="tab-pane fade film-detail-videos" id="nav-bandesannonces" role="tabpanel" aria-labelledby="nav-bandesannonces-tab">
                                             <p className="card-text">
-                                                <div style={{ display: "flex", flexWrap: "wrap" }}>
-                                                    {seeAllVideos ? videosFilm && videosFilm.map((video, index) => <div key={index} style={{ width: "50%" }}><iframe src={`http://www.youtube.com/embed/${video.key}`} width="100%" allowFullScreen></iframe></div>)
-                                                    : videosFilm && videosFilm.slice(0, 4).map((video, index) => <div key={index} style={{ width: "50%" }}><iframe src={`http://www.youtube.com/embed/${video.key}`} width="100%" allowFullScreen></iframe></div>)}
-                                                    {!seeAllVideos && videosFilm.length > 4 && <p onClick={() => setSeeAllVideos(!seeAllVideos)} style={{ cursor: "pointer", textAlign: "center", width: "100%" }}>Voir toutes les vidéos</p>}
+                                                <div>
+                                                    {seeAllVideos ? videosFilm && videosFilm.map((video, index) => <div key={index}><iframe src={`http://www.youtube.com/embed/${video.key}`} width="100%" allowFullScreen></iframe></div>)
+                                                    : videosFilm && videosFilm.slice(0, 4).map((video, index) => <div key={index}><iframe src={`http://www.youtube.com/embed/${video.key}`} width="100%" allowFullScreen></iframe></div>)}
+                                                    {!seeAllVideos && videosFilm.length > 4 && <p onClick={() => setSeeAllVideos(!seeAllVideos)}>Voir toutes les vidéos</p>}
                                                 </div>
                                             </p>
                                         </div>
                                     )}
                                     {photosFilm && photosFilm.length > 0 && (
                                         <div className="tab-pane fade" id="nav-photos" role="tabpanel" aria-labelledby="nav-photos-tab">
-                                            <div style={{ display: "flex", flexWrap: "wrap" }}>
-                                                {photosFilm && photosFilm.map((photo, index) => <img key={index} src={`http://image.tmdb.org/t/p/w500${photo.file_path}`} style={{ width: "50%" }} />)}
+                                            <div className="film-detail-photos">
+                                                {photosFilm && photosFilm.map((photo, index) => <img key={index} src={`http://image.tmdb.org/t/p/w500${photo.file_path}`} />)}
                                             </div>
                                         </div>
                                     )}
@@ -212,42 +247,42 @@ function DetailFilm({ match }) {
                     </div>
                     {similarFilms && similarFilms.length > 0 && (
                         <div>
-                            <div style={{ padding: "20px" }}>
+                            <div className="similar-films-title">
                                 <h3>Films similaires</h3>
                             </div>
-                            <div className="row similar-films" style={{ marginBottom: "10px", boxShadow: "grey 0 0 10px 2px", padding: "20px" }}>
-                        <ItemsCarousel
-                            gutter={10}
-                            activePosition={'center'}
-                            chevronWidth={10}
-                            numberOfCards={4}
-                            slidesToScroll={2}
-                            outsideChevron={true}
-                            showSlither={false}
-                            firstAndLastGutter={false}
-                            activeItemIndex={activeItemIndex}
-                            requestToChangeActive={value => setActiveItemIndex(value)}
-                            rightChevron={<i className="fas fa-chevron-right"></i>}
-                            leftChevron={<i className="fas fa-chevron-left"></i>}
-                        >
-                            {similarFilms && similarFilms.map((film) => (
-                                <div className="col-xs-12" key={film.id}>
-                                    <a href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} style={{ textDecoration: "none" }}>
-                                        <img src={`http://image.tmdb.org/t/p/w500${film.poster_path}`} alt={`Poster du film ${film.title}`} style={{ height: "200px", display: "block", margin: "0 auto" }} />
-                                        <br />
-                                        <p style={{ textAlign: "center" }}>{film.title}</p>
-                                        <div style={{ display: "flex", justifyContent: "center" }}>
-                                            <StarRatingComponent 
-                                                name="rate1" 
-                                                starCount={10}
-                                                value={film.vote_average}
-                                            />
+                            <div className="row similar-films">
+                                <ItemsCarousel
+                                    gutter={10}
+                                    activePosition={'center'}
+                                    chevronWidth={10}
+                                    numberOfCards={4}
+                                    slidesToScroll={2}
+                                    outsideChevron={true}
+                                    showSlither={false}
+                                    firstAndLastGutter={false}
+                                    activeItemIndex={activeItemIndex}
+                                    requestToChangeActive={value => setActiveItemIndex(value)}
+                                    rightChevron={<i className="fas fa-chevron-right"></i>}
+                                    leftChevron={<i className="fas fa-chevron-left"></i>}
+                                >
+                                    {similarFilms && similarFilms.map((film) => (
+                                        <div className="col-xs-12 similar-film-detail" key={film.id}>
+                                            <a href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id}>
+                                                <img src={`http://image.tmdb.org/t/p/w500${film.poster_path}`} alt={`Poster du film ${film.title}`} />
+                                                <br />
+                                                <p>{film.title}</p>
+                                                <div className="col-xs-12 similar-film-detail-rating">
+                                                    <StarRatingComponent 
+                                                        name="rate1" 
+                                                        starCount={10}
+                                                        value={film.vote_average}
+                                                    />
+                                                </div>
+                                            </a>
                                         </div>
-                                    </a>
-                                </div>
-                            ))}
-                        </ItemsCarousel>
-                    </div>
+                                    ))}
+                                </ItemsCarousel>
+                            </div>
                         </div>
                     )}
                 </div>

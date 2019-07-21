@@ -12,7 +12,7 @@ import Spinner from '../../Molecules/Spinner';
 function AfficheFilms() {
     const [afficheFilms, setAfficheFilms] = useState([]);
     const [pending, setPending] = useState(true);
-    const [activePage, setActivePage] = useState(1)
+    const [activePage, setActivePage] = useState(1);
     const afficheFilmsUrl = `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=${activePage}`;
     const forceUpdate = useForceUpdate();
 
