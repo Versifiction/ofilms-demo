@@ -68,32 +68,38 @@ function Films() {
             <div className="container">
                 <h2>Films</h2>
                 <div className="film-types">
-                    <h3>Les films à l'affiche</h3>
+                    <h3 className="film-types-title">Les films à l'affiche
+                        <p className="film-types-suite">
+                            <Link href="/films/affiche" to="/films/affiche">
+                                Voir plus
+                            </Link>
+                        </p>
+                    </h3>
                     {pending ? <Spinner /> :
                         <>
-                            <div style={{ display: "flex", flexWrap: "wrap" }}>
+                            <div className="film-types-datas">
                                 {afficheFilms && afficheFilms.slice(0, 5).map((film, index) => (
                                     <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} className={`text-decoration-none ${index !== 0 ? "film-types-container" : ""}`} style={{ width: "200px" }}>
                                         <img src={`http://image.tmdb.org/t/p/w500${film.poster_path}`} alt={`Poster du film ${film.title}`} className={`${index !== 0 ? "film-types-img" : "film-types-img-first"}`} />
                                         <p className={`film-types-title ${index !== 0 ? "film-types-container" : ""}`}>{film.title}</p>
-                                        <p className={`film-types-date ${index !== 0 ? "film-types-container" : ""}`}>{film.release_date.slice(0, 4)}</p>
                                     </Link>
                                 ))}
                             </div>
-                            <p className="film-types-suite">
-                                <Link href="/films/affiche" to="/films/affiche">
-                                    Voir plus
-                                </Link>
-                            </p>
                             <hr />
                         </>
                     }
                 </div>
                 <div className="film-types">
-                    <h3>Les films les mieux notés</h3>
+                    <h3 className="film-types-title">Les films les mieux notés
+                        <p className="film-types-suite">
+                            <Link href="/films/populaires" to="/films/populaires">
+                                Voir plus
+                            </Link>
+                        </p>
+                    </h3>
                     {pending ? <Spinner /> :
                         <>
-                            <div style={{ display: "flex", flexWrap: "wrap" }}>
+                            <div className="film-types-datas">
                                 {bestRatedFilms && bestRatedFilms.slice(0, 5).map((film, index) => (
                                     <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} className={`text-decoration-none ${index !== 0 ? "film-types-container" : ""}`} style={{ width: "200px" }}>
                                         <img src={`http://image.tmdb.org/t/p/w500${film.poster_path}`} alt={`Poster du film ${film.title}`} className={`${index !== 0 ? "film-types-img" : "film-types-img-first"}`} />
@@ -102,33 +108,29 @@ function Films() {
                                     </Link>
                                 ))}
                             </div>
-                            <p className="film-types-suite">
-                                <Link href="/films/populaires" to="/films/populaires">
-                                    Voir plus
-                                </Link>
-                            </p>
+                            
                             <hr />
                         </>
                     }
                 </div>
                 <div className="film-types">
-                    <h3>Les films en tendances</h3>
+                    <h3 className="film-types-title">Les films en tendances
+                        <p className="film-types-suite">
+                            <Link href="/films/tendances" to="/films/tendances">
+                                Voir plus
+                            </Link>
+                        </p>
+                    </h3>
                     {pending ? <Spinner /> :
                         <>
-                            <div style={{ display: "flex", flexWrap: "wrap" }}>
+                            <div className="film-types-datas">
                                 {tendancesFilms && tendancesFilms.slice(0, 5).map((film, index) => (
                                     <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} className={`text-decoration-none ${index !== 0 ? "film-types-container" : ""}`} style={{ width: "200px" }}>
                                         <img src={`http://image.tmdb.org/t/p/w500${film.poster_path}`} alt={`Poster du film ${film.title}`} className={`${index !== 0 ? "film-types-img" : "film-types-img-first"}`} />
                                         <p className={`film-types-title ${index !== 0 ? "film-types-container" : ""}`}>{!film.title ? film.name : film.title}</p>
-                                        <p className={`film-types-date ${index !== 0 ? "film-types-container" : ""}`}>{film.release_date && film.release_date.slice(0, 4)}</p>
                                     </Link>
                                 ))}
                             </div>
-                            <p className="film-types-suite">
-                                <Link href="/films/tendances" to="/films/tendances">
-                                    Voir plus
-                                </Link>
-                            </p>
                             <hr />
                         </>
                     }

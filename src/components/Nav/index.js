@@ -24,10 +24,14 @@ function Nav() {
                         <Link href="/forum" to="/forum">Forum</Link>
                     </li>
                 </ul>
-                <form className="form-inline my-2 my-lg-0">
+                {/* <form className="form-inline my-2 my-lg-0">
                     <input className="form-control mr-sm-2" type="search" placeholder="Rechercher un film, une série, un acteur..." aria-label="Search" style={{ width: "325px", height: "50px", borderRadius: "0", marginRight: "0px !important", border: "inherit" }} />
                     <button className="btn btn-primary my-2 my-sm-0" type="submit" style={{ borderRadius: "0" }}><i className="fas fa-search"></i></button>
-                </form>
+                </form> */}
+                <div class="search-container">
+                    <input type="text" placeholder="Recherche de films/séries..." />
+                    <div class="search"></div>
+                </div>
                 <ul className="navbar-nav">
                     <li className="nav-item">
                         <Link href="/connexion" to="/connexion">Se connecter</Link>
