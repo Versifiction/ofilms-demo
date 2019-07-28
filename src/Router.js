@@ -9,6 +9,9 @@ import AfficheFilms from './components/films/AfficheFilms';
 import DetailFilm from './components/films/DetailFilm';
 import BestRatedFilms from './components/films/BestRatedFilms';
 import TendancesFilms from './components/films/TendancesFilms';
+import DetailSerie from './components/series/DetailSerie';
+import BestRatedSeries from './components/series/BestRatedSeries';
+import TendancesSeries from './components/series/TendancesSeries';
 import Connexion from './pages/Connexion';
 import Inscription from './pages/Inscription';
 import Erreur from './pages/Erreur';
@@ -24,6 +27,9 @@ class Router extends Component {
         <Route path='/film/:id' exact component={ DetailFilm } />
         <Route path='/films/populaires' exact component={ BestRatedFilms } />
         <Route path='/films/tendances' exact component={ TendancesFilms } />
+        <Route path='/serie/:id' exact component={ DetailSerie } />
+        <Route path='/series/populaires' exact component={ BestRatedSeries } />
+        <Route path='/series/tendances' exact component={ TendancesSeries } />
         <Route path='/connexion' exact component={ Connexion } />
         <Route path='/inscription' exact component={ Inscription } />
         <Route component={ Erreur } />

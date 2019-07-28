@@ -12,7 +12,7 @@ function Nav() {
             <div className="collapse navbar-collapse d-flex justify-content-between" id="navbarNav">
                 <ul className="navbar-nav">
                     <li className="nav-item active nav-title">
-                        <Link href="/" to="/" style={{ color: "#cdad76" }}>O'Films</Link>
+                        <Link href="/" to="/">O'Films</Link>
                     </li>
                     <li className="nav-item">
                         <Link href="/films" to="/films">Films</Link>
@@ -28,9 +28,9 @@ function Nav() {
                     <input className="form-control mr-sm-2" type="search" placeholder="Rechercher un film, une série, un acteur..." aria-label="Search" style={{ width: "325px", height: "50px", borderRadius: "0", marginRight: "0px !important", border: "inherit" }} />
                     <button className="btn btn-primary my-2 my-sm-0" type="submit" style={{ borderRadius: "0" }}><i className="fas fa-search"></i></button>
                 </form> */}
-                <div class="search-container">
+                <div className="search-container">
                     <input type="text" placeholder="Recherche de films/séries..." />
-                    <div class="search"></div>
+                    <div className="search"></div>
                 </div>
                 <ul className="navbar-nav">
                     <li className="nav-item">

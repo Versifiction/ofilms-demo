@@ -38,6 +38,14 @@ function DetailFilm({ match }) {
         loadVideosFilm();
         loadPhotosFilm();
         loadKeywordsFilm();
+        $('#nav-photos').hide()
+        $('.nav-link').click(function(event){ 
+            $(this).addClass('active').siblings().removeClass('active');
+            $(this).attr('aria-selected', true).siblings().attr('aria-selected', false);
+            event.target.id === "nav-photos-tab" ? $('#nav-bandesannonces').show() : $('#nav-bandesannonces').hide();
+            event.target.id === "nav-photos-tab" ? $('#nav-photos').show() : $('#nav-photos').hide();
+            $("body").find(`[aria-labelledby="${event.target.id}"`).addClass('show active').siblings().removeClass('show active');
+        });
     }, []);
 
     async function loadFilmDetail() {
@@ -73,13 +81,6 @@ function DetailFilm({ match }) {
             setSimilarFilms(dataSimilarFilms.data.results);
             setPending(false);
             document.getElementsByClassName('sc-bdVaJa')[0].style.width = "100%";
-            $('#nav-photos').hide()
-            $('.nav-link').click(function(event){ 
-                $(this).addClass('active').siblings().removeClass('active');
-                $(this).attr('aria-selected', true).siblings().attr('aria-selected', false);
-                event.target.id === "nav-photos-tab" ? $('#nav-photos').show() : $('#nav-photos').hide();
-                $("body").find(`[aria-labelledby="${event.target.id}"`).addClass('show active').siblings().removeClass('show active');
-            });
             $('.sc-bxivhb').css({display: 'flex', justifyContent: 'center', alignItems: 'center'});
             forceUpdate();
         } catch (error) {
@@ -123,23 +124,79 @@ function DetailFilm({ match }) {
         }
     };
 
+    function toggleTabs(event) {
+        $('.active').removeClass('active');
+        $(event.target).addClass('active');
+        $(event.target).attr('aria-selected', true).siblings().attr('aria-selected', false);
+        event.target.id === "nav-photos-tab" ? $('#nav-photos').show() : $('#nav-photos').hide();
+        $("body").find(`[aria-labelledby="${event.target.id}"`).addClass('show active').siblings().removeClass('show active');
+    }
+
     return (
         <>
             <Nav />
             <div className="container">
                 <div className="content">
-                    <h2>{filmDetail && filmDetail.title}</h2>
                     <div className="movies">
                     {pending ? <Spinner /> :
                         <div className="row detail-film" key={filmDetail && filmDetail.id}>
-                            <div className="col-xs-12 col-md-3 detail-film-poster">
+                            <div className="col-xs-12 col-md-4 detail-film-poster">
                                 <img src={`http://image.tmdb.org/t/p/w500${filmDetail && filmDetail.poster_path}`} className="card-img-top" alt={`Poster du film ${filmDetail && filmDetail.title}`} />
+                                <h2>{filmDetail && filmDetail.title}</h2>
+                                <p className="film-detail">
+                                                Titre original 
+                                                <span>
+                                                {filmDetail && filmDetail.original_title}
+                                                </span>
+                                            </p>
+                                <p className="film-detail">
+                                    Catégories 
+                                    <span>
+                                        {filmDetail && filmDetail.genres.map((genre, index) => <div key={index} className="no-margin-bottom text-capitalize film-detail-keywords"><p>{genre.name}</p></div>)}
+                                    </span>
+                                </p>
+                                <p className="film-detail">
+                                    Date de sortie 
+                                    <span>
+                                    {moment(filmDetail && filmDetail.release_date).format('DD/MM/YYYY')}
+                                    </span>
+                                </p>
+                                <p className="film-detail film-detail-duree">
+                                    Durée du film 
+                                    <span>
+                                        {filmDetail && filmDetail.runtime} minutes
+                                    </span>
+                                </p>
+                                <p className="film-detail">
+                                    Production 
+                                    <span>
+                                        {filmDetail && filmDetail.production_companies.map((company, index) => <p key={index} className="no-margin-bottom production-companies">{company.name}&nbsp;</p>)}
+                                    </span>
+                                </p>
+                                <p className="film-detail">
+                                    Budget 
+                                    <span>
+                                        {filmDetail && filmDetail.budget.toLocaleString()} $
+                                    </span>
+                                </p>
+                                <p className="film-detail">
+                                    Recette
+                                    <span>
+                                        {filmDetail && filmDetail.revenue.toLocaleString()} $
+                                    </span>
+                                </p>
+                                <p className="film-detail">
+                                    Mots-clés
+                                    <span>
+                                        <div className="film-detail-keywords">{keywordsFilm && keywordsFilm.map((keyword) => <p>{keyword.name}</p>)}</div>
+                                    </span>
+                                </p>
                             </div>
-                            <div className="col-xs-12 col-md-9">
+                            <div className="col-xs-12 col-md-8">
                                 <ul className="nav nav-tabs detail-film-videos" id="nav-tab" role="tablist">
-                                    <a className="nav-item nav-link active" id="nav-infos-tab" data-toggle="tab" href="#nav-infos" role="tab" aria-controls="nav-infos" aria-selected="true">Infos</a>
-                                    {videosFilm && videosFilm.length > 0 && <a className="nav-item nav-link" id="nav-bandesannonces-tab" data-toggle="tab" href="#nav-bandesannonces" role="tab" aria-controls="nav-bandesannonces" aria-selected="false">Bandes annonces</a>}
-                                    <a className="nav-item nav-link" id="nav-photos-tab" data-toggle="tab" href="#nav-photos" role="tab" aria-controls="nav-photos" aria-selected="false">Photos</a>
+                                    <a className="nav-item nav-link active" onClick={toggleTabs} id="nav-infos-tab" data-toggle="tab" href="#nav-infos" role="tab" aria-controls="nav-infos" aria-selected="true">Infos</a>
+                                    {videosFilm && videosFilm.length > 0 && <a className="nav-item nav-link" onClick={toggleTabs} id="nav-bandesannonces-tab" data-toggle="tab" href="#nav-bandesannonces" role="tab" aria-controls="nav-bandesannonces" aria-selected="false">Bandes annonces</a>}
+                                    {photosFilm && photosFilm.length > 0 && <a className="nav-item nav-link" onClick={toggleTabs} id="nav-photos-tab" data-toggle="tab" href="#nav-photos" role="tab" aria-controls="nav-photos" aria-selected="false">Photos</a>}
                                 </ul>
                                 <div className="tab-content" id="nav-tabContent">
                                     <div className="tab-pane fade show active" id="nav-infos" role="tabpanel" aria-labelledby="nav-infos-tab">
@@ -153,73 +210,44 @@ function DetailFilm({ match }) {
                                                 starCount={10}
                                                 value={filmDetail && filmDetail.vote_average}
                                             />
-                                            <p><i className="fas fa-thumbs-up"></i>&nbsp;{filmDetail && filmDetail.vote_count}</p>
-                                            <p className="film-detail">
-                                                Titre original 
-                                                <span>
-                                                &nbsp;{filmDetail && filmDetail.original_title}
-                                                </span>
-                                            </p>
-                                            <p className="film-detail">
-                                                Date de sortie 
-                                                <span>
-                                                &nbsp;{moment(filmDetail && filmDetail.release_date).format('DD/MM/YYYY')}
-                                                </span>
-                                            </p>
-                                            <p className="film-detail">
-                                                Genres 
-                                                <span>
-                                                    &nbsp;{filmDetail && filmDetail.genres.map((genre, index) => <p key={index} className="no-margin-bottom text-capitalize">{index !== 0 ? `/ ${genre.name}` : genre.name}&nbsp;</p>)}
-                                                </span>
-                                            </p>
-                                            <p className="film-detail film-detail-duree">
-                                                Durée du film 
-                                                <span>
-                                                    &nbsp;{filmDetail && filmDetail.runtime} minutes
-                                                </span>
-                                            </p>
-                                            <p className="film-detail">
-                                                Production 
-                                                <span>
-                                                    &nbsp;{filmDetail && filmDetail.production_companies && filmDetail.production_companies.map((company, index) => <p key={index} className="no-margin-bottom">{index !== 0 ? `/ ${company.name}` : company.name}&nbsp;</p>)}
-                                                </span>
-                                            </p>
-                                            <p className="film-detail">
-                                                Budget 
-                                                <span>
-                                                    &nbsp;{filmDetail && filmDetail.budget.toLocaleString()} $
-                                                </span>
-                                            </p>
-                                            <p className="film-detail">
-                                                Recette
-                                                <span>
-                                                    &nbsp;{filmDetail && filmDetail.revenue.toLocaleString()} $
-                                                </span>
-                                            </p>
+                                            <p><i className="fas fa-thumbs-up"></i>{filmDetail && filmDetail.vote_count}</p>
                                             <br />
-                                            <p className="card-text">
-                                                <span className="film-detail">
-                                                    Synopsis
+                                            <p className="film-detail">
+                                                Synopsis
+                                                <span>
+                                                    {filmDetail && filmDetail.overview}
                                                 </span>
-                                                &nbsp;{filmDetail && filmDetail.overview}
                                             </p>
-                                            <p className="card-text">
-                                                <span className="film-detail">
-                                                    Casting
+                                            <p className="film-detail">
+                                                Casting
+                                                <span>
+                                                    <div className="film-detail-cast film-detail-cast-photos scrolling-wrapper">
+                                                        {castFilm && castFilm.slice(0, 6).map((cast) => 
+                                                            <div key={cast.id} className="card">
+                                                                <img src={cast.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${cast.profile_path}`} className="card-img-top" alt={cast.name} />
+                                                                <br />
+                                                                <p className="film-detail-cast-name">{cast.name}</p>
+                                                                <p className="film-detail-cast-character">{cast.character}</p>
+                                                            </div>
+                                                        )}
+                                                    </div>  
                                                 </span>
-                                                <div className="film-detail-cast film-detail-cast-photos">
-                                                    {castFilm && castFilm.slice(0, 6).map((cast) => <div key={cast.id}><img src={cast.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${cast.profile_path}`} className="card-img-top" alt={cast.name} /><br /><p className="film-detail-cast-name">{cast.name}</p></div>)}
-                                                </div>
                                             </p>
-                                            <p className="card-text">
-                                                <span className="film-detail">
-                                                    Crew
+                                            <p className="film-detail">
+                                                Crew
+                                                <span>
+                                                    <div className="film-detail-cast film-detail-cast-photos scrolling-wrapper">
+                                                        {crewFilm && crewFilm.slice(0, 6).map((crew) => 
+                                                            <div key={crew.id} className="card">
+                                                                <img src={crew.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${crew.profile_path}`} className="card-img-top" alt={crew.name} />
+                                                                <br />
+                                                                <p className="film-detail-cast-name">{crew.name}</p>
+                                                                <p className="film-detail-cast-character">{crew.job}</p>
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                 </span>
-                                                <div className="film-detail-cast film-detail-cast-photos">
-                                                    {crewFilm && crewFilm.slice(0, 6).map((crew) => <div key={crew.id}><img src={crew.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${crew.profile_path}`} className="card-img-top" alt={crew.name} /><br />{crew.name}</div>)}
-                                                </div>
                                             </p>
-                                            <div className="film-detail-keywords">{keywordsFilm && keywordsFilm.map((keyword) => <p>{keyword.name}</p>)}</div>
                                         </div>
                                     </div>
                                     {videosFilm && videosFilm.length > 0 && (
