@@ -21,9 +21,13 @@ Liste des URLS commencés :
 - /film/populaires
 - /series
 - /serie/:id
-- /serie/tendances
-- /serie/populaires
+- /series/tendances
+- /series/populaires
 
 Disponibles également via la barre de navigation.
+
+## Bugs éventuels
+
+Si lors du chargement d'une page, une erreur React apparaît, il faut reloader la page et cela marchera,
 
 Bonne navigation !
