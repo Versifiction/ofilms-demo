@@ -59,7 +59,7 @@ function Series() {
                 <div className="film-types">
                     <h3 className="film-types-title">Les séries en tendances
                         <p className="film-types-suite">
-                            <Link href="/films/tendances" to="/films/tendances">
+                            <Link href="/series/tendances" to="/series/tendances">
                                 Voir plus
                             </Link>
                         </p>

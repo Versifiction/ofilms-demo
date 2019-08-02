@@ -135,185 +135,186 @@ function DetailFilm({ match }) {
     return (
         <>
             <Nav />
-            <div className="container">
-                <div className="content">
-                    <div className="movies">
-                    {pending ? <Spinner /> :
-                        <div className="row detail-film" key={filmDetail && filmDetail.id}>
-                            <div className="col-xs-12 col-md-4 detail-film-poster">
-                                <img src={`http://image.tmdb.org/t/p/w500${filmDetail && filmDetail.poster_path}`} className="card-img-top" alt={`Poster du film ${filmDetail && filmDetail.title}`} />
-                                <h2>{filmDetail && filmDetail.title}</h2>
-                                <p className="film-detail">
-                                                Titre original 
-                                                <span>
-                                                {filmDetail && filmDetail.original_title}
-                                                </span>
-                                            </p>
-                                <p className="film-detail">
-                                    Catégories 
-                                    <span>
-                                        {filmDetail && filmDetail.genres.map((genre, index) => <div key={index} className="no-margin-bottom text-capitalize film-detail-keywords"><p>{genre.name}</p></div>)}
-                                    </span>
-                                </p>
-                                <p className="film-detail">
-                                    Date de sortie 
-                                    <span>
-                                    {moment(filmDetail && filmDetail.release_date).format('DD/MM/YYYY')}
-                                    </span>
-                                </p>
-                                <p className="film-detail film-detail-duree">
-                                    Durée du film 
-                                    <span>
-                                        {filmDetail && filmDetail.runtime} minutes
-                                    </span>
-                                </p>
-                                <p className="film-detail">
-                                    Production 
-                                    <span>
-                                        {filmDetail && filmDetail.production_companies.map((company, index) => <p key={index} className="no-margin-bottom production-companies">{company.name}&nbsp;</p>)}
-                                    </span>
-                                </p>
-                                <p className="film-detail">
-                                    Budget 
-                                    <span>
-                                        {filmDetail && filmDetail.budget.toLocaleString()} $
-                                    </span>
-                                </p>
-                                <p className="film-detail">
-                                    Recette
-                                    <span>
-                                        {filmDetail && filmDetail.revenue.toLocaleString()} $
-                                    </span>
-                                </p>
-                                <p className="film-detail">
-                                    Mots-clés
-                                    <span>
-                                        <div className="film-detail-keywords">{keywordsFilm && keywordsFilm.map((keyword) => <p>{keyword.name}</p>)}</div>
-                                    </span>
-                                </p>
-                            </div>
-                            <div className="col-xs-12 col-md-8">
-                                <ul className="nav nav-tabs detail-film-videos" id="nav-tab" role="tablist">
-                                    <a className="nav-item nav-link active" onClick={toggleTabs} id="nav-infos-tab" data-toggle="tab" href="#nav-infos" role="tab" aria-controls="nav-infos" aria-selected="true">Infos</a>
-                                    {videosFilm && videosFilm.length > 0 && <a className="nav-item nav-link" onClick={toggleTabs} id="nav-bandesannonces-tab" data-toggle="tab" href="#nav-bandesannonces" role="tab" aria-controls="nav-bandesannonces" aria-selected="false">Bandes annonces</a>}
-                                    {photosFilm && photosFilm.length > 0 && <a className="nav-item nav-link" onClick={toggleTabs} id="nav-photos-tab" data-toggle="tab" href="#nav-photos" role="tab" aria-controls="nav-photos" aria-selected="false">Photos</a>}
-                                </ul>
-                                <div className="tab-content" id="nav-tabContent">
-                                    <div className="tab-pane fade show active" id="nav-infos" role="tabpanel" aria-labelledby="nav-infos-tab">
-                                        <div className="card-body">
-                                            {filmDetail && filmDetail.production_countries && filmDetail.production_countries.map((country) => (
-                                                <Flag code={`${country.iso_3166_1}`} key={country.name} className="film-production-flag" />
-                                            ))}
-                                            <br />
-                                            <StarRatingComponent 
-                                                name="rate1" 
-                                                starCount={10}
-                                                value={filmDetail && filmDetail.vote_average}
-                                            />
-                                            <p><i className="fas fa-thumbs-up"></i>{filmDetail && filmDetail.vote_count}</p>
-                                            <br />
-                                            <p className="film-detail">
-                                                Synopsis
-                                                <span>
-                                                    {filmDetail && filmDetail.overview}
-                                                </span>
-                                            </p>
-                                            <p className="film-detail">
-                                                Casting
-                                                <span>
-                                                    <div className="film-detail-cast film-detail-cast-photos scrolling-wrapper">
-                                                        {castFilm && castFilm.slice(0, 6).map((cast) => 
-                                                            <div key={cast.id} className="card">
-                                                                <img src={cast.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${cast.profile_path}`} className="card-img-top" alt={cast.name} />
-                                                                <br />
-                                                                <p className="film-detail-cast-name">{cast.name}</p>
-                                                                <p className="film-detail-cast-character">{cast.character}</p>
-                                                            </div>
-                                                        )}
-                                                    </div>  
-                                                </span>
-                                            </p>
-                                            <p className="film-detail">
-                                                Crew
-                                                <span>
-                                                    <div className="film-detail-cast film-detail-cast-photos scrolling-wrapper">
-                                                        {crewFilm && crewFilm.slice(0, 6).map((crew) => 
-                                                            <div key={crew.id} className="card">
-                                                                <img src={crew.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${crew.profile_path}`} className="card-img-top" alt={crew.name} />
-                                                                <br />
-                                                                <p className="film-detail-cast-name">{crew.name}</p>
-                                                                <p className="film-detail-cast-character">{crew.job}</p>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </span>
-                                            </p>
+            <div className="banniere-film-detail" 
+                style={{ backgroundImage: `url("http://image.tmdb.org/t/p/w500${filmDetail && filmDetail.poster_path}")`, backgroundSize: "cover", backgroundPosition: "center", height: "600px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            </div>
+            <div className="container content">
+                <div className="movies">
+                {pending ? <Spinner /> :
+                    <div className="row detail-film" key={filmDetail && filmDetail.id}>
+                        <div className="col-xs-12 col-md-4 detail-film-poster">
+                            <img src={`http://image.tmdb.org/t/p/w500${filmDetail && filmDetail.poster_path}`} className="card-img-top" alt={`Poster du film ${filmDetail && filmDetail.title}`} />
+                            <h2>{filmDetail && filmDetail.title}</h2>
+                            <p className="film-detail">
+                                            Titre original 
+                                            <span>
+                                            {filmDetail && filmDetail.original_title}
+                                            </span>
+                                        </p>
+                            <p className="film-detail">
+                                Catégories 
+                                <span>
+                                    {filmDetail && filmDetail.genres.map((genre, index) => <div key={index} className="no-margin-bottom text-capitalize film-detail-keywords"><p>{genre.name}</p></div>)}
+                                </span>
+                            </p>
+                            <p className="film-detail">
+                                Date de sortie 
+                                <span>
+                                {moment(filmDetail && filmDetail.release_date).format('DD/MM/YYYY')}
+                                </span>
+                            </p>
+                            <p className="film-detail film-detail-duree">
+                                Durée du film 
+                                <span>
+                                    {filmDetail && filmDetail.runtime} minutes
+                                </span>
+                            </p>
+                            <p className="film-detail">
+                                Production 
+                                <span>
+                                    {filmDetail && filmDetail.production_companies.map((company, index) => <p key={index} className="no-margin-bottom production-companies">{company.name}&nbsp;</p>)}
+                                </span>
+                            </p>
+                            <p className="film-detail">
+                                Budget 
+                                <span>
+                                    {filmDetail && filmDetail.budget.toLocaleString()} $
+                                </span>
+                            </p>
+                            <p className="film-detail">
+                                Recette
+                                <span>
+                                    {filmDetail && filmDetail.revenue.toLocaleString()} $
+                                </span>
+                            </p>
+                            <p className="film-detail">
+                                Mots-clés
+                                <span>
+                                    <div className="film-detail-keywords">{keywordsFilm && keywordsFilm.map((keyword) => <p>{keyword.name}</p>)}</div>
+                                </span>
+                            </p>
+                        </div>
+                        <div className="col-xs-12 col-md-8">
+                            <ul className="nav nav-tabs detail-film-videos" id="nav-tab" role="tablist">
+                                <a className="nav-item nav-link active" onClick={toggleTabs} id="nav-infos-tab" data-toggle="tab" href="#nav-infos" role="tab" aria-controls="nav-infos" aria-selected="true">Infos</a>
+                                {videosFilm && videosFilm.length > 0 && <a className="nav-item nav-link" onClick={toggleTabs} id="nav-bandesannonces-tab" data-toggle="tab" href="#nav-bandesannonces" role="tab" aria-controls="nav-bandesannonces" aria-selected="false">Bandes annonces</a>}
+                                {photosFilm && photosFilm.length > 0 && <a className="nav-item nav-link" onClick={toggleTabs} id="nav-photos-tab" data-toggle="tab" href="#nav-photos" role="tab" aria-controls="nav-photos" aria-selected="false">Photos</a>}
+                            </ul>
+                            <div className="tab-content" id="nav-tabContent">
+                                <div className="tab-pane fade show active" id="nav-infos" role="tabpanel" aria-labelledby="nav-infos-tab">
+                                    <div className="card-body">
+                                        {filmDetail && filmDetail.production_countries && filmDetail.production_countries.map((country) => (
+                                            <Flag code={`${country.iso_3166_1}`} key={country.name} className="film-production-flag" />
+                                        ))}
+                                        <br />
+                                        <StarRatingComponent 
+                                            name="rate1" 
+                                            starCount={10}
+                                            value={filmDetail && filmDetail.vote_average}
+                                        />
+                                        <p><i className="fas fa-thumbs-up"></i>{filmDetail && filmDetail.vote_count}</p>
+                                        <br />
+                                        <p className="film-detail">
+                                            Synopsis
+                                            <span>
+                                                {filmDetail && filmDetail.overview}
+                                            </span>
+                                        </p>
+                                        <p className="film-detail">
+                                            Casting
+                                            <span>
+                                                <div className="film-detail-cast film-detail-cast-photos scrolling-wrapper">
+                                                    {castFilm && castFilm.slice(0, 6).map((cast) => 
+                                                        <div key={cast.id} className="card">
+                                                            <img src={cast.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${cast.profile_path}`} className="card-img-top" alt={cast.name} />
+                                                            <br />
+                                                            <p className="film-detail-cast-name">{cast.name}</p>
+                                                            <p className="film-detail-cast-character">{cast.character}</p>
+                                                        </div>
+                                                    )}
+                                                </div>  
+                                            </span>
+                                        </p>
+                                        <p className="film-detail">
+                                            Crew
+                                            <span>
+                                                <div className="film-detail-cast film-detail-cast-photos scrolling-wrapper">
+                                                    {crewFilm && crewFilm.slice(0, 6).map((crew) => 
+                                                        <div key={crew.id} className="card">
+                                                            <img src={crew.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${crew.profile_path}`} className="card-img-top" alt={crew.name} />
+                                                            <br />
+                                                            <p className="film-detail-cast-name">{crew.name}</p>
+                                                            <p className="film-detail-cast-character">{crew.job}</p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                {videosFilm && videosFilm.length > 0 && (
+                                    <div className="tab-pane fade film-detail-videos" id="nav-bandesannonces" role="tabpanel" aria-labelledby="nav-bandesannonces-tab">
+                                        <p className="card-text">
+                                            <div>
+                                                {seeAllVideos ? videosFilm && videosFilm.slice(0, 8).map((video, index) => <div key={index}><iframe src={`http://www.youtube.com/embed/${video.key}`} width="100%" allowFullScreen></iframe></div>)
+                                                : videosFilm && videosFilm.slice(0, 4).map((video, index) => <div key={index}><iframe src={`http://www.youtube.com/embed/${video.key}`} width="100%" allowFullScreen></iframe></div>)}
+                                                {!seeAllVideos && videosFilm.length > 4 && <p onClick={() => setSeeAllVideos(!seeAllVideos)}>Voir plus de vidéos</p>}
+                                            </div>
+                                        </p>
+                                    </div>
+                                )}
+                                {photosFilm && photosFilm.length > 0 && (
+                                    <div className="tab-pane fade" id="nav-photos" role="tabpanel" aria-labelledby="nav-photos-tab">
+                                        <div className="film-detail-photos">
+                                            {photosFilm && photosFilm.map((photo, index) => <img key={index} src={`http://image.tmdb.org/t/p/w500${photo.file_path}`} />)}
                                         </div>
                                     </div>
-                                    {videosFilm && videosFilm.length > 0 && (
-                                        <div className="tab-pane fade film-detail-videos" id="nav-bandesannonces" role="tabpanel" aria-labelledby="nav-bandesannonces-tab">
-                                            <p className="card-text">
-                                                <div>
-                                                    {seeAllVideos ? videosFilm && videosFilm.map((video, index) => <div key={index}><iframe src={`http://www.youtube.com/embed/${video.key}`} width="100%" allowFullScreen></iframe></div>)
-                                                    : videosFilm && videosFilm.slice(0, 4).map((video, index) => <div key={index}><iframe src={`http://www.youtube.com/embed/${video.key}`} width="100%" allowFullScreen></iframe></div>)}
-                                                    {!seeAllVideos && videosFilm.length > 4 && <p onClick={() => setSeeAllVideos(!seeAllVideos)}>Voir toutes les vidéos</p>}
-                                                </div>
-                                            </p>
-                                        </div>
-                                    )}
-                                    {photosFilm && photosFilm.length > 0 && (
-                                        <div className="tab-pane fade" id="nav-photos" role="tabpanel" aria-labelledby="nav-photos-tab">
-                                            <div className="film-detail-photos">
-                                                {photosFilm && photosFilm.map((photo, index) => <img key={index} src={`http://image.tmdb.org/t/p/w500${photo.file_path}`} />)}
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
+                                )}
                             </div>
                         </div>
-                    }
                     </div>
-                    {similarFilms && similarFilms.length > 0 && (
-                        <div>
-                            <div className="similar-films-title">
-                                <h3>Films similaires</h3>
-                            </div>
-                            <div className="row similar-films">
-                                <ItemsCarousel
-                                    gutter={10}
-                                    activePosition={'center'}
-                                    chevronWidth={10}
-                                    numberOfCards={4}
-                                    slidesToScroll={2}
-                                    outsideChevron={true}
-                                    showSlither={false}
-                                    firstAndLastGutter={false}
-                                    activeItemIndex={activeItemIndex}
-                                    requestToChangeActive={value => setActiveItemIndex(value)}
-                                    rightChevron={<i className="fas fa-chevron-right"></i>}
-                                    leftChevron={<i className="fas fa-chevron-left"></i>}
-                                >
-                                    {similarFilms && similarFilms.map((film) => (
-                                        <div className="col-xs-12 similar-film-detail" key={film.id}>
-                                            <a href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id}>
-                                                <img src={`http://image.tmdb.org/t/p/w500${film.poster_path}`} alt={`Poster du film ${film.title}`} />
-                                                <br />
-                                                <p>{film.title}</p>
-                                                <div className="col-xs-12 similar-film-detail-rating">
-                                                    <StarRatingComponent 
-                                                        name="rate1" 
-                                                        starCount={10}
-                                                        value={film.vote_average}
-                                                    />
-                                                </div>
-                                            </a>
-                                        </div>
-                                    ))}
-                                </ItemsCarousel>
-                            </div>
-                        </div>
-                    )}
+                }
                 </div>
+                {similarFilms && similarFilms.length > 0 && (
+                    <div>
+                        <div className="similar-films-title">
+                            <h3>Films similaires</h3>
+                        </div>
+                        <div className="row similar-films">
+                            <ItemsCarousel
+                                gutter={10}
+                                activePosition={'center'}
+                                chevronWidth={10}
+                                numberOfCards={4}
+                                slidesToScroll={2}
+                                outsideChevron={true}
+                                showSlither={false}
+                                firstAndLastGutter={false}
+                                activeItemIndex={activeItemIndex}
+                                requestToChangeActive={value => setActiveItemIndex(value)}
+                                rightChevron={<i className="fas fa-chevron-right"></i>}
+                                leftChevron={<i className="fas fa-chevron-left"></i>}
+                            >
+                                {similarFilms && similarFilms.map((film) => (
+                                    <div className="col-xs-12 similar-film-detail" key={film.id}>
+                                        <a href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id}>
+                                            <img src={`http://image.tmdb.org/t/p/w500${film.poster_path}`} alt={`Poster du film ${film.title}`} />
+                                            <br />
+                                            <p>{film.title}</p>
+                                            <div className="col-xs-12 similar-film-detail-rating">
+                                                <StarRatingComponent 
+                                                    name="rate1" 
+                                                    starCount={10}
+                                                    value={film.vote_average}
+                                                />
+                                            </div>
+                                        </a>
+                                    </div>
+                                ))}
+                            </ItemsCarousel>
+                        </div>
+                    </div>
+                )}
             </div>
         </>
     )

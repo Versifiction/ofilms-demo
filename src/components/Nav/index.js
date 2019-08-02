@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from 'react-router-dom';
+import $ from 'jquery';
 
 import '../../App.css';
 
 function Nav() {
+    useEffect(() => {
+        const elementPosition = $('.navbar').offset();
+
+        $(window).scroll(function(){
+            if($(window).scrollTop() > elementPosition.top){
+                $('.navbar').css('position','fixed').css('top','0');
+            } else {
+                $('.navbar').css('position','relative');
+            }    
+        });
+    })
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark">
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
