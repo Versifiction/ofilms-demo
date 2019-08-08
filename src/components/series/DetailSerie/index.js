@@ -38,6 +38,10 @@ function DetailSerie({ match }) {
         loadVideosSerie();
         loadPhotosSerie();
         loadKeywordsSerie();
+
+        return () => {
+            document.body.style.backgroundImage = `url("https://www.transparenttextures.com/patterns/black-linen.png")`
+        }
     }, []);
 
     async function loadSerieDetail() {
@@ -46,6 +50,7 @@ function DetailSerie({ match }) {
             console.log("SeriesDetail ", dataSerieDetail);
             setSerieDetail(dataSerieDetail.data);
             setPending(false);
+            document.body.style.backgroundImage = `url("http://image.tmdb.org/t/p/original${dataSerieDetail.data.poster_path}")`
             document.title = `O'Films | ${dataSerieDetail.data.original_name}`
             forceUpdate();
         } catch (error) {

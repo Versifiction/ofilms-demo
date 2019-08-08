@@ -18,7 +18,12 @@ function TendancesFilms() {
     const forceUpdate = useForceUpdate();
 
     useEffect(() => {
+        document.title = `O'Films | Les films en tendances`
         loadTendancesFilms();
+
+        return () => {
+            document.body.style.backgroundImage = `url("https://www.transparenttextures.com/patterns/black-linen.png")`
+        }
     }, []);
 
     async function loadTendancesFilms() {
@@ -27,6 +32,7 @@ function TendancesFilms() {
             console.log("data ", dataTendancesFilms);
             setTendancesFilms(dataTendancesFilms.data.results);
             console.log("tendancesFilms ", dataTendancesFilms);
+            document.body.style.backgroundImage = `url("http://image.tmdb.org/t/p/original${dataTendancesFilms.data.results[0].poster_path}")`
             setPending(false);
             forceUpdate();
         } catch (error) {
@@ -37,57 +43,42 @@ function TendancesFilms() {
     return (
         <>
             <Nav />
-            <div className="container">
-                <div className="content">
-                    <h2>Les films en tendances</h2>
-                    <div className="movies">
-                    {pending ? <Spinner /> : tendancesFilms && tendancesFilms.map((film, index) => (
-                        <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} className="text-decoration-none">
-                            <div className="row detail-film">
-                                <div className="col-xs-12 col-md-3 detail-film-poster">
-                                    <img src={`http://image.tmdb.org/t/p/w500${film.poster_path}`} className="card-img-top" alt={`Poster du film ${film.title}`} />
-                                </div>
-                                <div className="col-xs-12 col-md-9">
-                                    <div className="card-body">
-                                        <p className="card-title film-detail-title">
-                                            {film && film.title}
-                                        </p>
-                                        <StarRatingComponent 
-                                            name="rate1" 
-                                            starCount={10}
-                                            value={film && film.vote_average}
-                                        />
-                                        <p><i className="fas fa-thumbs-up"></i>&nbsp;{film && film.vote_count}</p>
-                                        <p className="film-detail">
-                                            Titre original 
-                                            <span>
-                                            &nbsp;{film && film.original_title}
-                                            </span>
-                                        </p>
-                                        <p className="film-detail">
-                                            Date de sortie 
-                                            <span>
-                                            &nbsp;{moment(film && film.release_date).format('DD/MM/YYYY')}
-                                            </span>
-                                        </p>
-                                        <p className="film-detail">
-                                            Genres 
-                                            <span>
-                                                &nbsp;{film && film.genre_ids}
-                                            </span>
-                                        </p>
-                                        <p className="card-text">
-                                            <span className="film-detail">
-                                                Synopsis
-                                            </span>
-                                            &nbsp;{film && film.overview}
-                                        </p>
-                                    </div>
+            <div className="container content">
+                <h2 style={{ textAlign: "center", color: "#343a40", marginBottom: "30px" }}>Les films en tendances</h2>
+                <div className="movies" style={{ marginTop: "40px", display: "flex", flexWrap: "wrap" }}>
+                {pending ? <Spinner /> : tendancesFilms && tendancesFilms.map((film, index) => (
+                    <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} style={{ textDecoration: "none", width: "50%", padding: "10px", height: "375px" }}>
+                        <div className="row" style={{ marginBottom: "10px", boxShadow: "grey 0 0 10px 2px", padding: "20px", width: "100%", height: "100%" }}>
+                            <div className="col-xs-12 col-md-4" style={{ padding: "20px" }}>
+                                <img src={`http://image.tmdb.org/t/p/w500${film.poster_path}`} className="card-img-top" alt={`Poster du film ${film.title}`} style={{ width: "100%" }} />
+                            </div>
+                            <div className="col-xs-12 col-md-8">
+                                <div className="card-body">
+                                    <p className="card-title" style={{ fontSize: "26px", textTransform: "uppercase", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>
+                                        {film && film.title}
+                                    </p>
+                                    <StarRatingComponent 
+                                        name="rate1" 
+                                        starCount={10}
+                                        value={film && film.vote_average}
+                                    />
+                                    <p style={{ fontSize: "14px", marginBottom: "0", color: "#23272A", textTransform: "uppercase", fontWeight: "bold" }}>
+                                        Genres 
+                                        <span style={{ color: "black", fontWeight: "initial" }}>
+                                            &nbsp;{film && film.genre_ids}
+                                        </span>
+                                    </p>
+                                    <p className="card-text">
+                                        <span style={{ color: "#23272A", textTransform: "uppercase", fontWeight: "bold", fontSize: "14px" }}>
+                                            Synopsis
+                                        </span>
+                                        &nbsp;{film && film.overview.substring(0, 200)}...
+                                    </p>
                                 </div>
                             </div>
-                        </Link>
-                    ))}
-                    </div>
+                        </div>
+                    </Link>
+                ))}
                 </div>
             </div>
         </>

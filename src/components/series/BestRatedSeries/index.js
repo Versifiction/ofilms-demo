@@ -9,26 +9,32 @@ import useForceUpdate from 'use-force-update';
 import Nav from '../../Nav';
 import Spinner from '../../Molecules/Spinner'
 
-function BestRatedFilms() {
-    const [bestRatedFilms, setBestRatedFilms] = useState([]);
+function BestRatedSeries() {
+    const [bestRatedSeries, setBestRatedSeries] = useState([]);
     const [allGenres, setAllGenres] = useState([]);
     const [pending, setPending] = useState(true);
     const [activePage, setActivePage] = useState(1);
-    const bestRatedFilmsUrl = `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=${activePage}`;
-    const allGenresUrl = `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
+    const bestRatedSeriesUrl = `https://api.themoviedb.org/3/tv/top_rated?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=${activePage}`;
+    const allGenresUrl = `https://api.themoviedb.org/3/genre/tv/list?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
     const forceUpdate = useForceUpdate();
 
     useEffect(() => {
-        loadBestRatedFilms();
+        document.title = `O'Films | Les séries les mieux notées`
+        loadBestRatedSeries();
         loadAllGenres();
+
+        return () => {
+            document.body.style.backgroundImage = `url("https://www.transparenttextures.com/patterns/black-linen.png")`
+        }
     }, []);
 
-    async function loadBestRatedFilms() {
+    async function loadBestRatedSeries() {
         try {
-            const dataBestRatedFilms = await axios.get(bestRatedFilmsUrl);
-            console.log("data ", dataBestRatedFilms);
-            setBestRatedFilms(dataBestRatedFilms.data.results);
-            console.log("bestRatedFilms ", bestRatedFilms);
+            const dataBestRatedSeries = await axios.get(bestRatedSeriesUrl);
+            console.log("data ", dataBestRatedSeries);
+            setBestRatedSeries(dataBestRatedSeries.data.results);
+            console.log("bestRatedSeries ", bestRatedSeries);
+            document.body.style.backgroundImage = `url("http://image.tmdb.org/t/p/original${dataBestRatedSeries.data.results[0].poster_path}")`
             setPending(false);
             forceUpdate();
         } catch (error) {
@@ -52,61 +58,46 @@ function BestRatedFilms() {
     return (
         <>
             <Nav />
-            <div className="container">
-                <div className="content" style={{ padding: "20px" }}>
-                    <h2 style={{ textAlign: "center", color: "#343a40", marginTop: "100px", marginBottom: "40px" }}>Les films les mieux notés</h2>
-                    <div className="movies" style={{ marginTop: "40px" }}>
-                    {pending ? <Spinner /> : bestRatedFilms && bestRatedFilms.map((film, index) => (
-                        <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} style={{ textDecoration: "none" }}>
-                            <div className="row" style={{ marginBottom: "10px", boxShadow: "grey 0 0 10px 2px", padding: "20px" }}>
-                                <div className="col-xs-12 col-md-3" style={{ padding: "20px" }}>
-                                    <img src={`http://image.tmdb.org/t/p/w500${film.poster_path}`} className="card-img-top" alt={`Poster du film ${film.title}`} style={{ width: "100%" }} />
-                                </div>
-                                <div className="col-xs-12 col-md-9">
-                                    <div className="card-body">
-                                        <p className="card-title" style={{ fontSize: "26px", textTransform: "uppercase" }}>
-                                            {film.title}
-                                        </p>
-                                        <StarRatingComponent 
-                                            name="rate1" 
-                                            starCount={10}
-                                            value={film.vote_average}
-                                        />
-                                        <p style={{ fontSize: "14px", marginBottom: "0", color: "grey", textTransform: "uppercase", fontWeight: "bold" }}>
-                                            Titre original 
-                                            <span style={{ color: "black", fontWeight: "initial" }}>
-                                            &nbsp;{film.original_title}
-                                            </span>
-                                        </p>
-                                        <p style={{ fontSize: "14px", marginBottom: "0", color: "grey", textTransform: "uppercase", fontWeight: "bold" }}>
-                                            Date de sortie 
-                                            <span style={{ color: "black", fontWeight: "initial" }}>
-                                            &nbsp;{moment(film.release_date).format('DD/MM/YYYY')}
-                                            </span>
-                                        </p>
-                                        <p style={{ fontSize: "14px", marginBottom: "0", color: "grey", textTransform: "uppercase", fontWeight: "bold" }}>
-                                            Genres 
-                                            <span style={{ color: "black", fontWeight: "initial" }}>
-                                                &nbsp;{film.genre_ids}
-                                            </span>
-                                        </p>
-                                        <p className="card-text">
-                                            <span style={{ color: "grey", textTransform: "uppercase", fontWeight: "bold", fontSize: "14px" }}>
-                                                Synopsis
-                                            </span>
-                                            &nbsp;{film.overview}
-                                        </p>
-                                        <p><i className="fas fa-thumbs-up" style={{ color: "green" }}></i>&nbsp;{film.vote_count}</p>
-                                    </div>
+            <div className="container content">
+                <h2 style={{ textAlign: "center", color: "#343a40", marginBottom: "30px" }}>Les séries les mieux notées</h2>
+                <div className="movies" style={{ marginTop: "40px", display: "flex", flexWrap: "wrap" }}>
+                {pending ? <Spinner /> : bestRatedSeries && bestRatedSeries.map((serie, index) => (
+                    <Link href={`/serie/${serie.id}`} to={`/serie/${serie.id}`} key={serie.id} style={{ textDecoration: "none", width: "50%", padding: "10px", height: "375px" }}>
+                        <div className="row" style={{ marginBottom: "10px", boxShadow: "grey 0 0 10px 2px", padding: "20px", width: "100%", height: "100%" }}>
+                            <div className="col-xs-12 col-md-4" style={{ padding: "20px" }}>
+                                <img src={`http://image.tmdb.org/t/p/w500${serie.poster_path}`} className="card-img-top" alt={`Poster de la série ${serie.original_name}`} style={{ width: "100%" }} />
+                            </div>
+                            <div className="col-xs-12 col-md-8">
+                                <div className="card-body">
+                                    <p className="card-title" style={{ fontSize: "26px", textTransform: "uppercase", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>
+                                        {serie && serie.original_name}
+                                    </p>
+                                    <StarRatingComponent 
+                                        name="rate1" 
+                                        starCount={10}
+                                        value={serie && serie.vote_average}
+                                    />
+                                    <p style={{ fontSize: "14px", marginBottom: "0", color: "#23272A", textTransform: "uppercase", fontWeight: "bold" }}>
+                                        Genres 
+                                        <span style={{ color: "black", fontWeight: "initial" }}>
+                                            &nbsp;{serie && serie.genre_ids}
+                                        </span>
+                                    </p>
+                                    <p className="card-text">
+                                        <span style={{ color: "#23272A", textTransform: "uppercase", fontWeight: "bold", fontSize: "14px" }}>
+                                            Synopsis
+                                        </span>
+                                        &nbsp;{serie && serie.overview.substring(0, 200)}...
+                                    </p>
                                 </div>
                             </div>
-                        </Link>
-                    ))}
-                    </div>
+                        </div>
+                    </Link>
+                ))}
                 </div>
             </div>
         </>
     )
 }
 
-export default BestRatedFilms;
+export default BestRatedSeries;

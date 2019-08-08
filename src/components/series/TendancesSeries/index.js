@@ -17,7 +17,12 @@ function TendancesSeries() {
     const forceUpdate = useForceUpdate();
 
     useEffect(() => {
+        document.title = `O'Films | Les séries en tendances`
         loadTendancesSeries();
+
+        return () => {
+            document.body.style.backgroundImage = `url("https://www.transparenttextures.com/patterns/black-linen.png")`
+        }
     }, []);
 
     async function loadTendancesSeries() {
@@ -26,6 +31,7 @@ function TendancesSeries() {
             console.log("data ", dataTendancesSeries);
             setTendancesSeries(dataTendancesSeries.data.results);
             console.log("tendancesFilms ", dataTendancesSeries);
+            document.body.style.backgroundImage = `url("http://image.tmdb.org/t/p/original${dataTendancesSeries.data.results[0].poster_path}")`
             setPending(false);
             forceUpdate();
         } catch (error) {
@@ -36,50 +42,42 @@ function TendancesSeries() {
     return (
         <>
             <Nav />
-            <div className="container">
-                <div className="content">
-                    <h2>Les séries en tendances</h2>
-                    <div className="movies">
-                    {pending ? <Spinner /> : tendancesSeries && tendancesSeries.map((serie, index) => (
-                        <Link href={`/serie/${serie.id}`} to={`/serie/${serie.id}`} key={serie.id} className="text-decoration-none">
-                            <div className="row detail-film">
-                                <div className="col-xs-12 col-md-3 detail-film-poster">
-                                    <img src={`http://image.tmdb.org/t/p/w500${serie.poster_path}`} className="card-img-top" alt={`Poster de la série ${serie.original_name}`} />
-                                </div>
-                                <div className="col-xs-12 col-md-9">
-                                    <div className="card-body">
-                                        <p className="card-title film-detail-title">
-                                            {serie && serie.original_name}
-                                        </p>
-                                        <StarRatingComponent 
-                                            name="rate1" 
-                                            starCount={10}
-                                            value={serie && serie.vote_average}
-                                        />
-                                        <p className="film-detail">
-                                            Date de sortie 
-                                            <span>
-                                            {moment(serie && serie.release_date).format('DD/MM/YYYY')}
-                                            </span>
-                                        </p>
-                                        <p className="film-detail">
-                                            Genres 
-                                            <span>
-                                                {serie && serie.genre_ids}
-                                            </span>
-                                        </p>
-                                        <p className="film-detail">
+            <div className="container content">
+                <h2 style={{ textAlign: "center", color: "#343a40", marginBottom: "30px" }}>Les séries en tendances</h2>
+                <div className="movies" style={{ marginTop: "40px", display: "flex", flexWrap: "wrap" }}>
+                {pending ? <Spinner /> : tendancesSeries && tendancesSeries.map((serie, index) => (
+                    <Link href={`/serie/${serie.id}`} to={`/serie/${serie.id}`} key={serie.id} style={{ textDecoration: "none", width: "50%", padding: "10px", height: "375px" }}>
+                        <div className="row" style={{ marginBottom: "10px", boxShadow: "grey 0 0 10px 2px", padding: "20px", width: "100%", height: "100%" }}>
+                            <div className="col-xs-12 col-md-4" style={{ padding: "20px" }}>
+                                <img src={`http://image.tmdb.org/t/p/w500${serie.poster_path}`} className="card-img-top" alt={`Poster de la série ${serie.original_name}`} style={{ width: "100%" }} />
+                            </div>
+                            <div className="col-xs-12 col-md-8">
+                                <div className="card-body">
+                                    <p className="card-title" style={{ fontSize: "26px", textTransform: "uppercase", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>
+                                        {serie && serie.original_name}
+                                    </p>
+                                    <StarRatingComponent 
+                                        name="rate1" 
+                                        starCount={10}
+                                        value={serie && serie.vote_average}
+                                    />
+                                    <p style={{ fontSize: "14px", marginBottom: "0", color: "#23272A", textTransform: "uppercase", fontWeight: "bold" }}>
+                                        Genres 
+                                        <span style={{ color: "black", fontWeight: "initial" }}>
+                                            &nbsp;{serie && serie.genre_ids}
+                                        </span>
+                                    </p>
+                                    <p className="card-text">
+                                        <span style={{ color: "#23272A", textTransform: "uppercase", fontWeight: "bold", fontSize: "14px" }}>
                                             Synopsis
-                                            <span>
-                                                {serie && serie.overview}
-                                            </span>
-                                        </p>
-                                    </div>
+                                        </span>
+                                        &nbsp;{serie && serie.overview.substring(0, 200)}...
+                                    </p>
                                 </div>
                             </div>
-                        </Link>
-                    ))}
-                    </div>
+                        </div>
+                    </Link>
+                ))}
                 </div>
             </div>
         </>

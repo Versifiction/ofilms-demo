@@ -24,6 +24,10 @@ function Films() {
         loadAfficheFilms();
         loadTendancesFilms();
         loadBestRatedFilms();
+
+        return () => {
+            document.body.style.backgroundImage = `url("https://www.transparenttextures.com/patterns/black-linen.png")`
+        }
     }, [])
 
     async function loadAfficheFilms() {
