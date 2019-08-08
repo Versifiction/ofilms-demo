@@ -28,7 +28,8 @@ h2, h3 {
   background-color: white;
   box-shadow: grey 0 0 10px 2px;
   padding: 40px 40px 40px 40px;
-  margin-top: -100px;
+  margin-top: 100px;
+  margin-bottom: 100px;
 }
 
 hr {
@@ -76,7 +77,7 @@ ul li {
 }
 
 .navbar {
-  position: fixed;
+  position: relative;
   z-index: 1000;
   width: 100%;
   box-shadow: grey 0 0 2px;
@@ -173,6 +174,7 @@ ul li {
 .erreur-title {
   font-weight: bold;
   font-size: 30px;
+  color: white;
 }
 
 .erreur-title span {
@@ -213,7 +215,7 @@ ul li {
 .detail-film {
   margin-bottom: 10px;
   padding: 20px;
-  box-shadow: grey 0 0 10px 2px;
+  border-bottom: 1px solid black;
 }
 
 .detail-film-videos a {
@@ -235,7 +237,6 @@ ul li {
 
 .film-detail {
   font-size: 16px;
-  margin-bottom: 20px;
   color: #99AAB5;
   display: block;
 }
@@ -359,8 +360,6 @@ ul li {
 }
 
 .film-types-datas {
-  display: flex;
-  flex-wrap: wrap;
   margin-top: 30px;
 }
 
@@ -591,7 +590,6 @@ input::placeholder {
 .detail-film h2 {
   margin-top: 20px;
   margin-bottom: 20px;
-  box-shadow: grey 0 0 6px 2px;
 }
 
 .fa-spin {

@@ -46,6 +46,11 @@ function DetailFilm({ match }) {
             event.target.id === "nav-photos-tab" ? $('#nav-photos').show() : $('#nav-photos').hide();
             $("body").find(`[aria-labelledby="${event.target.id}"`).addClass('show active').siblings().removeClass('show active');
         });
+        $('.sc-bxivhb').hover(function() { $(this).css('box-shadow', 'grey 0 0 10px 2px')});
+
+        return () => {
+            document.body.style.backgroundImage = `url("https://www.transparenttextures.com/patterns/black-linen.png")`
+        }
     }, []);
 
     async function loadFilmDetail() {
@@ -53,7 +58,10 @@ function DetailFilm({ match }) {
             const dataFilmDetail = await axios.get(filmDetailUrl);
             console.log("filmDetail ", dataFilmDetail);
             setFilmDetail(dataFilmDetail.data);
-               setPending(false);
+            setPending(false);
+            console.log('poster ', dataFilmDetail.data.poster_path)
+            document.body.style.backgroundImage = `url("http://image.tmdb.org/t/p/original${dataFilmDetail.data.poster_path}")`
+            document.title = `O'Films | ${dataFilmDetail.data.title}`
             forceUpdate();
         } catch (error) {
             console.error(error);
@@ -135,9 +143,6 @@ function DetailFilm({ match }) {
     return (
         <>
             <Nav />
-            <div className="banniere-film-detail" 
-                style={{ backgroundImage: `url("http://image.tmdb.org/t/p/w500${filmDetail && filmDetail.poster_path}")`, backgroundSize: "cover", backgroundPosition: "center", height: "600px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            </div>
             <div className="container content">
                 <div className="movies">
                 {pending ? <Spinner /> :
@@ -146,11 +151,11 @@ function DetailFilm({ match }) {
                             <img src={`http://image.tmdb.org/t/p/w500${filmDetail && filmDetail.poster_path}`} className="card-img-top" alt={`Poster du film ${filmDetail && filmDetail.title}`} />
                             <h2>{filmDetail && filmDetail.title}</h2>
                             <p className="film-detail">
-                                            Titre original 
-                                            <span>
-                                            {filmDetail && filmDetail.original_title}
-                                            </span>
-                                        </p>
+                                Titre original 
+                                <span>
+                                {filmDetail && filmDetail.original_title}
+                                </span>
+                            </p>
                             <p className="film-detail">
                                 Catégories 
                                 <span>
@@ -224,12 +229,12 @@ function DetailFilm({ match }) {
                                             Casting
                                             <span>
                                                 <div className="film-detail-cast film-detail-cast-photos scrolling-wrapper">
-                                                    {castFilm && castFilm.slice(0, 6).map((cast) => 
+                                                    {castFilm && castFilm.map((cast) => 
                                                         <div key={cast.id} className="card">
                                                             <img src={cast.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${cast.profile_path}`} className="card-img-top" alt={cast.name} />
                                                             <br />
                                                             <p className="film-detail-cast-name">{cast.name}</p>
-                                                            <p className="film-detail-cast-character">{cast.character}</p>
+                                                            <p className="film-detail-cast-character">{cast.character === "" ? "-" : cast.character}</p>
                                                         </div>
                                                     )}
                                                 </div>  
@@ -239,12 +244,12 @@ function DetailFilm({ match }) {
                                             Crew
                                             <span>
                                                 <div className="film-detail-cast film-detail-cast-photos scrolling-wrapper">
-                                                    {crewFilm && crewFilm.slice(0, 6).map((crew) => 
+                                                    {crewFilm && crewFilm.map((crew) => 
                                                         <div key={crew.id} className="card">
                                                             <img src={crew.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${crew.profile_path}`} className="card-img-top" alt={crew.name} />
                                                             <br />
                                                             <p className="film-detail-cast-name">{crew.name}</p>
-                                                            <p className="film-detail-cast-character">{crew.job}</p>
+                                                            <p className="film-detail-cast-character">{crew.job === "" ? "-" : crew.job}</p>
                                                         </div>
                                                     )}
                                                 </div>

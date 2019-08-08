@@ -65,9 +65,6 @@ function Films() {
     return (
         <>
             <Nav />
-            <div className="banniere-films">
-                <h2>Films</h2>
-            </div>
             <div className="container content">
                 <div className="film-types">
                     <h3 className="film-types-title">Les films à l'affiche
@@ -79,9 +76,9 @@ function Films() {
                     </h3>
                     {pending ? <Spinner /> :
                         <>
-                            <div className="film-types-datas">
-                                {afficheFilms && afficheFilms.slice(0, 5).map((film, index) => (
-                                    <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} className={`text-decoration-none ${index !== 0 ? "film-types-container" : ""}`}>
+                            <div className="film-types-datas scrolling-wrapper">
+                                {afficheFilms && afficheFilms.map((film, index) => (
+                                    <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} className={`text-decoration-none card ${index !== 0 ? "film-types-container" : ""}`}>
                                         <img src={`http://image.tmdb.org/t/p/w500${film.poster_path}`} alt={`Poster du film ${film.title}`} className={`${index !== 0 ? "film-types-img" : "film-types-img-first"}`} />
                                         <p className="film-types-title">{film.title}</p>
                                     </Link>
@@ -101,9 +98,9 @@ function Films() {
                     </h3>
                     {pending ? <Spinner /> :
                         <>
-                            <div className="film-types-datas">
-                                {tendancesFilms && tendancesFilms.slice(0, 5).map((film, index) => (
-                                    <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} className={`text-decoration-none ${index !== 0 ? "film-types-container" : ""}`}>
+                            <div className="film-types-datas scrolling-wrapper">
+                                {tendancesFilms && tendancesFilms.map((film, index) => (
+                                    <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} className={`text-decoration-none card ${index !== 0 ? "film-types-container" : ""}`}>
                                         <img src={`http://image.tmdb.org/t/p/w500${film.poster_path}`} alt={`Poster du film ${film.title}`} className={`${index !== 0 ? "film-types-img" : "film-types-img-first"}`} />
                                         <p className="film-types-title">{!film.title ? film.name : film.title}</p>
                                     </Link>
@@ -123,9 +120,9 @@ function Films() {
                     </h3>
                     {pending ? <Spinner /> :
                         <>
-                            <div className="film-types-datas">
-                                {bestRatedFilms && bestRatedFilms.slice(0, 5).map((film, index) => (
-                                    <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} className={`text-decoration-none ${index !== 0 ? "film-types-container" : ""}`}>
+                            <div className="film-types-datas scrolling-wrapper">
+                                {bestRatedFilms && bestRatedFilms.map((film, index) => (
+                                    <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} className={`text-decoration-none card ${index !== 0 ? "film-types-container" : ""}`}>
                                         <img src={`http://image.tmdb.org/t/p/w500${film.poster_path}`} alt={`Poster du film ${film.title}`} className={`${index !== 0 ? "film-types-img" : "film-types-img-first"}`} />
                                         <p className="film-types-title">{film && film.title}</p>
                                         <p className="film-types-date">{film && film.release_date.slice(0, 4)}</p>

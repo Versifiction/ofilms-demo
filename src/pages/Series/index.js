@@ -52,9 +52,6 @@ function Series() {
     return (
         <>
             <Nav />
-            <div className="banniere-series">
-                <h2>Séries</h2>
-            </div>
             <div className="container content">
                 <div className="film-types">
                     <h3 className="film-types-title">Les séries en tendances
@@ -66,9 +63,9 @@ function Series() {
                     </h3>
                     {pending ? <Spinner /> :
                         <>
-                            <div className="film-types-datas">
-                                {tendancesSeries && tendancesSeries.slice(0, 5).map((serie, index) => (
-                                    <Link href={`/serie/${serie.id}`} to={`/serie/${serie.id}`} key={serie.id} className={`text-decoration-none ${index !== 0 ? "film-types-container" : ""}`}>
+                            <div className="film-types-datas scrolling-wrapper">
+                                {tendancesSeries && tendancesSeries.map((serie, index) => (
+                                    <Link href={`/serie/${serie.id}`} to={`/serie/${serie.id}`} key={serie.id} className={`text-decoration-none card ${index !== 0 ? "film-types-container" : ""}`}>
                                         <img src={`http://image.tmdb.org/t/p/w500${serie.poster_path}`} alt={`Poster du film ${serie.title}`} className={`${index !== 0 ? "film-types-img" : "film-types-img-first"}`} />
                                         <p className="film-types-title">{!serie.title ? serie.name : serie.title}</p>
                                     </Link>
@@ -88,9 +85,9 @@ function Series() {
                     </h3>
                     {pending ? <Spinner /> :
                         <>
-                            <div className="film-types-datas">
-                                {bestRatedSeries && bestRatedSeries.slice(0, 5).map((serie, index) => (
-                                    <Link href={`/serie/${serie.id}`} to={`/serie/${serie.id}`} key={serie.id} className={`text-decoration-none ${index !== 0 ? "film-types-container" : ""}`}>
+                            <div className="film-types-datas scrolling-wrapper">
+                                {bestRatedSeries && bestRatedSeries.map((serie, index) => (
+                                    <Link href={`/serie/${serie.id}`} to={`/serie/${serie.id}`} key={serie.id} className={`text-decoration-none card ${index !== 0 ? "film-types-container" : ""}`}>
                                         <img src={`http://image.tmdb.org/t/p/w500${serie.poster_path}`} alt={`Poster du film ${serie.title}`} className={`${index !== 0 ? "film-types-img" : "film-types-img-first"}`} />
                                         <p className="film-types-title">{serie && serie.original_name}</p>
                                         <p className="film-types-date">{serie && serie.first_air_date.slice(0, 4)}</p>
