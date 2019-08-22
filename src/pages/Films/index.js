@@ -69,6 +69,7 @@ function Films() {
     return (
         <>
             <Nav />
+            <h2 className="media-type">Films</h2>
             <div className="container content">
                 <div className="film-types">
                     <h3 className="film-types-title">Les films à l'affiche
@@ -88,7 +89,7 @@ function Films() {
                                     </Link>
                                 ))}
                             </div>
-                            <hr />
+                            <hr className="hr-accueil" />
                         </>
                     }
                 </div>

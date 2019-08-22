@@ -12,6 +12,9 @@ import TendancesFilms from './components/films/TendancesFilms';
 import DetailSerie from './components/series/DetailSerie';
 import BestRatedSeries from './components/series/BestRatedSeries';
 import TendancesSeries from './components/series/TendancesSeries';
+import Keyword from './components/keywords';
+import DetailCompany from './components/company/DetailCompany';
+import DetailPerson from './components/persons/DetailPerson';
 import Connexion from './pages/Connexion';
 import Inscription from './pages/Inscription';
 import Erreur from './pages/Erreur';
@@ -30,6 +33,9 @@ class Router extends Component {
         <Route path='/serie/:id' exact component={ DetailSerie } />
         <Route path='/series/populaires' exact component={ BestRatedSeries } />
         <Route path='/series/tendances' exact component={ TendancesSeries } />
+        <Route path='/person/:id' exact component={ DetailPerson } />
+        <Route path='/keyword/:id' exact component={ Keyword } />
+        <Route path='/company/:id' exact component={ DetailCompany } />
         <Route path='/connexion' exact component={ Connexion } />
         <Route path='/inscription' exact component={ Inscription } />
         <Route component={ Erreur } />

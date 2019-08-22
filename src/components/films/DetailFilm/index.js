@@ -13,7 +13,7 @@ import Spinner from '../../Molecules/Spinner';
 //import placeholder from '../../../images/placeholder.png';
 
 function DetailFilm({ match }) {
-    const [filmDetail, setFilmDetail] = useState([]);
+    const [filmDetail, setFilmDetail] = useState(false);
     const [castFilm, setCastFilm] = useState([]);
     const [crewFilm, setCrewFilm] = useState([]);
     const [similarFilms, setSimilarFilms] = useState([]);
@@ -22,6 +22,7 @@ function DetailFilm({ match }) {
     const [keywordsFilm, setKeywordsFilm] = useState([]);
     const [seeAllVideos, setSeeAllVideos] = useState(false);
     const [activeItemIndex, setActiveItemIndex] = useState(0);
+    const [convertedRuntime, setConvertedRuntime] = useState();
     const [pending, setPending] = useState(true);
     const filmDetailUrl = `https://api.themoviedb.org/3/movie/${match.params.id}?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
     const creditsFilmUrl = `https://api.themoviedb.org/3/movie/${match.params.id}/credits?api_key=${process.env.REACT_APP_API_KEY}`;
@@ -53,6 +54,12 @@ function DetailFilm({ match }) {
         }
     }, []);
 
+    function convertRuntime(runtime) {
+        let hours = Math.trunc(runtime/60);
+        let minutes = runtime % 60;
+        setConvertedRuntime(hours + "h" + minutes);
+    }
+
     async function loadFilmDetail() {
         try {
             const dataFilmDetail = await axios.get(filmDetailUrl);
@@ -62,6 +69,7 @@ function DetailFilm({ match }) {
             console.log('poster ', dataFilmDetail.data.poster_path)
             document.body.style.backgroundImage = `url("http://image.tmdb.org/t/p/original${dataFilmDetail.data.poster_path}")`
             document.title = `O'Films | ${dataFilmDetail.data.title}`
+            convertRuntime(dataFilmDetail.data.runtime);
             forceUpdate();
         } catch (error) {
             console.error(error);
@@ -159,7 +167,7 @@ function DetailFilm({ match }) {
                             <p className="film-detail">
                                 Catégories 
                                 <span>
-                                    {filmDetail && filmDetail.genres.map((genre, index) => <div key={index} className="no-margin-bottom text-capitalize film-detail-keywords"><p>{genre.name}</p></div>)}
+                                    {filmDetail && filmDetail.genres && filmDetail.genres.map((genre, index) => <div key={index} className="no-margin-bottom text-capitalize film-detail-keywords"><p>{genre.name}</p></div>)}
                                 </span>
                             </p>
                             <p className="film-detail">
@@ -171,13 +179,13 @@ function DetailFilm({ match }) {
                             <p className="film-detail film-detail-duree">
                                 Durée du film 
                                 <span>
-                                    {filmDetail && filmDetail.runtime} minutes
+                                    {filmDetail && filmDetail.runtime} minutes ({convertedRuntime})
                                 </span>
                             </p>
                             <p className="film-detail">
                                 Production 
                                 <span>
-                                    {filmDetail && filmDetail.production_companies.map((company, index) => <p key={index} className="no-margin-bottom production-companies">{company.name}&nbsp;</p>)}
+                                    {filmDetail && filmDetail.production_companies.map((company, index) => <p key={index} className="no-margin-bottom production-companies"><Link href={`/company/${company.id}`} to={`/company/${company.id}`}>{company.name}&nbsp;{company.logo_path !== null && <img src={`http://image.tmdb.org/t/p/w500${company.logo_path}`} style={{ width: "25px" }} />}</Link></p>)}
                                 </span>
                             </p>
                             <p className="film-detail">
@@ -192,12 +200,12 @@ function DetailFilm({ match }) {
                                     {filmDetail && filmDetail.revenue.toLocaleString()} $
                                 </span>
                             </p>
-                            <p className="film-detail">
+                            {keywordsFilm && keywordsFilm === [] && (<p className="film-detail">
                                 Mots-clés
                                 <span>
-                                    <div className="film-detail-keywords">{keywordsFilm && keywordsFilm.map((keyword) => <p>{keyword.name}</p>)}</div>
+                                    <div className="film-detail-keywords">{keywordsFilm && keywordsFilm.map((keyword) => <p><Link href={`/keyword/${keyword.id}`} to={`/keyword/${keyword.id}`}>{keyword.name}</Link></p>)}</div>
                                 </span>
-                            </p>
+                            </p>)}
                         </div>
                         <div className="col-xs-12 col-md-8">
                             <ul className="nav nav-tabs detail-film-videos" id="nav-tab" role="tablist">
@@ -231,7 +239,7 @@ function DetailFilm({ match }) {
                                                 <div className="film-detail-cast film-detail-cast-photos scrolling-wrapper">
                                                     {castFilm && castFilm.map((cast) => 
                                                         <div key={cast.id} className="card">
-                                                            <img src={cast.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${cast.profile_path}`} className="card-img-top" alt={cast.name} />
+                                                            <Link href={`/person/${cast.id}`} to={`/person/${cast.id}`}><img src={cast.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${cast.profile_path}`} className="card-img-top" alt={cast.name} /></Link>
                                                             <br />
                                                             <p className="film-detail-cast-name">{cast.name}</p>
                                                             <p className="film-detail-cast-character">{cast.character === "" ? "-" : cast.character}</p>
@@ -246,7 +254,7 @@ function DetailFilm({ match }) {
                                                 <div className="film-detail-cast film-detail-cast-photos scrolling-wrapper">
                                                     {crewFilm && crewFilm.map((crew) => 
                                                         <div key={crew.id} className="card">
-                                                            <img src={crew.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${crew.profile_path}`} className="card-img-top" alt={crew.name} />
+                                                            <Link href={`/person/${crew.id}`} to={`/person/${crew.id}`}><img src={crew.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${crew.profile_path}`} className="card-img-top" alt={crew.name} /></Link>
                                                             <br />
                                                             <p className="film-detail-cast-name">{crew.name}</p>
                                                             <p className="film-detail-cast-character">{crew.job === "" ? "-" : crew.job}</p>
@@ -279,6 +287,7 @@ function DetailFilm({ match }) {
                         </div>
                     </div>
                 }
+                <hr className="hr-detailfilm" />
                 </div>
                 {similarFilms && similarFilms.length > 0 && (
                     <div>

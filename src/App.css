@@ -24,18 +24,31 @@ h2, h3 {
   text-transform: uppercase;
 }
 
+h2.media-type {
+  text-align: center;
+  color: white;
+  margin-top: 50px;
+}
+
 .content {
   background-color: white;
   box-shadow: grey 0 0 10px 2px;
   padding: 40px 40px 40px 40px;
-  margin-top: 100px;
-  margin-bottom: 100px;
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
-hr {
+hr.hr-accueil {
   border: 0.5px dotted #23272A !important;
   margin-top: 2rem;
   margin-bottom: 2rem;
+}
+
+hr.hr-detailfilm  {
+  border: 0.5px dotted #23272A !important;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  width: 50%;
 }
 
 ul, ol { 
@@ -215,7 +228,6 @@ ul li {
 .detail-film {
   margin-bottom: 10px;
   padding: 20px;
-  border-bottom: 1px solid black;
 }
 
 .detail-film-videos a {
@@ -239,6 +251,9 @@ ul li {
   font-size: 16px;
   color: #99AAB5;
   display: block;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .film-detail span, .film-detail-duree span {
@@ -246,7 +261,6 @@ ul li {
   font-weight: initial;
   color: #23272A;
   display: block;
-  font-weight: 500;
 }
 
 .film-detail-cast div {
@@ -260,9 +274,20 @@ ul li {
   margin-top: 10px;
 }
 
+.film-detail-cast-name {
+  padding: 0 10px !important;
+  text-overflow: ellipsis; 
+  overflow: hidden; 
+  white-space: nowrap;
+}
+
 .film-detail-cast-character {
   color: #99AAB5;
   font-size: 14px;
+  padding: 0 10px !important;
+  text-overflow: ellipsis; 
+  overflow: hidden; 
+  white-space: nowrap;
 }
 
 .film-detail-videos p div {
@@ -395,8 +420,9 @@ p.film-types-title {
   font-weight: 300;
 }
 
-a#nav-infos-tab.nav-item.nav-link.active {
-  color: #23272A !important;
+a#nav-infos-tab.nav-item.nav-link.active, a#nav-bandesannonces-tab.nav-item.nav-link.active, a#nav-photos-tab.nav-item.nav-link.active {
+  color: white !important;
+  background-color: #99AAB5 !important;
 }
 
 .nav-link {
@@ -654,4 +680,18 @@ input::placeholder {
 .card {
   border: inherit !important;
   cursor: pointer;
+}
+
+.active-page {
+  background-color: #23272A;
+  color: white;
+}
+
+ul.pagination a {
+  padding: 6px;
+}
+
+ul.pagination a:hover {
+  color: white;
+  background-color: #99AAB5;
 }

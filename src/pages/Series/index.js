@@ -52,6 +52,7 @@ function Series() {
     return (
         <>
             <Nav />
+            <h2 className="media-type">Séries</h2>
             <div className="container content">
                 <div className="film-types">
                     <h3 className="film-types-title">Les séries en tendances

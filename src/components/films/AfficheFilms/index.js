@@ -8,6 +8,7 @@ import useForceUpdate from 'use-force-update';
 //import { genres } from '../../utils/genres';
 import Nav from '../../Nav';
 import Spinner from '../../Molecules/Spinner';
+import Pagination from '../../Molecules/Pagination';
 
 function AfficheFilms() {
     const [afficheFilms, setAfficheFilms] = useState([]);
@@ -15,15 +16,26 @@ function AfficheFilms() {
     const [activePage, setActivePage] = useState(1);
     const afficheFilmsUrl = `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=${activePage}`;
     const forceUpdate = useForceUpdate();
+    const [itemsPerPage, setItemsPerPage] = useState(20)
+    const indexOfLastFilm = activePage * itemsPerPage
+    const indexOfFirstFilm = indexOfLastFilm - itemsPerPage
+    const [totalPages, setTotalPages] = useState(0)
+    
+    const goToPage = val => setActivePage(val)
+    const getFirst = () => setActivePage(1)
+    const getPrevious = () => activePage > 1 ? setActivePage(activePage - 1) : ""
+    const getNext = () => activePage < totalPages ? setActivePage(activePage + 1) : ""
+    const getLast = () => setActivePage(totalPages)
 
     useEffect(() => {
         document.title = `O'Films | Les films à l'affiche`
         loadAfficheFilms();
+        window.scroll(0, 0);
 
         return () => {
             document.body.style.backgroundImage = `url("https://www.transparenttextures.com/patterns/black-linen.png")`
         }
-    }, []);
+    }, [activePage]);
 
     async function loadAfficheFilms() {
         try {
@@ -32,6 +44,7 @@ function AfficheFilms() {
             setAfficheFilms(dataAfficheFilms.data.results);
             console.log("afficheFilms ", afficheFilms);
             document.body.style.backgroundImage = `url("http://image.tmdb.org/t/p/original${dataAfficheFilms.data.results[0].poster_path}")`
+            setTotalPages(dataAfficheFilms.data.total_pages);
             setPending(false);
             forceUpdate();
         } catch (error) {
@@ -49,7 +62,7 @@ function AfficheFilms() {
                     <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} style={{ textDecoration: "none", width: "50%", padding: "10px", height: "375px" }}>
                         <div className="row" style={{ marginBottom: "10px", boxShadow: "grey 0 0 10px 2px", padding: "20px", width: "100%", height: "100%" }}>
                             <div className="col-xs-12 col-md-4" style={{ padding: "20px" }}>
-                                <img src={`http://image.tmdb.org/t/p/w500${film.poster_path}`} className="card-img-top" alt={`Poster du film ${film.title}`} style={{ width: "100%" }} />
+                                <img src={film.poster_path !== null ? `http://image.tmdb.org/t/p/w500${film.poster_path}` : "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible"} className="card-img-top" alt={`Poster du film ${film.title}`} style={{ width: "100%" }} />
                             </div>
                             <div className="col-xs-12 col-md-8">
                                 <div className="card-body">
@@ -79,6 +92,18 @@ function AfficheFilms() {
                     </Link>
                 ))}
                 </div>
+            </div>
+            <div className="container content">
+                <Pagination
+                    getFirst={getFirst}
+                    getPrevious={getPrevious}
+                    getNext={getNext}
+                    getLast={getLast}
+                    goToPage={goToPage}
+                    activePage={activePage}
+                    setActivePage={setActivePage}
+                    total={totalPages}
+                />
             </div>
         </>
     )

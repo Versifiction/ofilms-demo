@@ -13,7 +13,7 @@ import Spinner from '../../Molecules/Spinner';
 //import placeholder from '../../../images/placeholder.png';
 
 function DetailSerie({ match }) {
-    const [serieDetail, setSerieDetail] = useState([]);
+    const [serieDetail, setSerieDetail] = useState(false);
     const [castSerie, setCastSerie] = useState([]);
     const [crewSerie, setCrewSerie] = useState([]);
     const [similarSeries, setSimilarSeries] = useState([]);
@@ -121,7 +121,7 @@ function DetailSerie({ match }) {
         try {
             const dataKeywordsSerie = await axios.get(keywordsSerieUrl);
             console.log("keywordsSerie ", dataKeywordsSerie);
-            setKeywordsSerie(dataKeywordsSerie.data.keywords);
+            setKeywordsSerie(dataKeywordsSerie.data.results);
             setPending(false);
             forceUpdate();
         } catch (error) {
@@ -195,6 +195,12 @@ function DetailSerie({ match }) {
                                                 {serieDetail && serieDetail.production_companies.map((company, index) => <p key={index} className="no-margin-bottom">{index !== 0 ? `/ ${company.name}` : company.name}</p>)}
                                             </span>
                                         </p>
+                                        {keywordsSerie && keywordsSerie=== [] && (<p className="film-detail">
+                                            Mots-clés
+                                            <span>
+                                                <div className="film-detail-keywords">{keywordsSerie && keywordsSerie.map((keyword) => <p><Link href={`/keyword/${keyword.id}`} to={`/keyword/${keyword.id}`}>{keyword.name}</Link></p>)}</div>
+                                            </span>
+                                        </p>)}
                         </div>
                         <div className="col-xs-12 col-md-8">
                             <ul className="nav nav-tabs detail-film-videos" id="nav-tab" role="tablist">
@@ -225,7 +231,7 @@ function DetailSerie({ match }) {
                                             Casting
                                             <span>
                                                 <div className="film-detail-cast film-detail-cast-photos scrolling-wrapper">
-                                                {castSerie && castSerie.map((cast) => <div key={cast.id} className="card"><img src={cast.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${cast.profile_path}`} className="card-img-top" alt={cast.name} /><br /><p className="film-detail-cast-name">{cast.name}</p><p className="film-detail-cast-character">{cast.character}</p></div>)}
+                                                {castSerie && castSerie.map((cast) => <div key={cast.id} className="card"><Link href={`/person/${cast.id}`} to={`/person/${cast.id}`}><img src={cast.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${cast.profile_path}`} className="card-img-top" alt={cast.name} /></Link><br /><p className="film-detail-cast-name">{cast.name}</p><p className="film-detail-cast-character">{cast.character}</p></div>)}
                                                 </div>
                                             </span>
                                         </p>)}
@@ -233,11 +239,10 @@ function DetailSerie({ match }) {
                                             Crew
                                             <span>
                                                 <div className="film-detail-cast film-detail-cast-photos scrolling-wrapper">
-                                                {crewSerie && crewSerie.map((crew) => <div key={crew.id} className="card"><img src={crew.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${crew.profile_path}`} className="card-img-top" alt={crew.name} /><br /><p className="film-detail-crew-name">{crew.name}</p></div>)}
+                                                {crewSerie && crewSerie.map((crew) => <div key={crew.id} className="card"><Link href={`/person/${crew.id}`} to={`/person/${crew.id}`}><img src={crew.profile_path == null ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" : `http://image.tmdb.org/t/p/w500${crew.profile_path}`} className="card-img-top" alt={crew.name} /></Link><br /><p className="film-detail-crew-name">{crew.name}</p></div>)}
                                                 </div>
                                             </span>
                                         </p>)}
-                                        <div className="film-detail-keywords">{keywordsSerie && keywordsSerie.map((keyword) => <p>{keyword.name}</p>)}</div>
                                     </div>
                                 </div>
                                 {serieDetail && serieDetail.seasons.length > 0 && (
@@ -284,6 +289,7 @@ function DetailSerie({ match }) {
                         </div>
                     </div>
                 }
+                <hr className="hr-detailfilm" />
                 </div>
                 {similarSeries && similarSeries.length > 0 && (
                     <div>
