@@ -14,12 +14,12 @@ import Spinner from '../../Molecules/Spinner';
 
 function DetailFilm({ match }) {
     const [filmDetail, setFilmDetail] = useState(false);
-    const [castFilm, setCastFilm] = useState([]);
-    const [crewFilm, setCrewFilm] = useState([]);
-    const [similarFilms, setSimilarFilms] = useState([]);
-    const [videosFilm, setVideosFilm] = useState([]);
-    const [photosFilm, setPhotosFilm] = useState([]);
-    const [keywordsFilm, setKeywordsFilm] = useState([]);
+    const [castFilm, setCastFilm] = useState(false);
+    const [crewFilm, setCrewFilm] = useState(false);
+    const [similarFilms, setSimilarFilms] = useState(false);
+    const [videosFilm, setVideosFilm] = useState(false);
+    const [photosFilm, setPhotosFilm] = useState(false);
+    const [keywordsFilm, setKeywordsFilm] = useState(false);
     const [seeAllVideos, setSeeAllVideos] = useState(false);
     const [activeItemIndex, setActiveItemIndex] = useState(0);
     const [convertedRuntime, setConvertedRuntime] = useState();

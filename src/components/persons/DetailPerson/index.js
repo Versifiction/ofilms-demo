@@ -14,9 +14,9 @@ import Spinner from '../../Molecules/Spinner';
 
 function DetailPerson({ match }) {
     const [personDetail, setPersonDetail] = useState(false);
-    const [castCreditsPerson, setCastCreditsPerson] = useState([]);
-    const [crewCreditsPerson, setCrewCreditsPerson] = useState([]);
-    const [photosPerson, setPhotosPerson] = useState([]);
+    const [castCreditsPerson, setCastCreditsPerson] = useState(false);
+    const [crewCreditsPerson, setCrewCreditsPerson] = useState(false);
+    const [photosPerson, setPhotosPerson] = useState(false);
     const [pending, setPending] = useState(true);
     const personDetailUrl = `https://api.themoviedb.org/3/person/${match.params.id}?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
     const castCreditsPersonUrl = `https://api.themoviedb.org/3/person/${match.params.id}/combined_credits?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;

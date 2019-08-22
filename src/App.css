@@ -69,6 +69,14 @@ nav a {
   color: #99AAB5;
 }
 
+ul.pagination a {
+  color: #23272A;
+}
+
+ul.pagination a.active-page {
+  color: #99AAB5;
+}
+
 nav a:hover {
   color: white;
   text-decoration: none;

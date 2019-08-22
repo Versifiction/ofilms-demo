@@ -10,8 +10,8 @@ import Nav from '../../Nav';
 import Spinner from '../../Molecules/Spinner'
 
 function BestRatedSeries() {
-    const [bestRatedSeries, setBestRatedSeries] = useState([]);
-    const [allGenres, setAllGenres] = useState([]);
+    const [bestRatedSeries, setBestRatedSeries] = useState(false);
+    const [allGenres, setAllGenres] = useState(false);
     const [pending, setPending] = useState(true);
     const [activePage, setActivePage] = useState(1);
     const bestRatedSeriesUrl = `https://api.themoviedb.org/3/tv/top_rated?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=${activePage}`;

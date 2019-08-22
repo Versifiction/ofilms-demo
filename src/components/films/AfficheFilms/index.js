@@ -11,14 +11,12 @@ import Spinner from '../../Molecules/Spinner';
 import Pagination from '../../Molecules/Pagination';
 
 function AfficheFilms() {
-    const [afficheFilms, setAfficheFilms] = useState([]);
+    const [afficheFilms, setAfficheFilms] = useState(false);
     const [pending, setPending] = useState(true);
     const [activePage, setActivePage] = useState(1);
     const afficheFilmsUrl = `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=${activePage}`;
     const forceUpdate = useForceUpdate();
     const [itemsPerPage, setItemsPerPage] = useState(20)
-    const indexOfLastFilm = activePage * itemsPerPage
-    const indexOfFirstFilm = indexOfLastFilm - itemsPerPage
     const [totalPages, setTotalPages] = useState(0)
     
     const goToPage = val => setActivePage(val)

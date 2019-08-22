@@ -14,12 +14,12 @@ import Spinner from '../../Molecules/Spinner';
 
 function DetailSerie({ match }) {
     const [serieDetail, setSerieDetail] = useState(false);
-    const [castSerie, setCastSerie] = useState([]);
-    const [crewSerie, setCrewSerie] = useState([]);
-    const [similarSeries, setSimilarSeries] = useState([]);
-    const [videosSerie, setVideosSerie] = useState([]);
-    const [photosSerie, setPhotosSerie] = useState([]);
-    const [keywordsSerie, setKeywordsSerie] = useState([]);
+    const [castSerie, setCastSerie] = useState(false);
+    const [crewSerie, setCrewSerie] = useState(false);
+    const [similarSeries, setSimilarSeries] = useState(false);
+    const [videosSerie, setVideosSerie] = useState(false);
+    const [photosSerie, setPhotosSerie] = useState(false);
+    const [keywordsSerie, setKeywordsSerie] = useState(false);
     const [seeAllVideos, setSeeAllVideos] = useState(false);
     const [activeItemIndex, setActiveItemIndex] = useState(0);
     const [pending, setPending] = useState(true);

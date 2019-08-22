@@ -10,7 +10,7 @@ import Nav from '../../Nav';
 import Spinner from '../../Molecules/Spinner';
 
 function TendancesSeries() {
-    const [tendancesSeries, setTendancesSeries] = useState([]);
+    const [tendancesSeries, setTendancesSeries] = useState(false);
     const [pending, setPending] = useState(true);
     const [activePage, setActivePage] = useState(1);
     const tendancesSeriesUrl = `https://api.themoviedb.org/3/tv/popular?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=${activePage}`;

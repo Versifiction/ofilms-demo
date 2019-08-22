@@ -8,29 +8,40 @@ import useForceUpdate from 'use-force-update';
 //import { genres } from '../../utils/genres';
 import Nav from '../../Nav';
 import Spinner from '../../Molecules/Spinner';
+import Pagination from '../../Molecules/Pagination';
 
 function TendancesFilms() {
-    const [tendancesFilms, setTendancesFilms] = useState([]);
+    const [tendancesFilms, setTendancesFilms] = useState(false);
     const [pending, setPending] = useState(true);
     const [activePage, setActivePage] = useState(1);
     const [timeValue, setTimeValue] = useState("week");
     const tendancesFilmsUrl = `https://api.themoviedb.org/3/trending/movies/${timeValue}?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=${activePage}`;
     const forceUpdate = useForceUpdate();
+    const [itemsPerPage, setItemsPerPage] = useState(20)
+    const [totalPages, setTotalPages] = useState(0)
+
+    const goToPage = val => setActivePage(val)
+    const getFirst = () => setActivePage(1)
+    const getPrevious = () => activePage > 1 ? setActivePage(activePage - 1) : ""
+    const getNext = () => activePage < totalPages ? setActivePage(activePage + 1) : ""
+    const getLast = () => setActivePage(totalPages)
 
     useEffect(() => {
         document.title = `O'Films | Les films en tendances`
         loadTendancesFilms();
+        window.scroll(0, 0);
 
         return () => {
             document.body.style.backgroundImage = `url("https://www.transparenttextures.com/patterns/black-linen.png")`
         }
-    }, []);
+    }, [activePage]);
 
     async function loadTendancesFilms() {
         try {
             const dataTendancesFilms = await axios.get(tendancesFilmsUrl);
             console.log("data ", dataTendancesFilms);
             setTendancesFilms(dataTendancesFilms.data.results);
+            setTotalPages(dataTendancesFilms.data.total_pages);
             console.log("tendancesFilms ", dataTendancesFilms);
             document.body.style.backgroundImage = `url("http://image.tmdb.org/t/p/original${dataTendancesFilms.data.results[0].poster_path}")`
             setPending(false);
@@ -80,6 +91,18 @@ function TendancesFilms() {
                     </Link>
                 ))}
                 </div>
+            </div>
+            <div className="container content">
+                <Pagination
+                    getFirst={getFirst}
+                    getPrevious={getPrevious}
+                    getNext={getNext}
+                    getLast={getLast}
+                    goToPage={goToPage}
+                    activePage={activePage}
+                    setActivePage={setActivePage}
+                    total={totalPages}
+                />
             </div>
         </>
     )
