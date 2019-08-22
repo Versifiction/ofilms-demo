@@ -147,60 +147,71 @@ function DetailSerie({ match }) {
                         <div className="col-xs-12 col-md-4 detail-film-poster">
                             <img src={`http://image.tmdb.org/t/p/w500${serieDetail && serieDetail.poster_path}`} className="card-img-top" alt={`Poster de la série ${serieDetail && serieDetail.title}`} />
                             <h2>{serieDetail && serieDetail.original_name}</h2>
+                            <StarRatingComponent 
+                                name="rate1" 
+                                starCount={10}
+                                value={serieDetail && serieDetail.vote_average}
+                            />
                             <p className="film-detail">
-                                            Titre original 
-                                            <span>
-                                            {serieDetail && serieDetail.original_name}
-                                            </span>
-                                        </p>
-                                        <p className="film-detail">
-                                            Genres 
-                                            <span>
-                                                {serieDetail && serieDetail.genres.map((genre, index) => <div key={index} className="no-margin-bottom text-capitalize film-detail-keywords"><p>{genre.name}</p></div>)}
-                                            </span>
-                                        </p>
-                                        <p className="film-detail">
-                                            Nombre de saisons 
-                                            <span>
-                                                {serieDetail && serieDetail.number_of_seasons && <p className="no-margin-bottom text-capitalize">{serieDetail.number_of_seasons}</p>}
-                                            </span>
-                                        </p>
-                                        <p className="film-detail">
-                                            Nombre d'épisodes
-                                            <span>
-                                                {serieDetail && serieDetail.number_of_episodes && <p className="no-margin-bottom text-capitalize">{serieDetail.number_of_episodes}</p>}
-                                            </span>
-                                        </p>
-                                        <p className="film-detail">
-                                            Première diffusion 
-                                            <span>
-                                            {moment(serieDetail && serieDetail.first_air_date).format('DD/MM/YYYY')}
-                                            </span>
-                                        </p>
-                                        <p className="film-detail">
-                                            Dernière diffusion 
-                                            <span>
-                                            {moment(serieDetail && serieDetail.last_air_date).format('DD/MM/YYYY')}
-                                            </span>
-                                        </p>
-                                        <p className="film-detail film-detail-duree">
-                                            Durée d'un épisode
-                                            <span>
-                                                {serieDetail && serieDetail.episode_run_time} minutes
-                                            </span>
-                                        </p>
-                                        <p className="film-detail">
-                                            Production 
-                                            <span>
-                                                {serieDetail && serieDetail.production_companies.map((company, index) => <p key={index} className="no-margin-bottom">{index !== 0 ? `/ ${company.name}` : company.name}</p>)}
-                                            </span>
-                                        </p>
-                                        {keywordsSerie && keywordsSerie=== [] && (<p className="film-detail">
-                                            Mots-clés
-                                            <span>
-                                                <div className="film-detail-keywords">{keywordsSerie && keywordsSerie.map((keyword) => <p><Link href={`/keyword/${keyword.id}`} to={`/keyword/${keyword.id}`}>{keyword.name}</Link></p>)}</div>
-                                            </span>
-                                        </p>)}
+                                Titre original 
+                                <span>
+                                {serieDetail && serieDetail.original_name}
+                                </span>
+                            </p>
+                            <p className="film-detail">
+                                Genres 
+                                <span>
+                                    {serieDetail && serieDetail.genres.map((genre, index) => <div key={index} className="no-margin-bottom text-capitalize film-detail-keywords"><p>{genre.name}</p></div>)}
+                                </span>
+                            </p>
+                            <p className="film-detail">
+                                Nombre de saisons 
+                                <span>
+                                    {serieDetail && serieDetail.number_of_seasons && <p className="no-margin-bottom text-capitalize">{serieDetail.number_of_seasons}</p>}
+                                </span>
+                            </p>
+                            <p className="film-detail">
+                                Nombre d'épisodes
+                                <span>
+                                    {serieDetail && serieDetail.number_of_episodes && <p className="no-margin-bottom text-capitalize">{serieDetail.number_of_episodes}</p>}
+                                </span>
+                            </p>
+                            <p className="film-detail">
+                                Première diffusion 
+                                <span>
+                                {moment(serieDetail && serieDetail.first_air_date).format('DD/MM/YYYY')}
+                                </span>
+                            </p>
+                            <p className="film-detail">
+                                Dernière diffusion 
+                                <span>
+                                {moment(serieDetail && serieDetail.last_air_date).format('DD/MM/YYYY')}
+                                </span>
+                            </p>
+                            <p className="film-detail film-detail-duree">
+                                Durée d'un épisode
+                                <span>
+                                    {serieDetail && serieDetail.episode_run_time} minutes
+                                </span>
+                            </p>
+                            <p className="film-detail">
+                                Production 
+                                <span>
+                                    {serieDetail && serieDetail.production_companies.map((company, index) => <p key={index} className="no-margin-bottom production-companies"><Link href={`/company/${company.id}`} to={`/company/${company.id}`}>{company.name}&nbsp;{company.logo_path !== null && <img src={`http://image.tmdb.org/t/p/w500${company.logo_path}`} style={{ width: "25px" }} />}</Link></p>)}
+                                </span>
+                            </p>
+                            <p className="film-detail">
+                                Pays de production
+                                <span>
+                                    {serieDetail && serieDetail.origin_country && <Flag code={serieDetail.origin_country[0]} className="film-production-flag" />}
+                                </span>
+                            </p>
+                            {keywordsSerie && keywordsSerie=== [] && (<p className="film-detail">
+                                Mots-clés
+                                <span>
+                                    <div className="film-detail-keywords">{keywordsSerie && keywordsSerie.map((keyword) => <p><Link href={`/keyword/${keyword.id}`} to={`/keyword/${keyword.id}`}>{keyword.name}</Link></p>)}</div>
+                                </span>
+                            </p>)}
                         </div>
                         <div className="col-xs-12 col-md-8">
                             <ul className="nav nav-tabs detail-film-videos" id="nav-tab" role="tablist">
@@ -212,14 +223,27 @@ function DetailSerie({ match }) {
                             <div className="tab-content" id="nav-tabContent">
                                 <div className="tab-pane fade show active" id="nav-infos" role="tabpanel" aria-labelledby="nav-infos-tab">
                                     <div className="card-body">
-                                        {serieDetail && serieDetail.origin_country && <Flag code={serieDetail.origin_country[0]} className="film-production-flag" />}
                                         <br />
-                                        <StarRatingComponent 
-                                            name="rate1" 
-                                            starCount={10}
-                                            value={serieDetail && serieDetail.vote_average}
-                                        />
-                                        <p><i className="fas fa-thumbs-up"></i>{serieDetail && serieDetail.vote_count}</p>
+                                        <div className="row">
+                                            <div className="col-xs-12 col-md-4">
+                                                <div className="content" style={{ textAlign: "center", margin: "inherit", padding: "20px" }}>
+                                                    <p>Note moyenne</p>
+                                                    <p style={{ fontWeight: "bold", fontSize: "20px" }}>{serieDetail && serieDetail.vote_average}</p>
+                                                </div>
+                                            </div>
+                                            <div className="col-xs-12 col-md-4">
+                                                <div className="content" style={{ textAlign: "center", margin: "inherit", padding: "20px" }}>
+                                                    <p>Nombre de votes</p>
+                                                    <p style={{ fontWeight: "bold", fontSize: "20px" }}>{serieDetail && serieDetail.vote_count}</p>
+                                                </div>
+                                            </div>
+                                            <div className="col-xs-12 col-md-4">
+                                                <div className="content" style={{ textAlign: "center", margin: "inherit", padding: "20px" }}>
+                                                    <p>Popularité</p>
+                                                    <p style={{ fontWeight: "bold", fontSize: "20px" }}>{serieDetail && serieDetail.popularity}</p>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <br />
                                         <p className="card-text film-detail">
                                             Synopsis

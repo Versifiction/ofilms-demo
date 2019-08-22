@@ -158,6 +158,11 @@ function DetailFilm({ match }) {
                         <div className="col-xs-12 col-md-4 detail-film-poster">
                             <img src={`http://image.tmdb.org/t/p/w500${filmDetail && filmDetail.poster_path}`} className="card-img-top" alt={`Poster du film ${filmDetail && filmDetail.title}`} />
                             <h2>{filmDetail && filmDetail.title}</h2>
+                            <StarRatingComponent 
+                                name="rate1" 
+                                starCount={10}
+                                value={filmDetail && filmDetail.vote_average}
+                            />
                             <p className="film-detail">
                                 Titre original 
                                 <span>
@@ -189,6 +194,14 @@ function DetailFilm({ match }) {
                                 </span>
                             </p>
                             <p className="film-detail">
+                                Pays de production 
+                                <span>
+                                {filmDetail && filmDetail.production_countries && filmDetail.production_countries.map((country) => (
+                                    <Flag code={`${country.iso_3166_1}`} key={country.name} className="film-production-flag" />
+                                ))}
+                                </span>
+                            </p>
+                            <p className="film-detail">
                                 Budget 
                                 <span>
                                     {filmDetail && filmDetail.budget.toLocaleString()} $
@@ -200,12 +213,12 @@ function DetailFilm({ match }) {
                                     {filmDetail && filmDetail.revenue.toLocaleString()} $
                                 </span>
                             </p>
-                            {keywordsFilm && keywordsFilm === [] && (<p className="film-detail">
+                            <p className="film-detail">
                                 Mots-clés
                                 <span>
                                     <div className="film-detail-keywords">{keywordsFilm && keywordsFilm.map((keyword) => <p><Link href={`/keyword/${keyword.id}`} to={`/keyword/${keyword.id}`}>{keyword.name}</Link></p>)}</div>
                                 </span>
-                            </p>)}
+                            </p>
                         </div>
                         <div className="col-xs-12 col-md-8">
                             <ul className="nav nav-tabs detail-film-videos" id="nav-tab" role="tablist">
@@ -216,16 +229,27 @@ function DetailFilm({ match }) {
                             <div className="tab-content" id="nav-tabContent">
                                 <div className="tab-pane fade show active" id="nav-infos" role="tabpanel" aria-labelledby="nav-infos-tab">
                                     <div className="card-body">
-                                        {filmDetail && filmDetail.production_countries && filmDetail.production_countries.map((country) => (
-                                            <Flag code={`${country.iso_3166_1}`} key={country.name} className="film-production-flag" />
-                                        ))}
                                         <br />
-                                        <StarRatingComponent 
-                                            name="rate1" 
-                                            starCount={10}
-                                            value={filmDetail && filmDetail.vote_average}
-                                        />
-                                        <p><i className="fas fa-thumbs-up"></i>{filmDetail && filmDetail.vote_count}</p>
+                                        <div className="row">
+                                            <div className="col-xs-12 col-md-4">
+                                                <div className="content" style={{ textAlign: "center", margin: "inherit", padding: "20px" }}>
+                                                    <p>Note moyenne</p>
+                                                    <p style={{ fontWeight: "bold", fontSize: "20px" }}>{filmDetail && filmDetail.vote_average}</p>
+                                                </div>
+                                            </div>
+                                            <div className="col-xs-12 col-md-4">
+                                                <div className="content" style={{ textAlign: "center", margin: "inherit", padding: "20px" }}>
+                                                    <p>Nombre de votes</p>
+                                                    <p style={{ fontWeight: "bold", fontSize: "20px" }}>{filmDetail && filmDetail.vote_count}</p>
+                                                </div>
+                                            </div>
+                                            <div className="col-xs-12 col-md-4">
+                                                <div className="content" style={{ textAlign: "center", margin: "inherit", padding: "20px" }}>
+                                                    <p>Popularité</p>
+                                                    <p style={{ fontWeight: "bold", fontSize: "20px" }}>{filmDetail && filmDetail.popularity}</p>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <br />
                                         <p className="film-detail">
                                             Synopsis
