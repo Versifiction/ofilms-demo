@@ -107,7 +107,7 @@ function DetailPerson({ match }) {
                 {pending ? <Spinner /> : 
                     <div className="row detail-film" key={personDetail && personDetail.id}>
                         <div className="col-xs-12 col-md-4 detail-film-poster">
-                            <img src={`http://image.tmdb.org/t/p/w500${personDetail && personDetail.profile_path}`} className="card-img-top" alt={`Poster de ${personDetail && personDetail.name}`} />
+                        <img src={personDetail && personDetail.birthday !== null ? `http://image.tmdb.org/t/p/w500${personDetail && personDetail.profile_path}` : "https://via.placeholder.com/300x400/2C2F33/FFFFFF/png?text=Image+non+disponible"} className="card-img-top" alt={`Poster de ${personDetail && personDetail.name}`} />
                             <h2>{personDetail && personDetail.name}</h2>
                             {personDetail && personDetail.length > 0 && (<p className="film-detail film-detail-duree">
                                 Connu également en tant que
@@ -121,18 +121,18 @@ function DetailPerson({ match }) {
                                     {personDetail && personDetail.known_for_department}
                                 </span>
                             </p>
-                            <p className="film-detail">
+                            {personDetail && personDetail.birthday !== null && (<p className="film-detail">
                                 Date de naissance
                                 <span>
                                 {moment(personDetail && personDetail.birthday).format('DD/MM/YYYY')}
                                 </span>
-                            </p>
-                            <p className="film-detail film-detail-duree">
+                            </p>)}
+                            {personDetail && personDetail.place_of_birth !== null && (<p className="film-detail film-detail-duree">
                                 Lieu de naissance
                                 <span>
                                     {personDetail && personDetail.place_of_birth}
                                 </span>
-                            </p>
+                            </p>)}
                             {personDetail.deathday && (
                                 <p className="film-detail">
                                     Date de décès

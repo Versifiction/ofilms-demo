@@ -46,6 +46,8 @@ function BestRatedFilms() {
             setTotalPages(dataBestRatedFilms.data.total_pages);
             console.log("bestRatedFilms ", bestRatedFilms);
             document.body.style.backgroundImage = `url("http://image.tmdb.org/t/p/original${dataBestRatedFilms.data.results[0].poster_path}")`
+            document.body.style.backgroundSize = "cover"
+            document.body.style.backgroundRepeat = "no-repeat"
             setPending(false);
             forceUpdate();
         } catch (error) {

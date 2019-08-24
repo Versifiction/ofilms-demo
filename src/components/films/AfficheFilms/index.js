@@ -42,6 +42,8 @@ function AfficheFilms() {
             setAfficheFilms(dataAfficheFilms.data.results);
             console.log("afficheFilms ", afficheFilms);
             document.body.style.backgroundImage = `url("http://image.tmdb.org/t/p/original${dataAfficheFilms.data.results[0].poster_path}")`
+            document.body.style.backgroundSize = "cover"
+            document.body.style.backgroundRepeat = "no-repeat"
             setTotalPages(dataAfficheFilms.data.total_pages);
             setPending(false);
             forceUpdate();

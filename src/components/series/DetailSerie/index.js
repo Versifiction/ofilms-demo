@@ -51,6 +51,8 @@ function DetailSerie({ match }) {
             setSerieDetail(dataSerieDetail.data);
             setPending(false);
             document.body.style.backgroundImage = `url("http://image.tmdb.org/t/p/original${dataSerieDetail.data.poster_path}")`
+            document.body.style.backgroundSize = "cover"
+            document.body.style.backgroundRepeat = "no-repeat"
             document.title = `O'Films | ${dataSerieDetail.data.original_name}`
             forceUpdate();
         } catch (error) {
@@ -206,12 +208,12 @@ function DetailSerie({ match }) {
                                     {serieDetail && serieDetail.origin_country && <Flag code={serieDetail.origin_country[0]} className="film-production-flag" />}
                                 </span>
                             </p>
-                            {keywordsSerie && keywordsSerie=== [] && (<p className="film-detail">
+                            <p className="film-detail">
                                 Mots-clés
                                 <span>
                                     <div className="film-detail-keywords">{keywordsSerie && keywordsSerie.map((keyword) => <p><Link href={`/keyword/${keyword.id}`} to={`/keyword/${keyword.id}`}>{keyword.name}</Link></p>)}</div>
                                 </span>
-                            </p>)}
+                            </p>
                         </div>
                         <div className="col-xs-12 col-md-8">
                             <ul className="nav nav-tabs detail-film-videos" id="nav-tab" role="tablist">

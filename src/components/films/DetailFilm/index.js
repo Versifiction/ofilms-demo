@@ -68,6 +68,8 @@ function DetailFilm({ match }) {
             setPending(false);
             console.log('poster ', dataFilmDetail.data.poster_path)
             document.body.style.backgroundImage = `url("http://image.tmdb.org/t/p/original${dataFilmDetail.data.poster_path}")`
+            document.body.style.backgroundSize = "cover"
+            document.body.style.backgroundRepeat = "no-repeat"
             document.title = `O'Films | ${dataFilmDetail.data.title}`
             convertRuntime(dataFilmDetail.data.runtime);
             forceUpdate();
