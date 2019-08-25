@@ -1,22 +1,22 @@
 import React, { useEffect } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-import '../../App.css';
-import Nav from '../../components/Nav';
+import "../../App.css";
+import Nav from "../../components/Nav";
 
 function Inscription() {
-    useEffect(() => {
-        document.title = "O'Films | Inscription";
-    })
+  useEffect(() => {
+    document.title = "O'Films | Inscription";
+  });
 
-    return (
-        <>
-            <Nav />
-            <div style={{ textAlign: "center" }}>
-                <p>Page inscription</p>
-            </div>
-        </>
-    )
+  return (
+    <>
+      <Nav />
+      <div style={{ textAlign: "center" }}>
+        <p>Page inscription</p>
+      </div>
+    </>
+  );
 }
 
 export default Inscription;

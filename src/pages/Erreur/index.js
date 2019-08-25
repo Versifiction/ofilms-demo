@@ -1,33 +1,39 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 
-import '../../App.css';
-import AccueilBanner from '../../images/404.jpg';
-import Accueil from '../../pages/Accueil';
+import "../../App.css";
+import AccueilBanner from "../../images/404.jpg";
+import Accueil from "../../pages/Accueil";
 
 function Erreur() {
-    const style = {
-        backgroundImage: "url("+ AccueilBanner +")",
-        backgroundPosition: "center",
-        backgroundSize: "100%",
-        width: "100%", 
-        height: "100vh",
-    }
+  const style = {
+    backgroundImage: "url(" + AccueilBanner + ")",
+    backgroundPosition: "center",
+    backgroundSize: "100%",
+    width: "100%",
+    height: "100vh"
+  };
 
-    useEffect(() => {
-        document.title = "O'Films | 404";
-    })
+  useEffect(() => {
+    document.title = "O'Films | 404";
+  });
 
-    return (
-        <div className="erreur-banniere" style={ style }>
-            <div className="container">
-                <div className="erreur-content">
-                    <p className="erreur-title"><span>Oops...</span><br />On dirait que vous vous êtes trompé de salle !</p>
-                    <Link href="/" to="/">Retourner à l'accueil</Link>
-                </div>
-            </div>
+  return (
+    <div className="erreur-banniere" style={style}>
+      <div className="container">
+        <div className="erreur-content">
+          <p className="erreur-title">
+            <span>Oops...</span>
+            <br />
+            On dirait que vous vous êtes trompé de salle !
+          </p>
+          <Link href="/" to="/">
+            Retourner à l'accueil
+          </Link>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default Erreur;
