@@ -1,27 +1,27 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import Nav from '../Nav';
 
 
-function afficheCountries ({match}) {
+function country () {
 
     const [countryName, setCountryName] = false;     
     const [countryIsoCode , setCountryIsoCode] = false;
-    const countryIsoCodeUrl = `https://api.themoviedb.org/3/configuration/countries/${match.params.iso_3166_1}?api_key=${process.env.REACT_APP_API_KEY}`;
-    const countryNameUrl = `https://api.themoviedb.org/3/configuration/countries/${match.params.english_name}?api_key=${process.env.REACT_APP_API_KEY}`;
+    const countryIsoCodeUrl = `https://api.themoviedb.org/3/configuration/countries/?api_key=${process.env.REACT_APP_API_KEY}`;
+    const countryNameUrl = `https://api.themoviedb.org/3/configuration/countries/?api_key=${process.env.REACT_APP_API_KEY}`;
 
     useEffect(() => {
-        document.title = `O'Films | Les pays`;
-        loadAfficheCountry();
+        //document.title = `O'Films | Les pays`;
+        loadCountry();
 
         return () => {
-            document.body.style.backgroundImage = `url("https://www.transparenttextures.com/patterns/black-linen.png")`
+            document.body.style.backgroundImage = `url("https://www.transparenttextures.com/patterns/black-linen.png")`;
         }
     }, []);
 
 
 
-    async function loadAfficheCountry () {
+    async function loadCountry () {
 
         try {
 
@@ -61,4 +61,4 @@ function afficheCountries ({match}) {
 
 }
 
-export default afficheCountries;
+export default country;
