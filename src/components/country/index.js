@@ -1,14 +1,14 @@
 import axios from "axios";
-import React, { useEffect} from "react";
+import React, { useEffect, useState } from "react";
 import Nav from '../Nav';
+import useForceUpdate from 'use-force-update';
+import Spinner from '../Molecules/Spinner';
 
-
-function country () {
-
-    const [countryName, setCountryName] = false;     
-    const [countryIsoCode , setCountryIsoCode] = false;
-    const countryIsoCodeUrl = `https://api.themoviedb.org/3/configuration/countries/?api_key=${process.env.REACT_APP_API_KEY}`;
-    const countryNameUrl = `https://api.themoviedb.org/3/configuration/countries/?api_key=${process.env.REACT_APP_API_KEY}`;
+function Country() {
+    const [countries, setCountries] = useState(false);     
+    const [pending, setPending] = useState(true);
+    const countriesUrl = `https://api.themoviedb.org/3/configuration/countries?api_key=381e8c936f62f2ab614e9f29cad6630f&language=fr`;
+    const forceUpdate = useForceUpdate();
 
     useEffect(() => {
         //document.title = `O'Films | Les pays`;
@@ -19,25 +19,17 @@ function country () {
         }
     }, []);
 
-
-
-    async function loadCountry () {
-
+    async function loadCountry() {
         try {
-
-            const dataCountryName = await axios.get(countryNameUrl);
-            const dataCountryIsoCode = await axios.get(countryIsoCodeUrl);
-            console.log("Pays : ", countryName);
-            console.log("Code iso : ", countryIsoCode);
-            
-            setCountryName(dataCountryName.data.english_name);
-            setCountryIsoCode (dataCountryIsoCode.data.iso_3166_1);
-            
+            const dataCountries = await axios.get(countriesUrl);
+            console.log("Pays : ", dataCountries.data);
+            setCountries(dataCountries.data);
+            setPending(false);
+            forceUpdate()
           }
          catch (error) {
              console.error (error);
             }
-
     };
 
     // un commentaire pr vérifier si mes commit sont ok :)
@@ -45,21 +37,17 @@ function country () {
         <>
         <Nav />
         <div style={{ textAlign: "center" }}>
-
             <h2>Liste des pays: </h2>
-                <p>
-                    <ul>
-                        <li>{countryName}</li>
-                        <li>{countryIsoCode}</li>
-                    </ul>
-                </p>
-            
-            
-
+                    {pending ? <Spinner /> : countries && countries.map(country => (
+                        <div key={country.iso_3166_1}>
+                        <p>{country.english_name}</p>
+                        <p>{country.iso_3166_1}</p>
+                        </div>
+                    ))}
         </div>
         </>
     )
 
 }
 
-export default country;
+export default Country;

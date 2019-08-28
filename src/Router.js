@@ -39,8 +39,8 @@ class Router extends Component {
         <Route path='/company/:id' exact component={ DetailCompany } />
         <Route path='/connexion' exact component={ Connexion } />
         <Route path='/inscription' exact component={ Inscription } />
-        <Route component={ Erreur } />
         <Route path='/countries' exact component={ Country } />
+        <Route component={ Erreur } />
       </Switch>
     )
   }
