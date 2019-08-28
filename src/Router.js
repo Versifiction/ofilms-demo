@@ -18,6 +18,7 @@ import DetailPerson from './components/persons/DetailPerson';
 import Connexion from './pages/Connexion';
 import Inscription from './pages/Inscription';
 import Erreur from './pages/Erreur';
+import Langue from './components/Langue';
 
 class Router extends Component {
   render() {
@@ -38,7 +39,9 @@ class Router extends Component {
         <Route path='/company/:id' exact component={ DetailCompany } />
         <Route path='/connexion' exact component={ Connexion } />
         <Route path='/inscription' exact component={ Inscription } />
+        <Route path='/langue' exact component={ Langue } />
         <Route component={ Erreur } />
+        
       </Switch>
     )
   }
