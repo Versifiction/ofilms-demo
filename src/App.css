@@ -474,6 +474,8 @@ a#nav-infos-tab.nav-item.nav-link.active, a#nav-bandesannonces-tab.nav-item.nav-
   bottom: 0;
   width: 600px;
   height: 100px;
+  display: flex;
+  flex-direction: column;
 }
 
 .search {
@@ -482,7 +484,7 @@ a#nav-infos-tab.nav-item.nav-link.active, a#nav-bandesannonces-tab.nav-item.nav-
   top: 0;
   right: 0;
   bottom: 0;
-  left: 0;
+  left: -77px;
   width: 50px;
   height: 50px;
   background: #23272A;
@@ -523,6 +525,53 @@ a#nav-infos-tab.nav-item.nav-link.active, a#nav-bandesannonces-tab.nav-item.nav-
   border-radius: 50%;
   border: 2px solid white;
   transition: all .5s;
+}
+
+.searchresult {
+  margin: auto;
+  position: relative;
+  right: -80px;
+  top: 77px;
+  width: 300px;
+  height: 50px;
+  border: 2px solid rgb(15, 15, 15);
+  display: flex;
+  flex-direction: column;
+}
+
+.selectoption {
+  position: absolute;
+  display: flex;
+  width: 300px;
+  height: 50px;
+  background-color: white;
+}
+
+.selected div {
+  height: 100%;
+  width: 90px;
+  /*border: 1px solid black;*/
+}
+
+.result {
+  position: relative;
+  top:48px;
+  width: 300px;
+  height: 50px;
+  display: none
+}
+
+
+.result:target {
+  position: relative;
+  top:48px;
+  width: 300px;
+  height: 50px;
+  display: block;
+}
+
+.selected:focus:active {
+  background-color: rgba(11, 11, 102, 0.301);
 }
 
 input {
@@ -586,6 +635,11 @@ input::placeholder {
   color: white;
   opacity: 0.5;
   font-weight: bolder;
+}
+.submit {
+  left: -99 px;
+  color: white;
+  width:25px;
 }
 
 .sc-bxivhb {
