@@ -11,7 +11,7 @@ function Country() {
     const forceUpdate = useForceUpdate();
 
     useEffect(() => {
-        //document.title = `O'Films | Les pays`;
+        document.title = `O'Films | Les pays`;
         loadCountry();
 
         return () => {
@@ -32,7 +32,7 @@ function Country() {
             }
     };
 
-    // un commentaire pr vérifier si mes commit sont ok :)
+
     return (
         <>
         <Nav />

@@ -10,25 +10,24 @@ import Nav from '../../Nav';
 import Spinner from '../../Molecules/Spinner';
 import Pagination from '../../Molecules/Pagination';
 
-
-function AfficheFilms() {
-    const [afficheFilms, setAfficheFilms] = useState(false);
+function UpComingFilms() {
+    const [upComingFilms, setUpComingFilms] = useState(false);
     const [pending, setPending] = useState(true);
     const [activePage, setActivePage] = useState(1);
-    const afficheFilmsUrl = `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=${activePage}`;
+    const UpComingFilmsUrl = `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=${activePage}`;
     const forceUpdate = useForceUpdate();
     const [itemsPerPage, setItemsPerPage] = useState(20)
     const [totalPages, setTotalPages] = useState(0)
-    
-    const goToPage = val => setActivePage(val)
+
+  const goToPage = val => setActivePage(val)
     const getFirst = () => setActivePage(1)
     const getPrevious = () => activePage > 1 ? setActivePage(activePage - 1) : ""
     const getNext = () => activePage < totalPages ? setActivePage(activePage + 1) : ""
     const getLast = () => setActivePage(totalPages)
 
     useEffect(() => {
-        document.title = `O'Films | Les films à l'affiche`
-        loadAfficheFilms();
+        document.title = `O'Films | Les films à venir`
+        loadUpcomingFilms();
         window.scroll(0, 0);
 
         return () => {
@@ -36,14 +35,11 @@ function AfficheFilms() {
         }
     }, [activePage]);
 
-    async function loadAfficheFilms() {
+    async function loadUpcomingFilms() {
         try {
-            const dataAfficheFilms = await axios.get(afficheFilmsUrl);
-            console.log("data ", dataAfficheFilms);
-            setAfficheFilms(dataAfficheFilms.data.results);
-            console.log("afficheFilms ", afficheFilms);
-            document.body.style.backgroundImage = `url("http://image.tmdb.org/t/p/original${dataAfficheFilms.data.results[0].poster_path}")`
-            setTotalPages(dataAfficheFilms.data.total_pages);
+            const dataUpcomingFilms = await axios.get(UpComingFilmsUrl);
+            console.log("Les films à venir ", dataUpcomingFilms);
+            setUpComingFilms(dataUpcomingFilms.data.results);
             setPending(false);
             forceUpdate();
         } catch (error) {
@@ -55,13 +51,13 @@ function AfficheFilms() {
         <>
             <Nav />
             <div className="container content">
-                <h2 style={{ textAlign: "center", color: "#343a40", marginBottom: "30px" }}>Les films à l'affiche</h2>
+                <h2 style={{ textAlign: "center", color: "#343a40", marginBottom: "30px" }}>Les films à venir</h2>
                 <div className="movies" style={{ marginTop: "40px", display: "flex", flexWrap: "wrap" }}>
-                {pending ? <Spinner /> : afficheFilms && afficheFilms.map((film, index) => (
+                {pending ? <Spinner /> : upComingFilms && upComingFilms.map((film, index) => (
                     <Link href={`/film/${film.id}`} to={`/film/${film.id}`} key={film.id} style={{ textDecoration: "none", width: "50%", padding: "10px", height: "375px" }}>
                         <div className="row" style={{ marginBottom: "10px", boxShadow: "grey 0 0 10px 2px", padding: "20px", width: "100%", height: "100%" }}>
                             <div className="col-xs-12 col-md-4" style={{ padding: "20px" }}>
-                                <img src={film.poster_path !== null ? `http://image.tmdb.org/t/p/w500${film.poster_path}` : "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible"} className="card-img-top" alt={`Poster du film ${film.title}`} style={{ width: "100%" }} />
+                                <img src={`http://image.tmdb.org/t/p/w500${film.poster_path}`} className="card-img-top" alt={`Poster du film ${film.title}`} style={{ width: "100%" }} />
                             </div>
                             <div className="col-xs-12 col-md-8">
                                 <div className="card-body">
@@ -108,4 +104,4 @@ function AfficheFilms() {
     )
 }
 
-export default AfficheFilms;
+export default UpComingFilms;
