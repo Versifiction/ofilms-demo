@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import StarRatingComponent from "react-star-rating-component";
-import moment from "moment";
 import useForceUpdate from "use-force-update";
 
 //import { genres } from '../../utils/genres';
 import Nav from "../../Nav";
 import Spinner from "../../Molecules/Spinner";
+import Pagination from "../../Molecules/Pagination";
 
 function BestRatedSeries() {
   const [bestRatedSeries, setBestRatedSeries] = useState(false);
@@ -17,6 +17,16 @@ function BestRatedSeries() {
   const bestRatedSeriesUrl = `https://api.themoviedb.org/3/tv/top_rated?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=${activePage}`;
   const allGenresUrl = `https://api.themoviedb.org/3/genre/tv/list?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
   const forceUpdate = useForceUpdate();
+  const [itemsPerPage, setItemsPerPage] = useState(20);
+  const [totalPages, setTotalPages] = useState(0);
+
+  const goToPage = val => setActivePage(val);
+  const getFirst = () => setActivePage(1);
+  const getPrevious = () =>
+    activePage > 1 ? setActivePage(activePage - 1) : "";
+  const getNext = () =>
+    activePage < totalPages ? setActivePage(activePage + 1) : "";
+  const getLast = () => setActivePage(totalPages);
 
   useEffect(() => {
     document.title = `O'Films | Les séries les mieux notées`;
@@ -33,8 +43,8 @@ function BestRatedSeries() {
       const dataBestRatedSeries = await axios.get(bestRatedSeriesUrl);
       console.log("data ", dataBestRatedSeries);
       setBestRatedSeries(dataBestRatedSeries.data.results);
+      setTotalPages(dataBestRatedSeries.data.total_pages);
       console.log("bestRatedSeries ", bestRatedSeries);
-      document.body.style.backgroundImage = `url("http://image.tmdb.org/t/p/original${dataBestRatedSeries.data.results[0].poster_path}")`;
       setPending(false);
       forceUpdate();
     } catch (error) {
@@ -58,11 +68,11 @@ function BestRatedSeries() {
   return (
     <>
       <Nav />
-      <div className="container content">
+      <div className="container">
         <h2
           style={{
             textAlign: "center",
-            color: "#343a40",
+            color: "#95878B",
             marginBottom: "30px"
           }}
         >
@@ -92,16 +102,12 @@ function BestRatedSeries() {
                   className="row"
                   style={{
                     marginBottom: "10px",
-                    boxShadow: "grey 0 0 10px 2px",
                     padding: "20px",
                     width: "100%",
                     height: "100%"
                   }}
                 >
-                  <div
-                    className="col-xs-12 col-md-4"
-                    style={{ padding: "20px" }}
-                  >
+                  <div className="col s12 m4" style={{ padding: "20px" }}>
                     <img
                       src={`http://image.tmdb.org/t/p/w500${serie.poster_path}`}
                       className="card-img-top"
@@ -109,7 +115,7 @@ function BestRatedSeries() {
                       style={{ width: "100%" }}
                     />
                   </div>
-                  <div className="col-xs-12 col-md-8">
+                  <div className="col s12 m8">
                     <div className="card-body">
                       <p
                         className="card-title"
@@ -128,24 +134,27 @@ function BestRatedSeries() {
                         starCount={10}
                         value={serie && serie.vote_average}
                       />
-                      <p
+                      <span
                         style={{
                           fontSize: "14px",
                           marginBottom: "0",
-                          color: "#23272A",
+                          color: "#0CD0FC",
                           textTransform: "uppercase",
-                          fontWeight: "bold"
+                          fontWeight: "bold",
+                          display: "block"
                         }}
                       >
                         Genres
-                        <span style={{ color: "black", fontWeight: "initial" }}>
+                        <span
+                          style={{ color: "#95878b", fontWeight: "initial" }}
+                        >
                           &nbsp;{serie && serie.genre_ids}
                         </span>
-                      </p>
+                      </span>
                       <p className="card-text">
                         <span
                           style={{
-                            color: "#23272A",
+                            color: "#0CD0FC",
                             textTransform: "uppercase",
                             fontWeight: "bold",
                             fontSize: "14px"
@@ -162,6 +171,18 @@ function BestRatedSeries() {
             ))
           )}
         </div>
+      </div>
+      <div className="container">
+        <Pagination
+          getFirst={getFirst}
+          getPrevious={getPrevious}
+          getNext={getNext}
+          getLast={getLast}
+          goToPage={goToPage}
+          activePage={activePage}
+          setActivePage={setActivePage}
+          total={totalPages}
+        />
       </div>
     </>
   );

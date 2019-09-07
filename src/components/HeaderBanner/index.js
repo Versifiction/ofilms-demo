@@ -8,7 +8,7 @@ function Nav() {
   const style = {
     backgroundImage: "url(" + AccueilBanner + ")",
     width: "100%",
-    height: "100vh",
+    height: "calc(100vh - 64px)",
     position: "relative"
   };
 
@@ -18,11 +18,15 @@ function Nav() {
       <p className="accueil-text">
         Les meilleurs films. Les meilleures séries.
       </p>
-      <Link href="/inscription" to="/inscription" className="btn btn-primary">
+      <button class="btn-large waves-effect waves-light">
         S'inscrire
-      </Link>
+        <i class="material-icons right">send</i>
+      </button>
       <div className="bounce">
-        <i class="fas fa-angle-double-down fa-2x"></i>
+        <i
+          class="fas fa-angle-double-down fa-2x"
+          style={{ color: "white" }}
+        ></i>
       </div>
     </div>
   );

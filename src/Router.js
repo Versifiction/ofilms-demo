@@ -28,10 +28,10 @@ class Router extends Component {
         <Route path="/series" exact component={Series} />
         <Route path="/films/affiche" exact component={AfficheFilms} />
         <Route path="/film/:id" exact component={DetailFilm} />
-        <Route path="/films/populaires" exact component={BestRatedFilms} />
+        <Route path="/films/mieux-notes" exact component={BestRatedFilms} />
         <Route path="/films/tendances" exact component={TendancesFilms} />
         <Route path="/serie/:id" exact component={DetailSerie} />
-        <Route path="/series/populaires" exact component={BestRatedSeries} />
+        <Route path="/series/mieux-notees" exact component={BestRatedSeries} />
         <Route path="/series/tendances" exact component={TendancesSeries} />
         <Route path="/person/:id" exact component={DetailPerson} />
         <Route path="/keyword/:id" exact component={Keyword} />

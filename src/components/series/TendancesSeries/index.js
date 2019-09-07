@@ -8,6 +8,7 @@ import useForceUpdate from "use-force-update";
 //import { genres } from '../../utils/genres';
 import Nav from "../../Nav";
 import Spinner from "../../Molecules/Spinner";
+import Pagination from "../../Molecules/Pagination";
 
 function TendancesSeries() {
   const [tendancesSeries, setTendancesSeries] = useState(false);
@@ -15,6 +16,16 @@ function TendancesSeries() {
   const [activePage, setActivePage] = useState(1);
   const tendancesSeriesUrl = `https://api.themoviedb.org/3/tv/popular?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=${activePage}`;
   const forceUpdate = useForceUpdate();
+  const [itemsPerPage, setItemsPerPage] = useState(20);
+  const [totalPages, setTotalPages] = useState(0);
+
+  const goToPage = val => setActivePage(val);
+  const getFirst = () => setActivePage(1);
+  const getPrevious = () =>
+    activePage > 1 ? setActivePage(activePage - 1) : "";
+  const getNext = () =>
+    activePage < totalPages ? setActivePage(activePage + 1) : "";
+  const getLast = () => setActivePage(totalPages);
 
   useEffect(() => {
     document.title = `O'Films | Les séries en tendances`;
@@ -30,8 +41,8 @@ function TendancesSeries() {
       const dataTendancesSeries = await axios.get(tendancesSeriesUrl);
       console.log("data ", dataTendancesSeries);
       setTendancesSeries(dataTendancesSeries.data.results);
+      setTotalPages(dataTendancesSeries.data.total_pages);
       console.log("tendancesFilms ", dataTendancesSeries);
-      document.body.style.backgroundImage = `url("http://image.tmdb.org/t/p/original${dataTendancesSeries.data.results[0].poster_path}")`;
       setPending(false);
       forceUpdate();
     } catch (error) {
@@ -42,11 +53,11 @@ function TendancesSeries() {
   return (
     <>
       <Nav />
-      <div className="container content">
+      <div className="container">
         <h2
           style={{
             textAlign: "center",
-            color: "#343a40",
+            color: "#95878B",
             marginBottom: "30px"
           }}
         >
@@ -76,16 +87,12 @@ function TendancesSeries() {
                   className="row"
                   style={{
                     marginBottom: "10px",
-                    boxShadow: "grey 0 0 10px 2px",
                     padding: "20px",
                     width: "100%",
                     height: "100%"
                   }}
                 >
-                  <div
-                    className="col-xs-12 col-md-4"
-                    style={{ padding: "20px" }}
-                  >
+                  <div className="col s12 m4" style={{ padding: "20px" }}>
                     <img
                       src={`http://image.tmdb.org/t/p/w500${serie.poster_path}`}
                       className="card-img-top"
@@ -93,7 +100,7 @@ function TendancesSeries() {
                       style={{ width: "100%" }}
                     />
                   </div>
-                  <div className="col-xs-12 col-md-8">
+                  <div className="col s12 m8">
                     <div className="card-body">
                       <p
                         className="card-title"
@@ -112,24 +119,27 @@ function TendancesSeries() {
                         starCount={10}
                         value={serie && serie.vote_average}
                       />
-                      <p
+                      <span
                         style={{
                           fontSize: "14px",
                           marginBottom: "0",
-                          color: "#23272A",
+                          color: "#0CD0FC",
                           textTransform: "uppercase",
-                          fontWeight: "bold"
+                          fontWeight: "bold",
+                          display: "block"
                         }}
                       >
                         Genres
-                        <span style={{ color: "black", fontWeight: "initial" }}>
+                        <span
+                          style={{ color: "#95878b", fontWeight: "initial" }}
+                        >
                           &nbsp;{serie && serie.genre_ids}
                         </span>
-                      </p>
+                      </span>
                       <p className="card-text">
                         <span
                           style={{
-                            color: "#23272A",
+                            color: "#0CD0FC",
                             textTransform: "uppercase",
                             fontWeight: "bold",
                             fontSize: "14px"
@@ -146,6 +156,18 @@ function TendancesSeries() {
             ))
           )}
         </div>
+      </div>
+      <div className="container">
+        <Pagination
+          getFirst={getFirst}
+          getPrevious={getPrevious}
+          getNext={getNext}
+          getLast={getLast}
+          goToPage={goToPage}
+          activePage={activePage}
+          setActivePage={setActivePage}
+          total={totalPages}
+        />
       </div>
     </>
   );

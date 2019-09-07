@@ -52,16 +52,16 @@ function Series() {
     <>
       <Nav />
       <h2 className="media-type">Séries</h2>
-      <div className="container content">
+      <div className="container">
         <div className="film-types">
-          <h3 className="film-types-title">
+          <h4 className="film-types-title">
             Les séries en tendances
             <p className="film-types-suite">
               <Link href="/series/tendances" to="/series/tendances">
                 Voir plus
               </Link>
             </p>
-          </h3>
+          </h4>
           {pending ? (
             <Spinner />
           ) : (
@@ -92,19 +92,19 @@ function Series() {
                     </Link>
                   ))}
               </div>
-              <hr />
+              <hr className="hr-accueil" />
             </>
           )}
         </div>
         <div className="film-types">
-          <h3 className="film-types-title">
+          <h4 className="film-types-title">
             Les séries les mieux notées
             <p className="film-types-suite">
-              <Link href="/series/populaires" to="/series/populaires">
+              <Link href="/series/mieux-notees" to="/series/mieux-notees">
                 Voir plus
               </Link>
             </p>
-          </h3>
+          </h4>
           {pending ? (
             <Spinner />
           ) : (
@@ -138,8 +138,7 @@ function Series() {
                     </Link>
                   ))}
               </div>
-
-              <hr />
+              <hr className="hr-accueil" />
             </>
           )}
         </div>

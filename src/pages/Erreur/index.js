@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 import "../../App.css";
 import AccueilBanner from "../../images/404.jpg";
-import Accueil from "../../pages/Accueil";
 
 function Erreur() {
   const style = {

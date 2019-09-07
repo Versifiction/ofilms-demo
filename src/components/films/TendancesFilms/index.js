@@ -45,7 +45,6 @@ function TendancesFilms() {
       setTendancesFilms(dataTendancesFilms.data.results);
       setTotalPages(dataTendancesFilms.data.total_pages);
       console.log("tendancesFilms ", dataTendancesFilms);
-      document.body.style.backgroundImage = `url("http://image.tmdb.org/t/p/original${dataTendancesFilms.data.results[0].poster_path}")`;
       setPending(false);
       forceUpdate();
     } catch (error) {
@@ -56,11 +55,11 @@ function TendancesFilms() {
   return (
     <>
       <Nav />
-      <div className="container content">
+      <div className="container">
         <h2
           style={{
             textAlign: "center",
-            color: "#343a40",
+            color: "white",
             marginBottom: "30px"
           }}
         >
@@ -83,23 +82,19 @@ function TendancesFilms() {
                   textDecoration: "none",
                   width: "50%",
                   padding: "10px",
-                  height: "375px"
+                  height: "300px"
                 }}
               >
                 <div
                   className="row"
                   style={{
                     marginBottom: "10px",
-                    boxShadow: "grey 0 0 10px 2px",
                     padding: "20px",
                     width: "100%",
                     height: "100%"
                   }}
                 >
-                  <div
-                    className="col-xs-12 col-md-4"
-                    style={{ padding: "20px" }}
-                  >
+                  <div className="col s12 m4" style={{ padding: "20px" }}>
                     <img
                       src={`http://image.tmdb.org/t/p/w500${film.poster_path}`}
                       className="card-img-top"
@@ -107,7 +102,7 @@ function TendancesFilms() {
                       style={{ width: "100%" }}
                     />
                   </div>
-                  <div className="col-xs-12 col-md-8">
+                  <div className="col s12 m8">
                     <div className="card-body">
                       <p
                         className="card-title"
@@ -121,29 +116,43 @@ function TendancesFilms() {
                       >
                         {film && film.title}
                       </p>
-                      <StarRatingComponent
-                        name="rate1"
-                        starCount={10}
-                        value={film && film.vote_average}
-                      />
-                      <p
+                      <div style={{ display: "flex" }}>
+                        <StarRatingComponent
+                          name="rate1"
+                          starCount={10}
+                          value={film && film.vote_average}
+                        />
+                        <span
+                          style={{
+                            color: "rgb(255, 180, 0)",
+                            marginLeft: "6px"
+                          }}
+                        >
+                          {film && film.vote_average}
+                        </span>
+                        /10
+                      </div>
+                      <span
                         style={{
                           fontSize: "14px",
                           marginBottom: "0",
-                          color: "#23272A",
+                          color: "#0CD0FC",
                           textTransform: "uppercase",
-                          fontWeight: "bold"
+                          fontWeight: "bold",
+                          display: "block"
                         }}
                       >
                         Genres
-                        <span style={{ color: "black", fontWeight: "initial" }}>
+                        <span
+                          style={{ color: "#95878b", fontWeight: "initial" }}
+                        >
                           &nbsp;{film && film.genre_ids}
                         </span>
-                      </p>
+                      </span>
                       <p className="card-text">
                         <span
                           style={{
-                            color: "#23272A",
+                            color: "#0CD0FC",
                             textTransform: "uppercase",
                             fontWeight: "bold",
                             fontSize: "14px"
@@ -161,7 +170,7 @@ function TendancesFilms() {
           )}
         </div>
       </div>
-      <div className="container content">
+      <div className="container">
         <Pagination
           getFirst={getFirst}
           getPrevious={getPrevious}

@@ -12,9 +12,11 @@ import Pagination from "../../Molecules/Pagination";
 
 function AfficheFilms() {
   const [afficheFilms, setAfficheFilms] = useState(false);
+  const [categoriesFilms, setCategoriesFilms] = useState(false);
   const [pending, setPending] = useState(true);
   const [activePage, setActivePage] = useState(1);
   const afficheFilmsUrl = `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=${activePage}`;
+  const categoriesFilmsUrl = `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
   const forceUpdate = useForceUpdate();
   const [itemsPerPage, setItemsPerPage] = useState(20);
   const [totalPages, setTotalPages] = useState(0);
@@ -30,6 +32,7 @@ function AfficheFilms() {
   useEffect(() => {
     document.title = `O'Films | Les films à l'affiche`;
     loadAfficheFilms();
+    loadCategoriesFilms();
     window.scroll(0, 0);
 
     return () => {
@@ -43,10 +46,19 @@ function AfficheFilms() {
       console.log("data ", dataAfficheFilms);
       setAfficheFilms(dataAfficheFilms.data.results);
       console.log("afficheFilms ", afficheFilms);
-      document.body.style.backgroundImage = `url("http://image.tmdb.org/t/p/original${dataAfficheFilms.data.results[0].poster_path}")`;
-      document.body.style.backgroundSize = "cover";
-      document.body.style.backgroundRepeat = "no-repeat";
       setTotalPages(dataAfficheFilms.data.total_pages);
+      setPending(false);
+      forceUpdate();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function loadCategoriesFilms() {
+    try {
+      const dataCategoriesFilms = await axios.get(categoriesFilmsUrl);
+      console.log("data ", dataCategoriesFilms);
+      setCategoriesFilms(dataCategoriesFilms.data.genres);
       setPending(false);
       forceUpdate();
     } catch (error) {
@@ -57,20 +69,18 @@ function AfficheFilms() {
   return (
     <>
       <Nav />
-      <div className="container content">
+      <div className="container">
         <h2
           style={{
             textAlign: "center",
-            color: "#343a40",
-            marginBottom: "30px"
+            color: "#ECEBEE",
+            marginBottom: "20px",
+            marginTop: "20px"
           }}
         >
           Les films à l'affiche
         </h2>
-        <div
-          className="movies"
-          style={{ marginTop: "40px", display: "flex", flexWrap: "wrap" }}
-        >
+        <div className="movies">
           {pending ? (
             <Spinner />
           ) : (
@@ -84,23 +94,11 @@ function AfficheFilms() {
                   textDecoration: "none",
                   width: "50%",
                   padding: "10px",
-                  height: "375px"
+                  height: "300px"
                 }}
               >
-                <div
-                  className="row"
-                  style={{
-                    marginBottom: "10px",
-                    boxShadow: "grey 0 0 10px 2px",
-                    padding: "20px",
-                    width: "100%",
-                    height: "100%"
-                  }}
-                >
-                  <div
-                    className="col-xs-12 col-md-4"
-                    style={{ padding: "20px" }}
-                  >
+                <div className="row film-encart">
+                  <div className="col s12 m4" style={{ padding: "20px" }}>
                     <img
                       src={
                         film.poster_path !== null
@@ -109,10 +107,10 @@ function AfficheFilms() {
                       }
                       className="card-img-top"
                       alt={`Poster du film ${film.title}`}
-                      style={{ width: "100%" }}
+                      style={{ width: "100px" }}
                     />
                   </div>
-                  <div className="col-xs-12 col-md-8">
+                  <div className="col s12 m8">
                     <div className="card-body">
                       <p
                         className="card-title"
@@ -126,29 +124,33 @@ function AfficheFilms() {
                       >
                         {film && film.title}
                       </p>
-                      <StarRatingComponent
-                        name="rate1"
-                        starCount={10}
-                        value={film && film.vote_average}
-                      />
-                      <p
-                        style={{
-                          fontSize: "14px",
-                          marginBottom: "0",
-                          color: "#23272A",
-                          textTransform: "uppercase",
-                          fontWeight: "bold"
-                        }}
-                      >
-                        Genres
-                        <span style={{ color: "black", fontWeight: "initial" }}>
-                          &nbsp;{film && film.genre_ids}
+                      <div style={{ display: "flex" }}>
+                        <StarRatingComponent
+                          name="rate1"
+                          starCount={10}
+                          value={film && film.vote_average}
+                        />
+                        <span
+                          style={{
+                            color: "rgb(255, 180, 0)",
+                            marginLeft: "6px"
+                          }}
+                        >
+                          {film && film.vote_average}
                         </span>
-                      </p>
+                        /10
+                      </div>
+                      <span className="genres">
+                        Genres
+                        <span>
+                          &nbsp;
+                          {film && film.genre_ids}
+                        </span>
+                      </span>
                       <p className="card-text">
                         <span
                           style={{
-                            color: "#23272A",
+                            color: "#0CD0FC",
                             textTransform: "uppercase",
                             fontWeight: "bold",
                             fontSize: "14px"
@@ -166,7 +168,7 @@ function AfficheFilms() {
           )}
         </div>
       </div>
-      <div className="container content">
+      <div className="container">
         <Pagination
           getFirst={getFirst}
           getPrevious={getPrevious}

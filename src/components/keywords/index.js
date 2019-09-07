@@ -8,6 +8,7 @@ import useForceUpdate from "use-force-update";
 //import { genres } from '../../utils/genres';
 import Nav from "../Nav";
 import Spinner from "../Molecules/Spinner";
+import Pagination from "../Molecules/Pagination";
 
 function Keyword({ match }) {
   const [keyword, setKeyword] = useState(false);
@@ -17,6 +18,16 @@ function Keyword({ match }) {
   const keywordUrl = `https://api.themoviedb.org/3/keyword/${match.params.id}/movies?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=${activePage}`;
   const keywordNameUrl = `https://api.themoviedb.org/3/keyword/${match.params.id}?api_key=${process.env.REACT_APP_API_KEY}`;
   const forceUpdate = useForceUpdate();
+  const [itemsPerPage, setItemsPerPage] = useState(20);
+  const [totalPages, setTotalPages] = useState(0);
+
+  const goToPage = val => setActivePage(val);
+  const getFirst = () => setActivePage(1);
+  const getPrevious = () =>
+    activePage > 1 ? setActivePage(activePage - 1) : "";
+  const getNext = () =>
+    activePage < totalPages ? setActivePage(activePage + 1) : "";
+  const getLast = () => setActivePage(totalPages);
 
   useEffect(() => {
     loadKeyword();
@@ -32,6 +43,7 @@ function Keyword({ match }) {
       const dataKeyword = await axios.get(keywordUrl);
       console.log("keyword ", dataKeyword);
       setKeyword(dataKeyword.data.results);
+      setTotalPages(dataKeyword.data.total_pages);
       setPending(false);
       forceUpdate();
     } catch (error) {
@@ -55,11 +67,11 @@ function Keyword({ match }) {
   return (
     <>
       <Nav />
-      <div className="container content">
+      <div className="container">
         <h2
           style={{
             textAlign: "center",
-            color: "#343a40",
+            color: "#95878B",
             marginBottom: "30px"
           }}
         >
@@ -89,16 +101,12 @@ function Keyword({ match }) {
                   className="row"
                   style={{
                     marginBottom: "10px",
-                    boxShadow: "grey 0 0 10px 2px",
                     padding: "20px",
                     width: "100%",
                     height: "100%"
                   }}
                 >
-                  <div
-                    className="col-xs-12 col-md-4"
-                    style={{ padding: "20px" }}
-                  >
+                  <div className="col s12 m4" style={{ padding: "20px" }}>
                     <img
                       src={`http://image.tmdb.org/t/p/w500${film.poster_path}`}
                       className="card-img-top"
@@ -106,7 +114,7 @@ function Keyword({ match }) {
                       style={{ width: "100%" }}
                     />
                   </div>
-                  <div className="col-xs-12 col-md-8">
+                  <div className="col s12 m8">
                     <div className="card-body">
                       <p
                         className="card-title"
@@ -125,24 +133,27 @@ function Keyword({ match }) {
                         starCount={10}
                         value={film && film.vote_average}
                       />
-                      <p
+                      <span
                         style={{
                           fontSize: "14px",
                           marginBottom: "0",
-                          color: "#23272A",
+                          color: "#0CD0FC",
                           textTransform: "uppercase",
-                          fontWeight: "bold"
+                          fontWeight: "bold",
+                          display: "block"
                         }}
                       >
                         Genres
-                        <span style={{ color: "black", fontWeight: "initial" }}>
+                        <span
+                          style={{ color: "#95878b", fontWeight: "initial" }}
+                        >
                           &nbsp;{film && film.genre_ids}
                         </span>
-                      </p>
+                      </span>
                       <p className="card-text">
                         <span
                           style={{
-                            color: "#23272A",
+                            color: "#0CD0FC",
                             textTransform: "uppercase",
                             fontWeight: "bold",
                             fontSize: "14px"
@@ -159,6 +170,18 @@ function Keyword({ match }) {
             ))
           )}
         </div>
+      </div>
+      <div className="container">
+        <Pagination
+          getFirst={getFirst}
+          getPrevious={getPrevious}
+          getNext={getNext}
+          getLast={getLast}
+          goToPage={goToPage}
+          activePage={activePage}
+          setActivePage={setActivePage}
+          total={totalPages}
+        />
       </div>
     </>
   );

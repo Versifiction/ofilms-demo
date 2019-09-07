@@ -92,7 +92,7 @@ function DetailCompany({ match }) {
             className="row detail-film"
             key={companyDetail && companyDetail.id}
           >
-            <div className="col-xs-12 detail-film-poster">
+            <div className="col s12 detail-film-poster">
               <img
                 src={`http://image.tmdb.org/t/p/w500${companyDetail &&
                   companyDetail.logo_path}`}

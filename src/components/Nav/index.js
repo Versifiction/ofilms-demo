@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import $ from "jquery";
@@ -8,78 +9,133 @@ function Nav() {
   useEffect(() => {
     const elementPosition = $(".navbar").offset();
 
-    $(window).scroll(function() {
-      if ($(window).scrollTop() > elementPosition.top) {
-        $(".navbar")
-          .css("position", "fixed")
-          .css("top", "0");
-      } else {
-        $(".navbar").css("position", "relative");
-      }
-    });
+    //   $(window).scroll(function() {
+    //     if ($(window).scrollTop() > elementPosition.top) {
+    //       $(".navbar")
+    //         .css("position", "fixed")
+    //         .css("top", "0");
+    //     } else {
+    //       $(".navbar").css("position", "relative");
+    //     }
+    //   });
   });
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark">
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
-      <div
-        className="collapse navbar-collapse d-flex justify-content-between"
-        id="navbarNav"
-      >
-        <ul className="navbar-nav">
-          <li className="nav-item active nav-title">
-            <Link href="/" to="/">
-              O'Films
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link href="/films" to="/films">
-              Films
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link href="/series" to="/series">
-              Séries
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link href="/forum" to="/forum">
-              Forum
-            </Link>
-          </li>
-        </ul>
-        {/* <form className="form-inline my-2 my-lg-0">
-                    <input className="form-control mr-sm-2" type="search" placeholder="Rechercher un film, une série, un acteur..." aria-label="Search" style={{ width: "325px", height: "50px", borderRadius: "0", marginRight: "0px !important", border: "inherit" }} />
-                    <button className="btn btn-primary my-2 my-sm-0" type="submit" style={{ borderRadius: "0" }}><i className="fas fa-search"></i></button>
-                </form> */}
-        <div className="search-container">
-          <input type="text" placeholder="Recherche de films/séries..." />
-          <div className="search"></div>
+    <>
+      <nav>
+        <div class="nav-wrapper">
+          <div class="row container">
+            <div class="col s12">
+              <div
+                data-target="slide-out"
+                class="sidenav-trigger show-on-large"
+                style={{ height: "64px" }}
+              >
+                <i class="material-icons colored" style={{ cursor: "pointer" }}>
+                  menu
+                </i>
+              </div>
+              <a
+                href="/"
+                class="brand-logo center"
+                style={{ color: "#0CD0FC" }}
+              >
+                O'Films
+              </a>
+              <ul class="hide-on-med-and-down right">
+                <li>
+                  <a
+                    class="waves-effect waves-light tooltipped"
+                    data-position="bottom"
+                    data-tooltip="Rechercher un film, une série, un acteur..."
+                    href="/connexion"
+                  >
+                    <i
+                      class="material-icons prefix"
+                      style={{ color: "#0CD0FC" }}
+                    >
+                      search
+                    </i>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="waves-effect waves-light tooltipped"
+                    data-position="bottom"
+                    data-tooltip="Se connecter / S'inscrire"
+                    href="/connexion"
+                  >
+                    <i class="material-icons colored">person</i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <ul className="navbar-nav">
-          <li className="nav-item">
-            <Link href="/connexion" to="/connexion">
-              Se connecter
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link href="/inscription" to="/inscription">
-              S'inscrire
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </nav>
+      </nav>
+      <ul id="slide-out" class="sidenav dark">
+        <li>
+          <div class="user-view">
+            <div>
+              <a href="/">O'Films</a>
+            </div>
+          </div>
+        </li>
+        <li>
+          <a class="waves-effect waves-light" href="/films">
+            <i class="material-icons colored">local_movies</i>Films
+          </a>
+        </li>
+        <li>
+          <a class="waves-effect waves-light subcategory" href="/films/affiche">
+            Films à l'affiche
+          </a>
+        </li>
+        <li>
+          <a
+            class="waves-effect waves-light subcategory"
+            href="/films/tendances"
+          >
+            Films en tendances
+          </a>
+        </li>
+        <li>
+          <a
+            class="waves-effect waves-light subcategory"
+            href="/films/mieux-notes"
+          >
+            Films les mieux notés
+          </a>
+        </li>
+        <li>
+          <a class="waves-effect waves-light" href="/series">
+            <i class="material-icons colored">tv</i>Séries
+          </a>
+        </li>
+        <li>
+          <a
+            class="waves-effect waves-light subcategory"
+            href="/series/tendances"
+          >
+            Séries en tendances
+          </a>
+        </li>
+        <li>
+          <a
+            class="waves-effect waves-light subcategory"
+            href="/series/mieux-notees"
+          >
+            Séries les mieux notées
+          </a>
+        </li>
+        <li>
+          <a class="waves-effect waves-light" href="#!">
+            <i class="material-icons colored">view_list</i>
+            <span id="txt1">Catégories</span>
+          </a>
+        </li>
+      </ul>
+    </>
   );
 }
 

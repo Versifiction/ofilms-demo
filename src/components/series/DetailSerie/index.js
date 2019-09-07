@@ -146,7 +146,7 @@ function DetailSerie({ match }) {
                 <div className="movies">
                 {pending ? <Spinner /> :
                     <div className="row detail-film" key={serieDetail && serieDetail.id}>
-                        <div className="col-xs-12 col-md-4 detail-film-poster">
+                        <div className="col s12 col-md-4 detail-film-poster">
                             <img src={`http://image.tmdb.org/t/p/w500${serieDetail && serieDetail.poster_path}`} className="card-img-top" alt={`Poster de la série ${serieDetail && serieDetail.title}`} />
                             <h2>{serieDetail && serieDetail.original_name}</h2>
                             <StarRatingComponent 
@@ -215,7 +215,7 @@ function DetailSerie({ match }) {
                                 </span>
                             </p>
                         </div>
-                        <div className="col-xs-12 col-md-8">
+                        <div className="col s12 col-md-8">
                             <ul className="nav nav-tabs detail-film-videos" id="nav-tab" role="tablist">
                                 <a className="nav-item nav-link active" onClick={toggleTabs} id="nav-infos-tab" data-toggle="tab" href="#nav-infos" role="tab" aria-controls="nav-infos" aria-selected="true">Infos</a>
                                 {serieDetail && serieDetail.seasons.length > 0 && <a className="nav-item nav-link" onClick={toggleTabs} id="nav-photos-tab" data-toggle="tab" href="#nav-photos" role="tab" aria-controls="nav-photos" aria-selected="false">Saisons</a>}
@@ -227,19 +227,19 @@ function DetailSerie({ match }) {
                                     <div className="card-body">
                                         <br />
                                         <div className="row">
-                                            <div className="col-xs-12 col-md-4">
+                                            <div className="col s12 col-md-4">
                                                 <div className="content" style={{ textAlign: "center", margin: "inherit", padding: "20px" }}>
                                                     <p>Note moyenne</p>
                                                     <p style={{ fontWeight: "bold", fontSize: "20px" }}>{serieDetail && serieDetail.vote_average}</p>
                                                 </div>
                                             </div>
-                                            <div className="col-xs-12 col-md-4">
+                                            <div className="col s12 col-md-4">
                                                 <div className="content" style={{ textAlign: "center", margin: "inherit", padding: "20px" }}>
                                                     <p>Nombre de votes</p>
                                                     <p style={{ fontWeight: "bold", fontSize: "20px" }}>{serieDetail && serieDetail.vote_count}</p>
                                                 </div>
                                             </div>
-                                            <div className="col-xs-12 col-md-4">
+                                            <div className="col s12 col-md-4">
                                                 <div className="content" style={{ textAlign: "center", margin: "inherit", padding: "20px" }}>
                                                     <p>Popularité</p>
                                                     <p style={{ fontWeight: "bold", fontSize: "20px" }}>{serieDetail && serieDetail.popularity}</p>
@@ -276,16 +276,16 @@ function DetailSerie({ match }) {
                                         <div className="film-detail-photos-saisons row" style={{ padding: "20px" }}>
                                             {serieDetail && serieDetail.seasons.map((saison) => (
                                                 <>
-                                                    <div key={saison.season_number} className="col-xs-12 col-md-10">
+                                                    <div key={saison.season_number} className="col s12 col-md-10">
                                                         <p className="film-detail">Saison <span>{saison.season_number}</span></p>
                                                         <p className="film-detail">Date de diffusion : <span>{moment(saison.air_date).format('DD/MM/YYYY')}</span></p>
                                                         <p className="film-detail">Nombre d'épisodes : <span>{saison.episode_count}</span></p>
                                                         {saison.overview !== "" ? <p className="film-detail">Résumé : <span>{saison.overview}</span></p> : ""}
                                                         <br />
                                                     </div>
-                                                    {saison.poster_path ? <div className="col-xs-12 col-md-2">
+                                                    {saison.poster_path ? <div className="col s12 col-md-2">
                                                         <img src={`http://image.tmdb.org/t/p/w500${saison.poster_path}`} alt={`Poster de la série ${serieDetail.original_name}`} />
-                                                    </div> : <div className="col-xs-12 col-md-2">
+                                                    </div> : <div className="col s12 col-md-2">
                                                         <img src="https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible" alt={`Poster de la série ${serieDetail.original_name}`} />
                                                     </div>}
                                                 </>
@@ -338,13 +338,13 @@ function DetailSerie({ match }) {
                                 leftChevron={<i className="fas fa-chevron-left"></i>}
                             >
                                 {similarSeries && similarSeries.map((serie) => (
-                                    <div className="col-xs-12 similar-film-detail" key={serie.id}>
+                                    <div className="col s12 similar-film-detail" key={serie.id}>
                                         <a href={`/serie/${serie.id}`} to={`/serie/${serie.id}`} key={serie.id}>
                                             <img src={`http://image.tmdb.org/t/p/w500${serie.poster_path}`} alt={`Poster de la série ${serie.title}`} />
                                             <br />
                                             <p>{serie.original_name}</p>
                                             <p>({serie.first_air_date.slice(0, 4)})</p>
-                                            <div className="col-xs-12 similar-film-detail-rating">
+                                            <div className="col s12 similar-film-detail-rating">
                                                 <StarRatingComponent 
                                                     name="rate1" 
                                                     starCount={10}
