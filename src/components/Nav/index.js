@@ -38,7 +38,7 @@ function Nav() {
               <a
                 href="/"
                 class="brand-logo center"
-                style={{ color: "#0CD0FC" }}
+                style={{ color: "#0CD0FC", textTransform: "uppercase" }}
               >
                 O'Films
               </a>

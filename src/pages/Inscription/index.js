@@ -1,24 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import useForceUpdate from "use-force-update";
+import axios from "axios";
 
 import "../../App.css";
 import Nav from "../../components/Nav";
 import API from "../../utils/API";
 
 function Inscription() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [localisation, setLocalisation] = useState(true);
-  const [mobilePhone, setMobilePhone] = useState("");
-  const [postalCode, setPostalCode] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-  const [city, setCity] = useState("");
   const forceUpdate = useForceUpdate();
   const [fields, setFields] = useState({
     email: "",
@@ -56,22 +46,27 @@ function Inscription() {
 
   async function sendForm(e) {
     e.preventDefault();
-    if (!email || email.length === 0) {
-      return;
-    }
-    if (!password || password.length === 0 || password !== confirmPassword) {
-      return;
-    }
-    if (password !== confirmPassword) {
-      return;
-    }
-    try {
-      const { data } = await API.signup({ email, password });
-      localStorage.setItem("token", data.token);
-      window.location = "/dashboard";
-    } catch (error) {
-      console.error(error);
-    }
+    console.log("submit");
+
+    axios
+      .post("http://localhost:4000/business/add", fields)
+      .then(res => console.log(res.data));
+    // if (!email || email.length === 0) {
+    //   return;
+    // }
+    // if (!password || password.length === 0 || password !== confirmPassword) {
+    //   return;
+    // }
+    // if (password !== confirmPassword) {
+    //   return;
+    // }
+    // try {
+    //   const { data } = await API.signup({ email, password });
+    //   localStorage.setItem("token", data.token);
+    //   window.location = "/dashboard";
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   return (
@@ -80,7 +75,7 @@ function Inscription() {
       <h2 className="media-type">Inscription</h2>
       <div className="row container">
         <div class="row">
-          <form class="col s12">
+          <form class="col s12" onSubmit={sendForm}>
             <div class="row">
               <div class="input-field col s6">
                 <i class="material-icons colored prefix">mail</i>
@@ -285,7 +280,7 @@ function Inscription() {
               </div>
             </div>
             <div className="row center" style={{ marginTop: "40px" }}>
-              <button class="btn waves-effect waves-light">
+              <button class="btn waves-effect waves-light" type="submit">
                 M'inscrire
                 <i class="material-icons right">send</i>
               </button>
