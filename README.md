@@ -13,12 +13,13 @@ Projet crée avec Create-React-App (https://github.com/facebook/create-react-app
 Seules quelques pages concernant les films et les séries sont intégrées.
 
 Liste des URLS terminées :
-- / 
-- /films
-- /film/:id
-- /film/affiche
-- /film/tendances
-- /film/populaires
+
+- /
+- /movies
+- /movie/:id
+- /movie/affiche
+- /movie/tendances
+- /movie/populaires
 - /series
 - /serie/:id
 - /series/tendances
@@ -28,6 +29,7 @@ Liste des URLS terminées :
 - /company/:id
 
 Commencées :
+
 - /connexion
 - /inscription
 

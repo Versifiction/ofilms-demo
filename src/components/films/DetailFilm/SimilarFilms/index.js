@@ -32,8 +32,8 @@ function SimilarFilms({ similarFilms }) {
                 similarFilms.map(film => (
                   <div className="col s12 similar-film-detail" key={film.id}>
                     <a
-                      href={`/film/${film.id}`}
-                      to={`/film/${film.id}`}
+                      href={`/movie/${film.id}`}
+                      to={`/movie/${film.id}`}
                       key={film.id}
                     >
                       <img

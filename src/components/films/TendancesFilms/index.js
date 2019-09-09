@@ -75,8 +75,8 @@ function TendancesFilms() {
             tendancesFilms &&
             tendancesFilms.map((film, index) => (
               <Link
-                href={`/film/${film.id}`}
-                to={`/film/${film.id}`}
+                href={`/movie/${film.id}`}
+                to={`/movie/${film.id}`}
                 key={film.id}
                 style={{
                   textDecoration: "none",

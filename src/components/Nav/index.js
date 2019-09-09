@@ -1,11 +1,21 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavLink, Link } from "react-router-dom";
+import axios from "axios";
+import useForceUpdate from "use-force-update";
 import $ from "jquery";
 
 import "../../App.css";
 
 function Nav() {
+  const [searchInputValue, setSearchInputValue] = useState("");
+  const [searchActive, setSearchActive] = useState(false);
+  const [pending, setPending] = useState(false);
+  const searchResultUrl = `https://api.themoviedb.org/3/search/multi?api_key=${process.env.REACT_APP_API_KEY}&language=fr-FR&include_adult=false&query=${searchInputValue}`;
+  const [searchResult, setSearchResult] = useState(false);
+  const forceUpdate = useForceUpdate();
+
   useEffect(() => {
     const elementPosition = $(".navbar").offset();
 
@@ -19,6 +29,30 @@ function Nav() {
     //     }
     //   });
   });
+
+  async function handleChange(e) {
+    setSearchInputValue(e.target.value);
+    console.log("target value ", e.target.value);
+    console.log("searchValue ", searchInputValue);
+
+    try {
+      const searchResult = await axios.post(searchResultUrl);
+      setSearchResult(searchResult.data.results);
+      setPending(false);
+      console.log("list of the search: ", searchResult);
+    } catch (error) {
+      console.error(error);
+    }
+
+    forceUpdate();
+  }
+
+  function toggleSearchActive() {
+    setSearchActive(!searchActive);
+    if (searchActive) {
+      setSearchInputValue("");
+    }
+  }
 
   return (
     <>
@@ -44,19 +78,110 @@ function Nav() {
               </a>
               <ul class="hide-on-med-and-down right">
                 <li>
-                  <a
-                    class="waves-effect waves-light tooltipped"
-                    data-position="bottom"
-                    data-tooltip="Rechercher un film, une série, un acteur..."
-                    href="/connexion"
-                  >
+                  <form action="" class="browser-default right">
+                    <input
+                      id="search-input"
+                      placeholder={
+                        searchActive
+                          ? "Rechercher un film, une série, un acteur..."
+                          : ""
+                      }
+                      type="text"
+                      class="browser-default search-field"
+                      name="q"
+                      value={searchInputValue}
+                      autocomplete="off"
+                      aria-label="Search box"
+                      onFocus={toggleSearchActive}
+                      onBlur={toggleSearchActive}
+                      onChange={e => handleChange(e)}
+                    />
+                    <label for="search-input">
+                      <i
+                        class="material-icons search-icon tooltipped"
+                        data-position="bottom"
+                        data-tooltip="Rechercher un film, une série, un acteur..."
+                        style={{ cursor: "pointer" }}
+                        onClick={toggleSearchActive}
+                      >
+                        search
+                      </i>
+                    </label>
                     <i
-                      class="material-icons prefix"
-                      style={{ color: "#0CD0FC" }}
+                      class="material-icons search-close-icon"
+                      onClick={() => setSearchInputValue("")}
                     >
-                      search
+                      cancel
                     </i>
-                  </a>
+                    <div class="search-popup">
+                      {searchActive && (
+                        <div class="search-content">
+                          <ul class="popup-list">
+                            {searchResult &&
+                              searchResult.slice(0, 10).map(result => (
+                                <li class="" style={{ marginBottom: "30px" }}>
+                                  <Link
+                                    class="grey-text"
+                                    href={`/${result.media_type}/${result.id}`}
+                                    to={`/${result.media_type}/${result.id}`}
+                                    style={{
+                                      height: "100px",
+                                      display: "flex",
+                                      alignItems: "center"
+                                    }}
+                                  >
+                                    {result.media_type === "person" ||
+                                    result.media_type === "tv" ? (
+                                      <>
+                                        <span>
+                                          <img
+                                            src={
+                                              result.profile_path == null
+                                                ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible"
+                                                : `http://image.tmdb.org/t/p/w500${result.profile_path}`
+                                            }
+                                            style={{ width: "50px" }}
+                                          />
+                                        </span>
+                                        <p
+                                          style={{
+                                            display: "inline-block",
+                                            marginLeft: "10px"
+                                          }}
+                                        >
+                                          {result.name}
+                                        </p>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <span>
+                                          <img
+                                            src={
+                                              result.poster_path == null
+                                                ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible"
+                                                : `http://image.tmdb.org/t/p/w500${result.poster_path}`
+                                            }
+                                            style={{ width: "50px" }}
+                                          />
+                                        </span>
+                                        <p
+                                          style={{
+                                            display: "inline-block",
+                                            marginLeft: "10px"
+                                          }}
+                                        >
+                                          {result.title}
+                                        </p>
+                                      </>
+                                    )}
+                                  </Link>
+                                </li>
+                              ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  </form>
                 </li>
                 <li>
                   <a
@@ -86,8 +211,8 @@ function Nav() {
             exact
             class="waves-effect waves-light"
             activeClassName="active"
-            href="/films"
-            to="/films"
+            href="/movies"
+            to="/movies"
           >
             <i class="material-icons colored">local_movies</i>Films
           </NavLink>
@@ -97,8 +222,8 @@ function Nav() {
             exact
             class="waves-effect waves-light"
             activeClassName="active"
-            href="/films/affiche"
-            to="/films/affiche"
+            href="/movies/affiche"
+            to="/movies/affiche"
           >
             Films à l'affiche
           </NavLink>
@@ -108,8 +233,8 @@ function Nav() {
             exact
             class="waves-effect waves-light"
             activeClassName="active"
-            href="/films/tendances"
-            to="/films/tendances"
+            href="/movies/tendances"
+            to="/movies/tendances"
           >
             Films en tendances
           </NavLink>
@@ -119,8 +244,8 @@ function Nav() {
             exact
             class="waves-effect waves-light"
             activeClassName="active"
-            href="/films/mieux-notes"
-            to="/films/mieux-notes"
+            href="/movies/mieux-notes"
+            to="/movies/mieux-notes"
           >
             Films les mieux notés
           </NavLink>

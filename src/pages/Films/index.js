@@ -75,7 +75,7 @@ function Films() {
           <h4 className="film-types-title">
             Les films à l'affiche
             <p className="film-types-suite">
-              <Link href="/films/affiche" to="/films/affiche">
+              <Link href="/movies/affiche" to="/movies/affiche">
                 Voir plus
               </Link>
             </p>
@@ -88,8 +88,8 @@ function Films() {
                 {afficheFilms &&
                   afficheFilms.map((film, index) => (
                     <Link
-                      href={`/film/${film.id}`}
-                      to={`/film/${film.id}`}
+                      href={`/movie/${film.id}`}
+                      to={`/movie/${film.id}`}
                       key={film.id}
                       className={`text-decoration-none card ${
                         index !== 0 ? "film-types-container" : ""
@@ -116,7 +116,7 @@ function Films() {
           <h4 className="film-types-title">
             Les films en tendances
             <p className="film-types-suite">
-              <Link href="/films/tendances" to="/films/tendances">
+              <Link href="/movies/tendances" to="/movies/tendances">
                 Voir plus
               </Link>
             </p>
@@ -129,8 +129,8 @@ function Films() {
                 {tendancesFilms &&
                   tendancesFilms.map((film, index) => (
                     <Link
-                      href={`/film/${film.id}`}
-                      to={`/film/${film.id}`}
+                      href={`/movie/${film.id}`}
+                      to={`/movie/${film.id}`}
                       key={film.id}
                       className={`text-decoration-none card ${
                         index !== 0 ? "film-types-container" : ""
@@ -159,7 +159,7 @@ function Films() {
           <h4 className="film-types-title">
             Les films les mieux notés
             <p className="film-types-suite">
-              <Link href="/films/mieux-notes" to="/films/mieux-notes">
+              <Link href="/movies/mieux-notes" to="/movies/mieux-notes">
                 Voir plus
               </Link>
             </p>
@@ -172,8 +172,8 @@ function Films() {
                 {bestRatedFilms &&
                   bestRatedFilms.map((film, index) => (
                     <Link
-                      href={`/film/${film.id}`}
-                      to={`/film/${film.id}`}
+                      href={`/movie/${film.id}`}
+                      to={`/movie/${film.id}`}
                       key={film.id}
                       className={`text-decoration-none card ${
                         index !== 0 ? "film-types-container" : ""
