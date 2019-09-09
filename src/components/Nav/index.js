@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import $ from "jquery";
 
 import "../../App.css";
@@ -82,51 +82,81 @@ function Nav() {
           </div>
         </li>
         <li>
-          <a class="waves-effect waves-light" href="/films">
+          <NavLink
+            exact
+            class="waves-effect waves-light"
+            activeClassName="active"
+            href="/films"
+            to="/films"
+          >
             <i class="material-icons colored">local_movies</i>Films
-          </a>
+          </NavLink>
         </li>
         <li>
-          <a class="waves-effect waves-light subcategory" href="/films/affiche">
+          <NavLink
+            exact
+            class="waves-effect waves-light"
+            activeClassName="active"
+            href="/films/affiche"
+            to="/films/affiche"
+          >
             Films à l'affiche
-          </a>
+          </NavLink>
         </li>
         <li>
-          <a
-            class="waves-effect waves-light subcategory"
+          <NavLink
+            exact
+            class="waves-effect waves-light"
+            activeClassName="active"
             href="/films/tendances"
+            to="/films/tendances"
           >
             Films en tendances
-          </a>
+          </NavLink>
         </li>
         <li>
-          <a
-            class="waves-effect waves-light subcategory"
+          <NavLink
+            exact
+            class="waves-effect waves-light"
+            activeClassName="active"
             href="/films/mieux-notes"
+            to="/films/mieux-notes"
           >
             Films les mieux notés
-          </a>
+          </NavLink>
         </li>
         <li>
-          <a class="waves-effect waves-light" href="/series">
+          <NavLink
+            exact
+            class="waves-effect waves-light"
+            activeClassName="active"
+            href="/series"
+            to="/series"
+          >
             <i class="material-icons colored">tv</i>Séries
-          </a>
+          </NavLink>
         </li>
         <li>
-          <a
-            class="waves-effect waves-light subcategory"
+          <NavLink
+            exact
+            class="waves-effect waves-light"
+            activeClassName="active"
             href="/series/tendances"
+            to="/series/tendances"
           >
             Séries en tendances
-          </a>
+          </NavLink>
         </li>
         <li>
-          <a
-            class="waves-effect waves-light subcategory"
+          <NavLink
+            exact
+            class="waves-effect waves-light"
+            activeClassName="active"
             href="/series/mieux-notees"
+            to="/series/mieux-notees"
           >
             Séries les mieux notées
-          </a>
+          </NavLink>
         </li>
         <li>
           <a class="waves-effect waves-light" href="#!">

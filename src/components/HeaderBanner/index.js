@@ -18,10 +18,12 @@ function Nav() {
       <p className="accueil-text">
         Les meilleurs films. Les meilleures séries.
       </p>
-      <button class="btn-large waves-effect waves-light">
-        S'inscrire
-        <i class="material-icons right">send</i>
-      </button>
+      <Link href="/inscription" to="/inscription" style={{ color: "#0cd0fc" }}>
+        <button class="btn-large waves-effect waves-light">
+          S'inscrire
+          <i class="material-icons right">send</i>
+        </button>
+      </Link>
       <div className="bounce">
         <i
           class="fas fa-angle-double-down fa-2x"

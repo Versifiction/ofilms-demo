@@ -154,7 +154,7 @@ ul.right li a {
   color: #95878b;
 }
 
-.sidenav li.active > a:hover {
+.sidenav li > a.active {
   color: #0cd0fc;
   border-left: 6px solid #0cd0fc;
 }
@@ -669,10 +669,6 @@ ul.pagination a {
 
 .pagination li i {
   font-size: 1.5rem;
-}
-
-.subcategory {
-  margin-left: 20px;
 }
 
 p.film-encart:hover {
