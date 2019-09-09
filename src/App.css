@@ -531,10 +531,10 @@ a#nav-infos-tab.nav-item.nav-link.active, a#nav-bandesannonces-tab.nav-item.nav-
   margin: auto;
   position: relative;
   right: -80px;
-  top: 77px;
+  top: 75px;
   width: 300px;
-  height: 50px;
-  border: 2px solid rgb(15, 15, 15);
+  height: 200px;
+  /*border: 2px solid rgb(15, 15, 15);*/
   display: flex;
   flex-direction: column;
 }
@@ -557,18 +557,20 @@ a#nav-infos-tab.nav-item.nav-link.active, a#nav-bandesannonces-tab.nav-item.nav-
   position: relative;
   top:48px;
   width: 300px;
-  height: 50px;
-  display: none
+  max-height: 0;
+  display: none;
 }
-
 
 .result:target {
   position: relative;
   top:48px;
   width: 300px;
-  height: 50px;
+  max-height: 150px;
+  background-color: white;
+  overflow-y: auto;
   display: block;
 }
+
 
 .selected:focus:active {
   background-color: rgba(11, 11, 102, 0.301);
