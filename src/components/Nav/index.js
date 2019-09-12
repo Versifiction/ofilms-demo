@@ -4,20 +4,22 @@ import React, { useEffect, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import axios from "axios";
 import useForceUpdate from "use-force-update";
+import M from "materialize-css";
 import $ from "jquery";
 
 import "../../App.css";
 
 function Nav() {
+  const [sideNavActive, setSideNavActive] = useState(false);
   const [searchInputValue, setSearchInputValue] = useState("");
-  const [searchActive, setSearchActive] = useState(false);
   const [pending, setPending] = useState(false);
-  const searchResultUrl = `https://api.themoviedb.org/3/search/multi?api_key=${process.env.REACT_APP_API_KEY}&language=fr-FR&include_adult=false&query=${searchInputValue}`;
   const [searchResult, setSearchResult] = useState(false);
   const forceUpdate = useForceUpdate();
 
   useEffect(() => {
     const elementPosition = $(".navbar").offset();
+
+    M.AutoInit();
 
     //   $(window).scroll(function() {
     //     if ($(window).scrollTop() > elementPosition.top) {
@@ -30,13 +32,19 @@ function Nav() {
     //   });
   });
 
+  function toggleSideNav() {
+    setSideNavActive(!sideNavActive);
+  }
+
   async function handleChange(e) {
     setSearchInputValue(e.target.value);
     console.log("target value ", e.target.value);
-    console.log("searchValue ", searchInputValue);
+    console.log("searchInputValue ", searchInputValue);
 
     try {
-      const searchResult = await axios.post(searchResultUrl);
+      const searchResult = await axios.post(
+        `https://api.themoviedb.org/3/search/multi?api_key=${process.env.REACT_APP_API_KEY}&language=fr-FR&include_adult=false&query=${e.target.value}`
+      );
       setSearchResult(searchResult.data.results);
       setPending(false);
       console.log("list of the search: ", searchResult);
@@ -45,13 +53,6 @@ function Nav() {
     }
 
     forceUpdate();
-  }
-
-  function toggleSearchActive() {
-    setSearchActive(!searchActive);
-    if (searchActive) {
-      setSearchInputValue("");
-    }
   }
 
   return (
@@ -81,19 +82,17 @@ function Nav() {
                   <form action="" class="browser-default right">
                     <input
                       id="search-input"
-                      placeholder={
-                        searchActive
-                          ? "Rechercher un film, une série, un acteur..."
-                          : ""
-                      }
+                      // placeholder={
+                      //   "Rechercher un film, une série, un acteur..."
+                      // }
                       type="text"
                       class="browser-default search-field"
                       name="q"
                       value={searchInputValue}
                       autocomplete="off"
                       aria-label="Search box"
-                      onFocus={toggleSearchActive}
-                      onBlur={toggleSearchActive}
+                      // onFocus={toggleSearchActive}
+                      // onBlur={toggleSearchActive}
                       onChange={e => handleChange(e)}
                     />
                     <label for="search-input">
@@ -102,7 +101,6 @@ function Nav() {
                         data-position="bottom"
                         data-tooltip="Rechercher un film, une série, un acteur..."
                         style={{ cursor: "pointer" }}
-                        onClick={toggleSearchActive}
                       >
                         search
                       </i>
@@ -114,72 +112,98 @@ function Nav() {
                       cancel
                     </i>
                     <div class="search-popup">
-                      {searchActive && (
-                        <div class="search-content">
-                          <ul class="popup-list">
-                            {searchResult &&
-                              searchResult.slice(0, 10).map(result => (
-                                <li class="" style={{ marginBottom: "30px" }}>
-                                  <Link
-                                    class="grey-text"
-                                    href={`/${result.media_type}/${result.id}`}
-                                    to={`/${result.media_type}/${result.id}`}
-                                    style={{
-                                      height: "100px",
-                                      display: "flex",
-                                      alignItems: "center"
-                                    }}
-                                  >
-                                    {result.media_type === "person" ||
-                                    result.media_type === "tv" ? (
-                                      <>
-                                        <span>
-                                          <img
-                                            src={
-                                              result.profile_path == null
-                                                ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible"
-                                                : `http://image.tmdb.org/t/p/w500${result.profile_path}`
-                                            }
-                                            style={{ width: "50px" }}
-                                          />
-                                        </span>
-                                        <p
+                      <div class="search-content">
+                        <ul class="popup-list">
+                          {searchResult &&
+                            searchResult.map(result => (
+                              <li class="" style={{ marginBottom: "30px" }}>
+                                <Link
+                                  class="grey-text"
+                                  href={`/${result.media_type}/${result.id}`}
+                                  to={`/${result.media_type}/${result.id}`}
+                                  style={{
+                                    height: "100px",
+                                    display: "flex",
+                                    alignItems: "center"
+                                  }}
+                                >
+                                  {result.media_type === "person" ||
+                                  result.media_type === "tv" ? (
+                                    <>
+                                      <span>
+                                        <img
+                                          src={
+                                            result.profile_path == null
+                                              ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible"
+                                              : `http://image.tmdb.org/t/p/w500${result.profile_path}`
+                                          }
+                                          style={{ width: "50px" }}
+                                        />
+                                      </span>
+                                      <p
+                                        style={{
+                                          display: "flex",
+                                          alignItems: "center",
+                                          marginLeft: "10px"
+                                        }}
+                                      >
+                                        {result.name}
+                                        <span
                                           style={{
-                                            display: "inline-block",
-                                            marginLeft: "10px"
+                                            fontSize: "10px",
+                                            textTransform: "uppercase",
+                                            marginLeft: "6px",
+                                            backgroundColor: "#95878b",
+                                            color: "white",
+                                            padding: "0px 10px"
                                           }}
                                         >
-                                          {result.name}
-                                        </p>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <span>
-                                          <img
-                                            src={
-                                              result.poster_path == null
-                                                ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible"
-                                                : `http://image.tmdb.org/t/p/w500${result.poster_path}`
-                                            }
-                                            style={{ width: "50px" }}
-                                          />
+                                          {result.media_type === "person"
+                                            ? "Personne"
+                                            : "Série"}
                                         </span>
-                                        <p
+                                      </p>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <span>
+                                        <img
+                                          src={
+                                            result.poster_path == null
+                                              ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible"
+                                              : `http://image.tmdb.org/t/p/w500${result.poster_path}`
+                                          }
+                                          style={{ width: "50px" }}
+                                        />
+                                      </span>
+                                      <p
+                                        style={{
+                                          display: "flex",
+                                          alignItems: "center",
+                                          marginLeft: "10px"
+                                        }}
+                                      >
+                                        {result.title}
+                                        <span
                                           style={{
-                                            display: "inline-block",
-                                            marginLeft: "10px"
+                                            fontSize: "10px",
+                                            textTransform: "uppercase",
+                                            marginLeft: "6px",
+                                            backgroundColor: "#95878b",
+                                            color: "white",
+                                            padding: "0px 10px"
                                           }}
                                         >
-                                          {result.title}
-                                        </p>
-                                      </>
-                                    )}
-                                  </Link>
-                                </li>
-                              ))}
-                          </ul>
-                        </div>
-                      )}
+                                          Film
+                                        </span>
+                                      </p>
+                                    </>
+                                  )}
+                                </Link>
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
                     </div>
                   </form>
                 </li>
@@ -198,7 +222,12 @@ function Nav() {
           </div>
         </div>
       </nav>
-      <ul id="slide-out" class="sidenav dark">
+      <ul
+        id="slide-out"
+        class="sidenav dark"
+        style={{ transform: sideNavActive ? "translateX(0%)" : "" }}
+        onClick={toggleSideNav}
+      >
         <li>
           <div class="user-view">
             <div>
@@ -208,7 +237,6 @@ function Nav() {
         </li>
         <li>
           <NavLink
-            exact
             class="waves-effect waves-light"
             activeClassName="active"
             href="/movies"
@@ -219,7 +247,6 @@ function Nav() {
         </li>
         <li>
           <NavLink
-            exact
             class="waves-effect waves-light"
             activeClassName="active"
             href="/movies/affiche"
@@ -230,7 +257,6 @@ function Nav() {
         </li>
         <li>
           <NavLink
-            exact
             class="waves-effect waves-light"
             activeClassName="active"
             href="/movies/tendances"
@@ -241,7 +267,6 @@ function Nav() {
         </li>
         <li>
           <NavLink
-            exact
             class="waves-effect waves-light"
             activeClassName="active"
             href="/movies/mieux-notes"
@@ -252,33 +277,30 @@ function Nav() {
         </li>
         <li>
           <NavLink
-            exact
             class="waves-effect waves-light"
             activeClassName="active"
-            href="/series"
-            to="/series"
+            href="/tv"
+            to="/tv"
           >
             <i class="material-icons colored">tv</i>Séries
           </NavLink>
         </li>
         <li>
           <NavLink
-            exact
             class="waves-effect waves-light"
             activeClassName="active"
-            href="/series/tendances"
-            to="/series/tendances"
+            href="/tv/tendances"
+            to="/tv/tendances"
           >
             Séries en tendances
           </NavLink>
         </li>
         <li>
           <NavLink
-            exact
             class="waves-effect waves-light"
             activeClassName="active"
-            href="/series/mieux-notees"
-            to="/series/mieux-notees"
+            href="/tv/mieux-notees"
+            to="/tv/mieux-notees"
           >
             Séries les mieux notées
           </NavLink>

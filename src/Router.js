@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import "./App.css";
 
 import Accueil from "./pages/Accueil";
-import Films from "./pages/films";
+import Films from "./pages/Films";
 import Series from "./pages/Series";
 import AfficheFilms from "./components/films/AfficheFilms";
 import DetailFilm from "./components/films/DetailFilm";
@@ -25,7 +25,7 @@ class Router extends Component {
       <Switch>
         <Route path="/" exact component={Accueil} />
         <Route path="/movies" exact component={Films} />
-        <Route path="/series" exact component={Series} />
+        <Route path="/tv" exact component={Series} />
         <Route path="/movies/affiche" exact component={AfficheFilms} />
         <Route path="/movie/:id" exact component={DetailFilm} />
         <Route path="/movies/mieux-notes" exact component={BestRatedFilms} />

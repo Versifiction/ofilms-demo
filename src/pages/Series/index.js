@@ -57,7 +57,7 @@ function Series() {
           <h4 className="film-types-title">
             Les séries en tendances
             <p className="film-types-suite">
-              <Link href="/series/tendances" to="/series/tendances">
+              <Link href="/tv/tendances" to="/tv/tendances">
                 Voir plus
               </Link>
             </p>
@@ -70,8 +70,8 @@ function Series() {
                 {tendancesSeries &&
                   tendancesSeries.map((serie, index) => (
                     <Link
-                      href={`/serie/${serie.id}`}
-                      to={`/serie/${serie.id}`}
+                      href={`/tv/${serie.id}`}
+                      to={`/tv/${serie.id}`}
                       key={serie.id}
                       className={`text-decoration-none card ${
                         index !== 0 ? "film-types-container" : ""
@@ -100,7 +100,7 @@ function Series() {
           <h4 className="film-types-title">
             Les séries les mieux notées
             <p className="film-types-suite">
-              <Link href="/series/mieux-notees" to="/series/mieux-notees">
+              <Link href="/tv/mieux-notees" to="/tv/mieux-notees">
                 Voir plus
               </Link>
             </p>
@@ -113,8 +113,8 @@ function Series() {
                 {bestRatedSeries &&
                   bestRatedSeries.map((serie, index) => (
                     <Link
-                      href={`/serie/${serie.id}`}
-                      to={`/serie/${serie.id}`}
+                      href={`/tv/${serie.id}`}
+                      to={`/tv/${serie.id}`}
                       key={serie.id}
                       className={`text-decoration-none card ${
                         index !== 0 ? "film-types-container" : ""

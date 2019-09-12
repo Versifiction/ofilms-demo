@@ -20,10 +20,10 @@ Liste des URLS terminées :
 - /movie/affiche
 - /movie/tendances
 - /movie/populaires
-- /series
-- /serie/:id
-- /series/tendances
-- /series/populaires
+- /tv
+- /tv/:id
+- /tv/tendances
+- /tv/populaires
 - /person/:id
 - /keyword/:id
 - /company/:id

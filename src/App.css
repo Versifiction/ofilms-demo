@@ -606,11 +606,6 @@ p.film-types-title {
   justify-content: center;
 }
 
-.card-img-top,
-.similar-film-detail img {
-  box-shadow: grey 0 0 10px 2px;
-}
-
 .production-companies {
   display: block;
 }
@@ -826,7 +821,7 @@ input.search-field:focus:hover {
 }
 
 input.search-field ~ .search-popup {
-  overflow: hidden;
+  overflow: scroll;
   min-height: 50px;
   max-height: 700px;
   width: 200px;
@@ -866,7 +861,7 @@ nav ul.popup-list li a:hover {
 }
 
 p {
-  font-size: 1.3rem;
+  font-size: 1rem;
 }
 
 .top-margin {
@@ -913,6 +908,15 @@ p {
   .search-content {
     width: 100%;
     padding: 8px 8px;
+  }
+
+  .search-popup-span {
+    font-size: 10px;
+    text-transform: uppercase;
+    margin-left: 6px;
+    background-color: #95878b;
+    color: white;
+    padding: 6px;
   }
 
   @media only screen and (max-width: 992px) {

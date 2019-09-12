@@ -88,8 +88,8 @@ function BestRatedSeries() {
             bestRatedSeries &&
             bestRatedSeries.map((serie, index) => (
               <Link
-                href={`/serie/${serie.id}`}
-                to={`/serie/${serie.id}`}
+                href={`/tv/${serie.id}`}
+                to={`/tv/${serie.id}`}
                 key={serie.id}
                 style={{
                   textDecoration: "none",

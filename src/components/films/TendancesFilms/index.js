@@ -12,10 +12,12 @@ import Pagination from "../../Molecules/Pagination";
 
 function TendancesFilms() {
   const [tendancesFilms, setTendancesFilms] = useState(false);
+  const [allGenres, setAllGenres] = useState(false);
   const [pending, setPending] = useState(true);
   const [activePage, setActivePage] = useState(1);
   const [timeValue, setTimeValue] = useState("week");
   const tendancesFilmsUrl = `https://api.themoviedb.org/3/trending/movies/${timeValue}?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=${activePage}`;
+  const allGenresUrl = `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
   const forceUpdate = useForceUpdate();
   const [itemsPerPage, setItemsPerPage] = useState(20);
   const [totalPages, setTotalPages] = useState(0);
@@ -31,6 +33,7 @@ function TendancesFilms() {
   useEffect(() => {
     document.title = `O'Films | Les films en tendances`;
     loadTendancesFilms();
+    loadAllGenres();
     window.scroll(0, 0);
 
     return () => {
@@ -45,6 +48,19 @@ function TendancesFilms() {
       setTendancesFilms(dataTendancesFilms.data.results);
       setTotalPages(dataTendancesFilms.data.total_pages);
       console.log("tendancesFilms ", dataTendancesFilms);
+      setPending(false);
+      forceUpdate();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function loadAllGenres() {
+    try {
+      const dataAllGenres = await axios.get(allGenresUrl);
+      console.log("data ", dataAllGenres);
+      setAllGenres(dataAllGenres.data.genres);
+      console.log("allgenres ", allGenres);
       setPending(false);
       forceUpdate();
     } catch (error) {
@@ -132,21 +148,28 @@ function TendancesFilms() {
                         </span>
                         /10
                       </div>
-                      <span
-                        style={{
-                          fontSize: "14px",
-                          marginBottom: "0",
-                          color: "#0CD0FC",
-                          textTransform: "uppercase",
-                          fontWeight: "bold",
-                          display: "block"
-                        }}
-                      >
+                      <span className="genres">
                         Genres
                         <span
-                          style={{ color: "#95878b", fontWeight: "initial" }}
+                          style={{
+                            color: "#95878b",
+                            fontWeight: "initial",
+                            marginLeft: "6px"
+                          }}
                         >
-                          &nbsp;{film && film.genre_ids}
+                          {film && film.genre_ids}
+                          {/* {film &&
+                            film.genre_ids.map(genre => (
+                              <p
+                                style={{
+                                  display: "inline-block",
+                                  marginRight: "4px"
+                                }}
+                              >
+                                {allGenres &&
+                                  allGenres.find(g => g.id === genre).name}
+                              </p>
+                            ))} */}
                         </span>
                       </span>
                       <p className="card-text">

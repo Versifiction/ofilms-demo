@@ -159,9 +159,24 @@ function BestRatedFilms() {
                       >
                         Genres
                         <span
-                          style={{ color: "#95878b", fontWeight: "initial" }}
+                          style={{
+                            color: "#95878b",
+                            fontWeight: "initial",
+                            marginLeft: "6px"
+                          }}
                         >
-                          &nbsp;{film && film.genre_ids}
+                          {film &&
+                            film.genre_ids.map(genre => (
+                              <p
+                                style={{
+                                  display: "inline-block",
+                                  marginRight: "4px"
+                                }}
+                              >
+                                {allGenres &&
+                                  allGenres.find(g => g.id === genre).name}
+                              </p>
+                            ))}
                         </span>
                       </span>
                       <p className="card-text">

@@ -347,18 +347,29 @@ function DetailFilm({ match }) {
                       </div>
                     </div>
                     <br />
-                    <p className="film-detail">
-                      Synopsis
-                      <span>{filmDetail && filmDetail.overview}</span>
-                    </p>
-                    <Cast castFilm={castFilm} />
-                    <Crew crewFilm={crewFilm} />
+                    {filmDetail.overview !== "" ? (
+                      <p className="film-detail">
+                        Synopsis
+                        <span>{filmDetail && filmDetail.overview}</span>
+                      </p>
+                    ) : (
+                      ""
+                    )}
+                    {castFilm && castFilm.length > 0 && (
+                      <Cast castFilm={castFilm} />
+                    )}
+                    {crewFilm && crewFilm.length > 0 && (
+                      <Crew crewFilm={crewFilm} />
+                    )}
                   </div>
-                  <BandesAnnonces videosFilm={videosFilm} />
-                  <Photos photosFilm={photosFilm} />
+                  {videosFilm && videosFilm.length > 0 && (
+                    <BandesAnnonces videosFilm={videosFilm} />
+                  )}
+                  {photosFilm && photosFilm.length > 0 && (
+                    <Photos photosFilm={photosFilm} />
+                  )}
                 </div>
               </div>
-              <hr className="hr-detailfilm" />
             </>
           )}
         </div>

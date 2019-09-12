@@ -10,6 +10,7 @@ function SimilarFilms({ similarFilms }) {
     <>
       {similarFilms && similarFilms.length > 0 && (
         <div>
+          <hr className="hr-detailfilm" />
           <div className="similar-films-title">
             <h3>Films similaires</h3>
           </div>

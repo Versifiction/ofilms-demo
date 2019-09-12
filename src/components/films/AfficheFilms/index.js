@@ -12,11 +12,11 @@ import Pagination from "../../Molecules/Pagination";
 
 function AfficheFilms() {
   const [afficheFilms, setAfficheFilms] = useState(false);
-  const [categoriesFilms, setCategoriesFilms] = useState(false);
+  const [allGenres, setAllGenres] = useState(false);
   const [pending, setPending] = useState(true);
   const [activePage, setActivePage] = useState(1);
   const afficheFilmsUrl = `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=${activePage}`;
-  const categoriesFilmsUrl = `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
+  const allGenresUrl = `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
   const forceUpdate = useForceUpdate();
   const [itemsPerPage, setItemsPerPage] = useState(20);
   const [totalPages, setTotalPages] = useState(0);
@@ -32,7 +32,7 @@ function AfficheFilms() {
   useEffect(() => {
     document.title = `O'Films | Les films à l'affiche`;
     loadAfficheFilms();
-    loadCategoriesFilms();
+    loadAllGenres();
     window.scroll(0, 0);
 
     return () => {
@@ -54,11 +54,12 @@ function AfficheFilms() {
     }
   }
 
-  async function loadCategoriesFilms() {
+  async function loadAllGenres() {
     try {
-      const dataCategoriesFilms = await axios.get(categoriesFilmsUrl);
-      console.log("data ", dataCategoriesFilms);
-      setCategoriesFilms(dataCategoriesFilms.data.genres);
+      const dataAllGenres = await axios.get(allGenresUrl);
+      console.log("data ", dataAllGenres);
+      setAllGenres(dataAllGenres.data.genres);
+      console.log("allgenres ", allGenres);
       setPending(false);
       forceUpdate();
     } catch (error) {
@@ -142,9 +143,25 @@ function AfficheFilms() {
                       </div>
                       <span className="genres">
                         Genres
-                        <span>
-                          &nbsp;
-                          {film && film.genre_ids}
+                        <span
+                          style={{
+                            color: "#95878b",
+                            fontWeight: "initial",
+                            marginLeft: "6px"
+                          }}
+                        >
+                          {film &&
+                            film.genre_ids.map(genre => (
+                              <p
+                                style={{
+                                  display: "inline-block",
+                                  marginRight: "4px"
+                                }}
+                              >
+                                {allGenres &&
+                                  allGenres.find(g => g.id === genre).name}
+                              </p>
+                            ))}
                         </span>
                       </span>
                       <p className="card-text">
