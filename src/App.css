@@ -4,6 +4,10 @@ body {
   background-image: url("https://www.transparenttextures.com/patterns/black-linen.png");
 }
 
+html {
+  color: inherit;
+}
+
 header,
 main,
 footer {
@@ -52,7 +56,8 @@ nav i.material-icons {
 }
 
 h1,
-i.material-icons.colored {
+i.material-icons.colored,
+.fab {
   color: #0cd0fc;
 }
 
@@ -917,6 +922,14 @@ p {
     background-color: #95878b;
     color: white;
     padding: 6px;
+  }
+
+  .material-tooltip {
+    background-color: #232d32;
+  }
+
+  .collapsible-body {
+    color: white;
   }
 
   @media only screen and (max-width: 992px) {

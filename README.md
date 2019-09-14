@@ -15,15 +15,15 @@ Seules quelques pages concernant les films et les séries sont intégrées.
 Liste des URLS terminées :
 
 - /
-- /movies
-- /movie/:id
-- /movie/affiche
-- /movie/tendances
-- /movie/populaires
-- /tv
-- /tv/:id
-- /tv/tendances
-- /tv/populaires
+- /films
+- /film/:id
+- /film/affiche
+- /film/tendances
+- /film/populaires
+- /series
+- /serie/:id
+- /series/tendances
+- /series/populaires
 - /person/:id
 - /keyword/:id
 - /company/:id

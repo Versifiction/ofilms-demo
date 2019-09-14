@@ -57,7 +57,6 @@ function TendancesSeries() {
         <h2
           style={{
             textAlign: "center",
-            color: "#95878B",
             marginBottom: "30px"
           }}
         >
@@ -73,8 +72,8 @@ function TendancesSeries() {
             tendancesSeries &&
             tendancesSeries.map((serie, index) => (
               <Link
-                href={`/tv/${serie.id}`}
-                to={`/tv/${serie.id}`}
+                href={`/serie/${serie.id}`}
+                to={`/serie/${serie.id}`}
                 key={serie.id}
                 style={{
                   textDecoration: "none",

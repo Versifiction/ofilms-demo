@@ -75,7 +75,7 @@ function Films() {
           <h4 className="film-types-title">
             Les films à l'affiche
             <p className="film-types-suite">
-              <Link href="/movies/affiche" to="/movies/affiche">
+              <Link href="/films/affiche" to="/films/affiche">
                 Voir plus
               </Link>
             </p>
@@ -116,7 +116,7 @@ function Films() {
           <h4 className="film-types-title">
             Les films en tendances
             <p className="film-types-suite">
-              <Link href="/movies/tendances" to="/movies/tendances">
+              <Link href="/films/tendances" to="/films/tendances">
                 Voir plus
               </Link>
             </p>
@@ -159,7 +159,7 @@ function Films() {
           <h4 className="film-types-title">
             Les films les mieux notés
             <p className="film-types-suite">
-              <Link href="/movies/mieux-notes" to="/movies/mieux-notes">
+              <Link href="/films/mieux-notes" to="/films/mieux-notes">
                 Voir plus
               </Link>
             </p>

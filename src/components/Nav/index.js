@@ -18,7 +18,7 @@ function Nav() {
 
   useEffect(() => {
     const elementPosition = $(".navbar").offset();
-
+    document.getElementsByClassName("sidenav-overlay")[0].style.opacity = "0";
     M.AutoInit();
 
     //   $(window).scroll(function() {
@@ -249,8 +249,8 @@ function Nav() {
           <NavLink
             class="waves-effect waves-light"
             activeClassName="active"
-            href="/movies/affiche"
-            to="/movies/affiche"
+            href="/films/affiche"
+            to="/films/affiche"
           >
             Films à l'affiche
           </NavLink>
@@ -259,8 +259,8 @@ function Nav() {
           <NavLink
             class="waves-effect waves-light"
             activeClassName="active"
-            href="/movies/tendances"
-            to="/movies/tendances"
+            href="/films/tendances"
+            to="/films/tendances"
           >
             Films en tendances
           </NavLink>
@@ -269,8 +269,8 @@ function Nav() {
           <NavLink
             class="waves-effect waves-light"
             activeClassName="active"
-            href="/movies/mieux-notes"
-            to="/movies/mieux-notes"
+            href="/films/mieux-notes"
+            to="/films/mieux-notes"
           >
             Films les mieux notés
           </NavLink>
@@ -289,8 +289,8 @@ function Nav() {
           <NavLink
             class="waves-effect waves-light"
             activeClassName="active"
-            href="/tv/tendances"
-            to="/tv/tendances"
+            href="/series/tendances"
+            to="/series/tendances"
           >
             Séries en tendances
           </NavLink>
@@ -299,18 +299,123 @@ function Nav() {
           <NavLink
             class="waves-effect waves-light"
             activeClassName="active"
-            href="/tv/mieux-notees"
-            to="/tv/mieux-notees"
+            href="/series/mieux-notees"
+            to="/series/mieux-notees"
           >
             Séries les mieux notées
           </NavLink>
         </li>
         <li>
-          <a class="waves-effect waves-light" href="#!">
+          <NavLink
+            class="waves-effect waves-light"
+            activeClassName="active"
+            href="/categories"
+            to="/categories"
+          >
             <i class="material-icons colored">view_list</i>
             <span id="txt1">Catégories</span>
-          </a>
+          </NavLink>
         </li>
+        <div class="divider"></div>
+        <li>
+          <NavLink
+            class="waves-effect waves-light"
+            activeClassName="active"
+            href="/forum"
+            to="/forum"
+          >
+            <i class="material-icons colored">forum</i>
+            <span id="txt1">Forum</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            class="waves-effect waves-light"
+            activeClassName="active"
+            href="/chat"
+            to="/chat"
+          >
+            <i class="material-icons colored">chat</i>
+            <span id="txt1">Chat</span>
+          </NavLink>
+        </li>
+        <div class="divider"></div>
+        <li>
+          <NavLink
+            class="waves-effect waves-light"
+            activeClassName="active"
+            href="/a-propos"
+            to="/a-propos"
+          >
+            <i class="material-icons colored">info</i>
+            <span id="txt1">A propos</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            class="waves-effect waves-light"
+            activeClassName="active"
+            href="/faq"
+            to="/faq"
+          >
+            <i class="material-icons colored">format_list_bulleted</i>
+            <span id="txt1">FAQ</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            class="waves-effect waves-light"
+            activeClassName="active"
+            href="/contact"
+            to="/contact"
+          >
+            <i class="material-icons colored">contact_mail</i>
+            <span id="txt1">Contact</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            class="waves-effect waves-light"
+            activeClassName="active"
+            href="/mentions-legales"
+            to="/mentions-legales"
+          >
+            <i class="material-icons colored">format_align_left</i>
+            <span id="txt1">Mentions légales</span>
+          </NavLink>
+        </li>
+        <div className="row" style={{ marginTop: "50px" }}>
+          <div
+            className="col s4"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              fontSize: "40px"
+            }}
+          >
+            <i class="fab fa-twitter"></i>
+          </div>
+          <div
+            className="col s4"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              fontSize: "40px"
+            }}
+          >
+            <i class="fab fa-facebook-f"></i>
+          </div>
+          <div
+            className="col s4"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              fontSize: "40px"
+            }}
+          >
+            <i class="fab fa-instagram"></i>
+          </div>
+        </div>
       </ul>
     </>
   );

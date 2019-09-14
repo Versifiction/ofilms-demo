@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Route, Switch } from "react-router-dom";
 import "./App.css";
 
@@ -17,31 +17,41 @@ import DetailCompany from "./components/company/DetailCompany";
 import DetailPerson from "./components/persons/DetailPerson";
 import Connexion from "./pages/Connexion";
 import Inscription from "./pages/Inscription";
+import Forum from "./pages/Forum";
+import Chat from "./pages/Chat";
+import Apropos from "./pages/Apropos";
+import Faq from "./pages/Faq";
+import Contact from "./pages/Contact";
+import MentionsLegales from "./pages/MentionsLegales";
 import Erreur from "./pages/Erreur";
 
-class Router extends Component {
-  render() {
-    return (
-      <Switch>
-        <Route path="/" exact component={Accueil} />
-        <Route path="/movies" exact component={Films} />
-        <Route path="/tv" exact component={Series} />
-        <Route path="/movies/affiche" exact component={AfficheFilms} />
-        <Route path="/movie/:id" exact component={DetailFilm} />
-        <Route path="/movies/mieux-notes" exact component={BestRatedFilms} />
-        <Route path="/movies/tendances" exact component={TendancesFilms} />
-        <Route path="/tv/:id" exact component={DetailSerie} />
-        <Route path="/tv/mieux-notees" exact component={BestRatedSeries} />
-        <Route path="/tv/tendances" exact component={TendancesSeries} />
-        <Route path="/person/:id" exact component={DetailPerson} />
-        <Route path="/keyword/:id" exact component={Keyword} />
-        <Route path="/company/:id" exact component={DetailCompany} />
-        <Route path="/connexion" exact component={Connexion} />
-        <Route path="/inscription" exact component={Inscription} />
-        <Route component={Erreur} />
-      </Switch>
-    );
-  }
+function Router() {
+  return (
+    <Switch>
+      <Route path="/" exact component={Accueil} />
+      <Route path="/films" exact component={Films} />
+      <Route path="/series" exact component={Series} />
+      <Route path="/films/affiche" exact component={AfficheFilms} />
+      <Route path="/film/:id" exact component={DetailFilm} />
+      <Route path="/films/mieux-notes" exact component={BestRatedFilms} />
+      <Route path="/films/tendances" exact component={TendancesFilms} />
+      <Route path="/serie/:id" exact component={DetailSerie} />
+      <Route path="/series/mieux-notees" exact component={BestRatedSeries} />
+      <Route path="/series/tendances" exact component={TendancesSeries} />
+      <Route path="/person/:id" exact component={DetailPerson} />
+      <Route path="/keyword/:id" exact component={Keyword} />
+      <Route path="/company/:id" exact component={DetailCompany} />
+      <Route path="/connexion" exact component={Connexion} />
+      <Route path="/inscription" exact component={Inscription} />
+      <Route path="/forum" exact component={Forum} />
+      <Route path="/chat" exact component={Chat} />
+      <Route path="/a-propos" exact component={Apropos} />
+      <Route path="/faq" exact component={Faq} />
+      <Route path="/contact" exact component={Contact} />
+      <Route path="/mentions-legales" exact component={MentionsLegales} />
+      <Route component={Erreur} />
+    </Switch>
+  );
 }
 
 export default Router;

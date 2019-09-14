@@ -26,12 +26,12 @@ function DetailSerie({ match }) {
   const [seeAllVideos, setSeeAllVideos] = useState(false);
   const [activeItemIndex, setActiveItemIndex] = useState(0);
   const [pending, setPending] = useState(true);
-  const serieDetailUrl = `https://api.themoviedb.org/3/tv/${match.params.id}?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
-  const creditsSerieUrl = `https://api.themoviedb.org/3/tv/${match.params.id}/credits?api_key=${process.env.REACT_APP_API_KEY}`;
-  const similarSeriesUrl = `https://api.themoviedb.org/3/tv/${match.params.id}/similar?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=1`;
-  const videosSerieUrl = `https://api.themoviedb.org/3/tv/${match.params.id}/videos?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
-  const photosSerieUrl = `https://api.themoviedb.org/3/tv/${match.params.id}/images?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
-  const keywordsSerieUrl = `https://api.themoviedb.org/3/tv/${match.params.id}/keywords?api_key=${process.env.REACT_APP_API_KEY}`;
+  const serieDetailUrl = `https://api.themoviedb.org/3/serie/${match.params.id}?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
+  const creditsSerieUrl = `https://api.themoviedb.org/3/serie/${match.params.id}/credits?api_key=${process.env.REACT_APP_API_KEY}`;
+  const similarSeriesUrl = `https://api.themoviedb.org/3/serie/${match.params.id}/similar?api_key=${process.env.REACT_APP_API_KEY}&language=fr&page=1`;
+  const videosSerieUrl = `https://api.themoviedb.org/3/serie/${match.params.id}/videos?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
+  const photosSerieUrl = `https://api.themoviedb.org/3/serie/${match.params.id}/images?api_key=${process.env.REACT_APP_API_KEY}&language=fr`;
+  const keywordsSerieUrl = `https://api.themoviedb.org/3/serie/${match.params.id}/keywords?api_key=${process.env.REACT_APP_API_KEY}`;
   const forceUpdate = useForceUpdate();
 
   useEffect(() => {
@@ -426,8 +426,8 @@ function DetailSerie({ match }) {
                   similarSeries.map(serie => (
                     <div className="col s12 similar-film-detail" key={serie.id}>
                       <a
-                        href={`/tv/${serie.id}`}
-                        to={`/tv/${serie.id}`}
+                        href={`/serie/${serie.id}`}
+                        to={`/serie/${serie.id}`}
                         key={serie.id}
                       >
                         <img
