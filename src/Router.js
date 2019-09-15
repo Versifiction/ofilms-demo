@@ -24,7 +24,7 @@ import Apropos from "./pages/Apropos";
 import Faq from "./pages/Faq";
 import Contact from "./pages/Contact";
 import MentionsLegales from "./pages/MentionsLegales";
-import Dashboard from "../src/components/dashboard";
+import Users from "./pages/Users";
 import Erreur from "./pages/Erreur";
 
 function Router() {
@@ -51,7 +51,7 @@ function Router() {
       <Route path="/faq" exact component={Faq} />
       <Route path="/contact" exact component={Contact} />
       <Route path="/mentions-legales" exact component={MentionsLegales} />
-      <PrivateRoute path="/dashboard" component={Dashboard} />
+      <Route path="/users" exact component={Users} />
       <Route component={Erreur} />
     </Switch>
   );

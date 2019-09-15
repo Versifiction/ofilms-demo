@@ -6,7 +6,7 @@ const headers = {
 export default {
   login: function(email, password) {
     return axios.post(
-      `${process.env.BASE_URL}/user/login`,
+      `${process.env.CLIENT_BASE_URL}/user/login`,
       {
         email,
         password
@@ -17,7 +17,7 @@ export default {
     );
   },
   signup: function(send) {
-    return axios.post(`${process.env.BASE_URL}/user/signup`, send, {
+    return axios.post(`${process.env.CLIENT_BASE_URL}/user/signup`, send, {
       headers: headers
     });
   },

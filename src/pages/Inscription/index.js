@@ -72,23 +72,9 @@ function Inscription() {
     if (!password || password.length === 0 || password !== confirmPassword) {
       return;
     }
-    try {
-      const { data } = await API.signup({
-        email,
-        password,
-        username,
-        firstname,
-        lastname,
-        sexe,
-        mobilePhone,
-        postalCode,
-        city
-      });
-      localStorage.setItem("token", data.token);
-      window.location = "/dashboard";
-    } catch (error) {
-      console.error(error);
-    }
+    axios
+      .post(`${process.env.SERVER_BASE_URL}/user/add`, fields)
+      .then(res => console.log(res.data));
   }
 
   return (

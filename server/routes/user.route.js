@@ -37,9 +37,16 @@ userRoutes.route("/update/:id").post(function(req, res) {
   User.findById(req.params.id, function(err, user) {
     if (!user) res.status(404).send("Donnée non trouvée");
     else {
-      user.person_name = req.body.person_name;
-      user.user_name = req.body.user_name;
-      user.user_gst_number = req.body.user_gst_number;
+      user.email = req.body.email;
+      user.password = req.body.password;
+      user.username = req.body.username;
+      user.firstname = req.body.firstname;
+      user.lastname = req.body.lastname;
+      user.sexe = req.body.sexe;
+      user.mobilePhone = req.body.mobilePhone;
+      user.postalCode = req.body.postalCode;
+      user.city = req.body.city;
+      user.creationDate = new Date();
 
       user
         .save()
