@@ -1,7 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-expressions */
 test 1
-<div id="test1" class="col s12">
+<div id="test1" className="col s12">
   <div className="row">
     <div className="col s12 col m4">
       <div
@@ -113,7 +113,7 @@ test 1
 </div>
 
 test2
-<div id="test2" class="col s12">
+<div id="test2" className="col s12">
                       {videosFilm && videosFilm.length > 0 && (
                         <p className="card-text">
                           <div>
@@ -150,7 +150,7 @@ test2
 
 
 test3
-<div id="test3" class="col s12">
+<div id="test3" className="col s12">
                       {photosFilm && photosFilm.length > 0 && (
                         <div className="film-detail-photos">
                           {photosFilm &&

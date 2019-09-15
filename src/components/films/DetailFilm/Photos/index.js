@@ -15,7 +15,7 @@ function Photos({ photosFilm }) {
 
   return (
     <>
-      <div id="test3" class="col s12">
+      <div id="test3" className="col s12">
         {photosFilm && photosFilm.length > 0 && (
           <p className="film-detail">
             Photos

@@ -69,14 +69,13 @@ i.material-icons.colored.active {
 .btn,
 .btn-large {
   background-color: #0cd0fc;
+  color: white;
   margin-top: 20px;
 }
 
 .btn:hover,
 .btn-large:hover {
-  background-color: white;
-  color: #0cd0fc;
-  border: 1px solid #0cd0fc;
+  background-color: #0cd0fc;
 }
 
 .sidenav li > a > i,
@@ -759,14 +758,9 @@ nav form {
 }
 
 .search-close-icon {
-  display: none !important;
-  position: absolute;
   top: 0;
-  left: 100% !important;
-  padding-left: 0px;
+  padding-left: 15px;
   color: #0cd0fc;
-  transition: color 0.2s;
-  cursor: pointer;
 }
 
 .my-grey {
@@ -781,7 +775,7 @@ input.search-field {
   height: 36px;
   width: 200px;
   background: #f7f7f7;
-  transition: background 0.2s, width 0.2s;
+  /*transition: background 0.2s, width 0.2s;*/
 }
 
 input.search-field:hover {
@@ -930,6 +924,10 @@ p {
 
   .collapsible-body {
     color: white;
+  }
+
+  .App {
+    position: relative;
   }
 
   @media only screen and (max-width: 992px) {

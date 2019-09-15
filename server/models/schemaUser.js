@@ -5,21 +5,6 @@ const config = require("../config/config");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  id: {
-    type: Number,
-    unique: true
-  },
-  username: {
-    type: String,
-    unique: true,
-    required: true,
-    trim: true
-  },
-  password: {
-    type: String,
-    required: true,
-    trim: true
-  },
   email: {
     type: String,
     lowercase: true,
@@ -27,8 +12,20 @@ const userSchema = new Schema({
     unique: true,
     required: true
   },
+  password: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+    trim: true
+  },
   fistname: String,
   lastname: String,
+  sexe: String,
   mobilePhone: Number,
   postalCode: Number,
   city: String,

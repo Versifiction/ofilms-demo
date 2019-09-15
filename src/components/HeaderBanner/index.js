@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import "../../App.css";
 import AccueilBanner from "../../images/bg-header.jpg";
@@ -18,15 +17,15 @@ function Nav() {
       <p className="accueil-text">
         Les meilleurs films. Les meilleures séries.
       </p>
-      <Link href="/inscription" to="/inscription" style={{ color: "#0cd0fc" }}>
-        <button class="btn-large waves-effect waves-light">
+      <a href="/inscription" style={{ color: "#0cd0fc" }}>
+        <button className="btn-large waves-effect waves-light">
           S'inscrire
-          <i class="material-icons right">send</i>
+          <i className="material-icons right">send</i>
         </button>
-      </Link>
+      </a>
       <div className="bounce">
         <i
-          class="fas fa-angle-double-down fa-2x"
+          className="fas fa-angle-double-down fa-2x"
           style={{ color: "white" }}
         ></i>
       </div>

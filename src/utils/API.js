@@ -21,7 +21,6 @@ export default {
       headers: headers
     });
   },
-
   isAuth: function() {
     return localStorage.getItem("token") !== null;
   },

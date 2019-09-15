@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
+import { PrivateRoute } from "./components/PrivateRoute/";
 import "./App.css";
 
 import Accueil from "./pages/Accueil";
@@ -23,6 +24,7 @@ import Apropos from "./pages/Apropos";
 import Faq from "./pages/Faq";
 import Contact from "./pages/Contact";
 import MentionsLegales from "./pages/MentionsLegales";
+import Dashboard from "../src/components/dashboard";
 import Erreur from "./pages/Erreur";
 
 function Router() {
@@ -49,6 +51,7 @@ function Router() {
       <Route path="/faq" exact component={Faq} />
       <Route path="/contact" exact component={Contact} />
       <Route path="/mentions-legales" exact component={MentionsLegales} />
+      <PrivateRoute path="/dashboard" component={Dashboard} />
       <Route component={Erreur} />
     </Switch>
   );

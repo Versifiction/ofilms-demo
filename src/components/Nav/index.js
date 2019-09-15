@@ -11,6 +11,7 @@ import "../../App.css";
 
 function Nav() {
   const [sideNavActive, setSideNavActive] = useState(false);
+  const [searchActive, setSearchActive] = useState(false);
   const [searchInputValue, setSearchInputValue] = useState("");
   const [pending, setPending] = useState(false);
   const [searchResult, setSearchResult] = useState(false);
@@ -32,6 +33,11 @@ function Nav() {
     //   });
   });
 
+  useEffect(() => {
+    console.log("searchActive ", searchActive);
+    console.log("searchInputValue ", searchInputValue);
+  }, [searchActive, searchInputValue]);
+
   function toggleSideNav() {
     setSideNavActive(!sideNavActive);
   }
@@ -42,7 +48,7 @@ function Nav() {
     console.log("searchInputValue ", searchInputValue);
 
     try {
-      const searchResult = await axios.post(
+      const searchResult = await axios.get(
         `https://api.themoviedb.org/3/search/multi?api_key=${process.env.REACT_APP_API_KEY}&language=fr-FR&include_adult=false&query=${e.target.value}`
       );
       setSearchResult(searchResult.data.results);
@@ -58,163 +64,191 @@ function Nav() {
   return (
     <>
       <nav>
-        <div class="nav-wrapper">
-          <div class="row container">
-            <div class="col s12">
+        <div className="nav-wrapper">
+          <div className="row container">
+            <div className="col s12">
               <div
                 data-target="slide-out"
-                class="sidenav-trigger show-on-large"
+                className="sidenav-trigger show-on-large"
                 style={{ height: "64px" }}
               >
-                <i class="material-icons colored" style={{ cursor: "pointer" }}>
+                <i
+                  className="material-icons colored"
+                  style={{ cursor: "pointer" }}
+                >
                   menu
                 </i>
               </div>
               <a
                 href="/"
-                class="brand-logo center"
+                className="brand-logo center"
                 style={{ color: "#0CD0FC", textTransform: "uppercase" }}
               >
                 O'Films
               </a>
-              <ul class="hide-on-med-and-down right">
+              <ul className="hide-on-med-and-down right">
                 <li>
-                  <form action="" class="browser-default right">
+                  <form action="" className="browser-default right">
                     <input
                       id="search-input"
                       // placeholder={
                       //   "Rechercher un film, une série, un acteur..."
                       // }
                       type="text"
-                      class="browser-default search-field"
+                      className="browser-default search-field"
                       name="q"
                       value={searchInputValue}
                       autocomplete="off"
                       aria-label="Search box"
-                      // onFocus={toggleSearchActive}
-                      // onBlur={toggleSearchActive}
+                      style={{
+                        borderBottom: searchActive ? "2px solid #0cd0fc" : ""
+                      }}
+                      onFocus={() => {
+                        setSearchActive(true);
+                      }}
+                      onBlur={() => {
+                        setSearchActive(false);
+                        setSearchInputValue("");
+                      }}
                       onChange={e => handleChange(e)}
                     />
-                    <label for="search-input">
-                      <i
-                        class="material-icons search-icon tooltipped"
-                        data-position="bottom"
-                        data-tooltip="Rechercher un film, une série, un acteur..."
-                        style={{ cursor: "pointer" }}
-                      >
-                        search
-                      </i>
-                    </label>
-                    <i
-                      class="material-icons search-close-icon"
-                      onClick={() => setSearchInputValue("")}
+                    <label
+                      htmlFor="search-input"
+                      className={searchActive ? "active" : ""}
                     >
-                      cancel
-                    </i>
-                    <div class="search-popup">
-                      <div class="search-content">
-                        <ul class="popup-list">
-                          {searchResult &&
-                            searchResult.map(result => (
-                              <li class="" style={{ marginBottom: "30px" }}>
-                                <Link
-                                  class="grey-text"
-                                  href={`/${result.media_type}/${result.id}`}
-                                  to={`/${result.media_type}/${result.id}`}
-                                  style={{
-                                    height: "100px",
-                                    display: "flex",
-                                    alignItems: "center"
-                                  }}
+                      {searchInputValue.length === 0 ? (
+                        <i
+                          className="material-icons search-icon tooltipped"
+                          data-position="bottom"
+                          data-tooltip="Rechercher un film, une série, un acteur..."
+                          style={{ cursor: "pointer" }}
+                        >
+                          search
+                        </i>
+                      ) : (
+                        <i
+                          className="material-icons search-close-icon tooltipped"
+                          data-position="bottom"
+                          data-tooltip="Vider la valeur du champ"
+                          style={{ cursor: "pointer" }}
+                          onClick={() => setSearchInputValue("")}
+                        >
+                          close
+                        </i>
+                      )}
+                    </label>
+                    {searchActive && (
+                      <div className="search-popup">
+                        <div className="search-content">
+                          <ul className="popup-list">
+                            {searchResult &&
+                              searchResult.map(result => (
+                                <li
+                                  key={result.id}
+                                  style={{ marginBottom: "30px" }}
                                 >
-                                  {result.media_type === "person" ||
-                                  result.media_type === "tv" ? (
-                                    <>
-                                      <span>
-                                        <img
-                                          src={
-                                            result.profile_path == null
-                                              ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible"
-                                              : `http://image.tmdb.org/t/p/w500${result.profile_path}`
-                                          }
-                                          style={{ width: "50px" }}
-                                        />
-                                      </span>
-                                      <p
-                                        style={{
-                                          display: "flex",
-                                          alignItems: "center",
-                                          marginLeft: "10px"
-                                        }}
-                                      >
-                                        {result.name}
-                                        <span
+                                  <a
+                                    className="grey-text"
+                                    href={`/${(result.media_type === "movie" &&
+                                      "film") ||
+                                      (result.media_type === "tv" && "serie") ||
+                                      (result.media_type === "person" &&
+                                        "person")}/${result.id}`}
+                                    style={{
+                                      height: "100px",
+                                      display: "flex",
+                                      alignItems: "center"
+                                    }}
+                                  >
+                                    {result.media_type === "person" ||
+                                    result.media_type === "tv" ? (
+                                      <>
+                                        <span>
+                                          <img
+                                            src={
+                                              result.profile_path == null
+                                                ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible"
+                                                : `http://image.tmdb.org/t/p/w500${result.profile_path}`
+                                            }
+                                            style={{ width: "50px" }}
+                                          />
+                                        </span>
+                                        <p
                                           style={{
-                                            fontSize: "10px",
-                                            textTransform: "uppercase",
-                                            marginLeft: "6px",
-                                            backgroundColor: "#95878b",
-                                            color: "white",
-                                            padding: "0px 10px"
+                                            display: "flex",
+                                            alignItems: "center",
+                                            marginLeft: "10px"
                                           }}
                                         >
-                                          {result.media_type === "person"
-                                            ? "Personne"
-                                            : "Série"}
+                                          {result.name}
+                                          <span
+                                            style={{
+                                              fontSize: "10px",
+                                              textTransform: "uppercase",
+                                              marginLeft: "6px",
+                                              backgroundColor: "#95878b",
+                                              color: "white",
+                                              padding: "0px 10px"
+                                            }}
+                                          >
+                                            {result.media_type === "person"
+                                              ? "Personne"
+                                              : "Série"}
+                                          </span>
+                                        </p>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <span>
+                                          <img
+                                            src={
+                                              result.poster_path == null
+                                                ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible"
+                                                : `http://image.tmdb.org/t/p/w500${result.poster_path}`
+                                            }
+                                            style={{ width: "50px" }}
+                                          />
                                         </span>
-                                      </p>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <span>
-                                        <img
-                                          src={
-                                            result.poster_path == null
-                                              ? "https://via.placeholder.com/200x300/2C2F33/FFFFFF/png?text=Image+non+disponible"
-                                              : `http://image.tmdb.org/t/p/w500${result.poster_path}`
-                                          }
-                                          style={{ width: "50px" }}
-                                        />
-                                      </span>
-                                      <p
-                                        style={{
-                                          display: "flex",
-                                          alignItems: "center",
-                                          marginLeft: "10px"
-                                        }}
-                                      >
-                                        {result.title}
-                                        <span
+                                        <p
                                           style={{
-                                            fontSize: "10px",
-                                            textTransform: "uppercase",
-                                            marginLeft: "6px",
-                                            backgroundColor: "#95878b",
-                                            color: "white",
-                                            padding: "0px 10px"
+                                            display: "flex",
+                                            alignItems: "center",
+                                            marginLeft: "10px"
                                           }}
                                         >
-                                          Film
-                                        </span>
-                                      </p>
-                                    </>
-                                  )}
-                                </Link>
-                              </li>
-                            ))}
-                        </ul>
+                                          {result.title}
+                                          <span
+                                            style={{
+                                              fontSize: "10px",
+                                              textTransform: "uppercase",
+                                              marginLeft: "6px",
+                                              backgroundColor: "#95878b",
+                                              color: "white",
+                                              padding: "0px 10px"
+                                            }}
+                                          >
+                                            Film
+                                          </span>
+                                        </p>
+                                      </>
+                                    )}
+                                  </a>
+                                </li>
+                              ))}
+                          </ul>
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </form>
                 </li>
                 <li>
                   <a
-                    class="waves-effect waves-light tooltipped"
+                    className="waves-effect waves-light tooltipped"
                     data-position="bottom"
                     data-tooltip="Se connecter / S'inscrire"
                     href="/connexion"
                   >
-                    <i class="material-icons colored">person</i>
+                    <i className="material-icons colored">person</i>
                   </a>
                 </li>
               </ul>
@@ -224,12 +258,12 @@ function Nav() {
       </nav>
       <ul
         id="slide-out"
-        class="sidenav dark"
+        className="sidenav dark"
         style={{ transform: sideNavActive ? "translateX(0%)" : "" }}
         onClick={toggleSideNav}
       >
         <li>
-          <div class="user-view">
+          <div className="user-view">
             <div>
               <a href="/">O'Films</a>
             </div>
@@ -237,17 +271,17 @@ function Nav() {
         </li>
         <li>
           <NavLink
-            class="waves-effect waves-light"
+            className="waves-effect waves-light"
             activeClassName="active"
             href="/movies"
             to="/movies"
           >
-            <i class="material-icons colored">local_movies</i>Films
+            <i className="material-icons colored">local_movies</i>Films
           </NavLink>
         </li>
         <li>
           <NavLink
-            class="waves-effect waves-light"
+            className="waves-effect waves-light"
             activeClassName="active"
             href="/films/affiche"
             to="/films/affiche"
@@ -257,7 +291,7 @@ function Nav() {
         </li>
         <li>
           <NavLink
-            class="waves-effect waves-light"
+            className="waves-effect waves-light"
             activeClassName="active"
             href="/films/tendances"
             to="/films/tendances"
@@ -267,7 +301,7 @@ function Nav() {
         </li>
         <li>
           <NavLink
-            class="waves-effect waves-light"
+            className="waves-effect waves-light"
             activeClassName="active"
             href="/films/mieux-notes"
             to="/films/mieux-notes"
@@ -277,17 +311,17 @@ function Nav() {
         </li>
         <li>
           <NavLink
-            class="waves-effect waves-light"
+            className="waves-effect waves-light"
             activeClassName="active"
             href="/tv"
             to="/tv"
           >
-            <i class="material-icons colored">tv</i>Séries
+            <i className="material-icons colored">tv</i>Séries
           </NavLink>
         </li>
         <li>
           <NavLink
-            class="waves-effect waves-light"
+            className="waves-effect waves-light"
             activeClassName="active"
             href="/series/tendances"
             to="/series/tendances"
@@ -297,7 +331,7 @@ function Nav() {
         </li>
         <li>
           <NavLink
-            class="waves-effect waves-light"
+            className="waves-effect waves-light"
             activeClassName="active"
             href="/series/mieux-notees"
             to="/series/mieux-notees"
@@ -307,80 +341,80 @@ function Nav() {
         </li>
         <li>
           <NavLink
-            class="waves-effect waves-light"
+            className="waves-effect waves-light"
             activeClassName="active"
             href="/categories"
             to="/categories"
           >
-            <i class="material-icons colored">view_list</i>
+            <i className="material-icons colored">view_list</i>
             <span id="txt1">Catégories</span>
           </NavLink>
         </li>
-        <div class="divider"></div>
+        <div className="divider"></div>
         <li>
           <NavLink
-            class="waves-effect waves-light"
+            className="waves-effect waves-light"
             activeClassName="active"
             href="/forum"
             to="/forum"
           >
-            <i class="material-icons colored">forum</i>
+            <i className="material-icons colored">forum</i>
             <span id="txt1">Forum</span>
           </NavLink>
         </li>
         <li>
           <NavLink
-            class="waves-effect waves-light"
+            className="waves-effect waves-light"
             activeClassName="active"
             href="/chat"
             to="/chat"
           >
-            <i class="material-icons colored">chat</i>
+            <i className="material-icons colored">chat</i>
             <span id="txt1">Chat</span>
           </NavLink>
         </li>
-        <div class="divider"></div>
+        <div className="divider"></div>
         <li>
           <NavLink
-            class="waves-effect waves-light"
+            className="waves-effect waves-light"
             activeClassName="active"
             href="/a-propos"
             to="/a-propos"
           >
-            <i class="material-icons colored">info</i>
+            <i className="material-icons colored">info</i>
             <span id="txt1">A propos</span>
           </NavLink>
         </li>
         <li>
           <NavLink
-            class="waves-effect waves-light"
+            className="waves-effect waves-light"
             activeClassName="active"
             href="/faq"
             to="/faq"
           >
-            <i class="material-icons colored">format_list_bulleted</i>
+            <i className="material-icons colored">format_list_bulleted</i>
             <span id="txt1">FAQ</span>
           </NavLink>
         </li>
         <li>
           <NavLink
-            class="waves-effect waves-light"
+            className="waves-effect waves-light"
             activeClassName="active"
             href="/contact"
             to="/contact"
           >
-            <i class="material-icons colored">contact_mail</i>
+            <i className="material-icons colored">contact_mail</i>
             <span id="txt1">Contact</span>
           </NavLink>
         </li>
         <li>
           <NavLink
-            class="waves-effect waves-light"
+            className="waves-effect waves-light"
             activeClassName="active"
             href="/mentions-legales"
             to="/mentions-legales"
           >
-            <i class="material-icons colored">format_align_left</i>
+            <i className="material-icons colored">format_align_left</i>
             <span id="txt1">Mentions légales</span>
           </NavLink>
         </li>
@@ -393,7 +427,7 @@ function Nav() {
               fontSize: "40px"
             }}
           >
-            <i class="fab fa-twitter"></i>
+            <i className="fab fa-twitter"></i>
           </div>
           <div
             className="col s4"
@@ -403,7 +437,7 @@ function Nav() {
               fontSize: "40px"
             }}
           >
-            <i class="fab fa-facebook-f"></i>
+            <i className="fab fa-facebook-f"></i>
           </div>
           <div
             className="col s4"
@@ -413,7 +447,7 @@ function Nav() {
               fontSize: "40px"
             }}
           >
-            <i class="fab fa-instagram"></i>
+            <i className="fab fa-instagram"></i>
           </div>
         </div>
       </ul>

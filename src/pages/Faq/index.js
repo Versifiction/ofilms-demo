@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "../../App";
+import "../../App.css";
 
 import Nav from "../../components/Nav";
 
@@ -21,13 +21,13 @@ function Faq() {
       <Nav />
       <div className="container">
         <h2>FAQ</h2>
-        <ul class="collapsible">
+        <ul className="collapsible">
           <li>
-            <div class="collapsible-header">
-              <i class="material-icons colored">question_answer</i>Comment
+            <div className="collapsible-header">
+              <i className="material-icons colored">question_answer</i>Comment
               s'inscrit-on ?
             </div>
-            <div class="collapsible-body">
+            <div className="collapsible-body">
               <span>
                 Pour s'inscrire, il suffit de se rendre{" "}
                 <a href="/inscription">ici</a>, et de remplir le formulaire
@@ -36,11 +36,11 @@ function Faq() {
             </div>
           </li>
           <li>
-            <div class="collapsible-header">
-              <i class="material-icons colored">question_answer</i>Le site
+            <div className="collapsible-header">
+              <i className="material-icons colored">question_answer</i>Le site
               est-il gratuit ?
             </div>
-            <div class="collapsible-body">
+            <div className="collapsible-body">
               <span>
                 Toutes les fonctionnalités présentes sur le site sont
                 effectivement gratuites, cependant certaines nécessitent d'avoir
@@ -49,12 +49,12 @@ function Faq() {
             </div>
           </li>
           <li>
-            <div class="collapsible-header">
-              <i class="material-icons colored">question_answer</i>Comment
+            <div className="collapsible-header">
+              <i className="material-icons colored">question_answer</i>Comment
               puis-je contacter les administrateurs et/ou les modérateurs du
               site ?
             </div>
-            <div class="collapsible-body">
+            <div className="collapsible-body">
               <span>
                 Vous pouvez contacter les administrateurs et/ou les modérateurs
                 du site en soumettant votre message ainsi que son objet,{" "}
@@ -63,11 +63,11 @@ function Faq() {
             </div>
           </li>
           <li>
-            <div class="collapsible-header">
-              <i class="material-icons colored">question_answer</i>Pourquoi mon
-              compte a été suspendu ?
+            <div className="collapsible-header">
+              <i className="material-icons colored">question_answer</i>Pourquoi
+              mon compte a été suspendu ?
             </div>
-            <div class="collapsible-body">
+            <div className="collapsible-body">
               <span>
                 Tout compte ne respectant pas les règles élémentaires de
                 savoir-vivre peut se voir suspendu.

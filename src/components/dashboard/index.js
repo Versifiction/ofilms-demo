@@ -2,7 +2,7 @@ import React from "react";
 
 import API from "../../utils/API";
 
-export class Dashboard extends React.Component {
+export default class Dashboard extends React.Component {
   disconnect = () => {
     API.logout();
     window.location = "/";
@@ -18,3 +18,4 @@ export class Dashboard extends React.Component {
       </div>
     );
   }
+}

@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import useForceUpdate from "use-force-update";
 
 import "../../App.css";
 import Nav from "../../components/Nav";
+import API from "../../utils/API";
 
 function Connexion() {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const forceUpdate = useForceUpdate();
+  const [submittable, setSubmittable] = useState(false);
+  const [fields, setFields] = useState({
+    email: "",
+    password: ""
+  });
 
   useEffect(() => {
     document.title = "O'Films | Connexion";
@@ -15,36 +22,76 @@ function Connexion() {
     setPasswordVisible(!passwordVisible);
   }
 
+  function handleChange(e) {
+    setFields({ ...fields, [e.target.name]: e.target.value.trim() });
+
+    forceUpdate();
+
+    console.log("fields ", fields);
+  }
+
+  async function sendForm(e) {
+    e.preventDefault();
+    console.log("submit");
+
+    setFields({ ...fields, lastConnection: new Date() });
+
+    const { email, password } = fields;
+    if (!email || email.length === 0) {
+      return;
+    }
+    if (!password || password.length === 0) {
+      return;
+    }
+    try {
+      const { data } = await API.login({
+        email,
+        password
+      });
+      localStorage.setItem("token", data.token);
+      window.location = "/dashboard";
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <>
       <Nav />
       <h2 className="media-type">Connexion</h2>
       <div className="row container">
-        <div class="row">
-          <form class="col s12 m6 push-m3">
-            <div class="row">
-              <div class="input-field col s12">
+        <div className="row">
+          <form className="col s12 m6 push-m3" onSubmit={sendForm}>
+            <div className="row">
+              <div className="input-field col s12">
                 <input
                   id="email"
                   type="email"
                   name="email"
+                  value={fields.email}
+                  onChange={e => handleChange(e)}
                   placeholder="Entrez votre adresse e-mail"
-                  class="validate"
+                  className="validate"
                 />
-                <label for="email">Adresse e-mail</label>
+                <label htmlFor="email">Adresse e-mail</label>
               </div>
             </div>
-            <div class="row">
-              <div class="input-field col s12" style={{ position: "relative" }}>
+            <div className="row">
+              <div
+                className="input-field col s12"
+                style={{ position: "relative" }}
+              >
                 <input
                   placeholder="Entrez votre mot de passe"
                   id="password"
                   name="password"
+                  value={fields.password}
+                  onChange={e => handleChange(e)}
                   type={passwordVisible ? "text" : "password"}
-                  class="validate"
+                  className="validate"
                 />
                 <i
-                  class="tiny material-icons colored right tooltipped"
+                  className="tiny material-icons colored right tooltipped"
                   data-position="bottom"
                   data-tooltip={
                     passwordVisible
@@ -59,14 +106,19 @@ function Connexion() {
                     cursor: "pointer"
                   }}
                 >
-                  {passwordVisible ? "visibility" : "visibility_off"}
+                  {passwordVisible ? "visibility_off" : "visibility"}
                 </i>
-                <label for="password">Mot de passe</label>
+                <label htmlFor="password">Mot de passe</label>
               </div>
               <div className="row center" style={{ marginTop: "40px" }}>
-                <button class="btn waves-effect waves-light">
+                <button
+                  // className={`btn waves-effect waves-light ${
+                  //   !submittable ? "disabled" : ""
+                  // }`}
+                  className="btn waves-effect waves-light"
+                >
                   Me connecter
-                  <i class="material-icons right">send</i>
+                  <i className="material-icons right">send</i>
                 </button>
               </div>
             </div>

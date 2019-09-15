@@ -6,7 +6,7 @@ import ItemsCarousel from "react-items-carousel";
 function BandesAnnonces({ videosFilm }) {
   const [activeItemIndex, setActiveItemIndex] = useState(0);
   return (
-    <div id="test2" class="col s12">
+    <div id="test2" className="col s12">
       {videosFilm && videosFilm.length > 0 && (
         <p className="film-detail">
           Bandes-annonces

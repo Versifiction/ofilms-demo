@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "../../App";
+import "../../App.css";
 
 import Nav from "../../components/Nav";
 

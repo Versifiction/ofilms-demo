@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useForceUpdate from "use-force-update";
+import M from "materialize-css";
 import axios from "axios";
 
 import "../../App.css";
@@ -10,6 +11,7 @@ function Inscription() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const forceUpdate = useForceUpdate();
+  const [submittable, setSubmittable] = useState(false);
   const [fields, setFields] = useState({
     email: "",
     password: "",
@@ -21,11 +23,13 @@ function Inscription() {
     localisation: true,
     mobilePhone: "",
     postalCode: "",
-    city: ""
+    city: "",
+    creationDate: ""
   });
 
   useEffect(() => {
     document.title = "O'Films | Inscription";
+    M.AutoInit();
   });
 
   function togglePasswordVisibility() {
@@ -37,7 +41,7 @@ function Inscription() {
   }
 
   function handleChange(e) {
-    setFields({ ...fields, [e.target.name]: e.target.value });
+    setFields({ ...fields, [e.target.name]: e.target.value.trim() });
 
     forceUpdate();
 
@@ -48,25 +52,43 @@ function Inscription() {
     e.preventDefault();
     console.log("submit");
 
-    axios
-      .post("http://localhost:4000/business/add", fields)
-      .then(res => console.log(res.data));
-    // if (!email || email.length === 0) {
-    //   return;
-    // }
-    // if (!password || password.length === 0 || password !== confirmPassword) {
-    //   return;
-    // }
-    // if (password !== confirmPassword) {
-    //   return;
-    // }
-    // try {
-    //   const { data } = await API.signup({ email, password });
-    //   localStorage.setItem("token", data.token);
-    //   window.location = "/dashboard";
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    setFields({ ...fields, creationDate: new Date() });
+
+    const {
+      email,
+      password,
+      username,
+      firstname,
+      lastname,
+      sexe,
+      mobilePhone,
+      postalCode,
+      city,
+      confirmPassword
+    } = fields;
+    if (!email || email.length === 0) {
+      return;
+    }
+    if (!password || password.length === 0 || password !== confirmPassword) {
+      return;
+    }
+    try {
+      const { data } = await API.signup({
+        email,
+        password,
+        username,
+        firstname,
+        lastname,
+        sexe,
+        mobilePhone,
+        postalCode,
+        city
+      });
+      localStorage.setItem("token", data.token);
+      window.location = "/dashboard";
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -74,11 +96,11 @@ function Inscription() {
       <Nav />
       <h2 className="media-type">Inscription</h2>
       <div className="row container">
-        <div class="row">
-          <form class="col s12" onSubmit={sendForm}>
-            <div class="row">
-              <div class="input-field col s6">
-                <i class="material-icons colored prefix">mail</i>
+        <div className="row">
+          <form className="col s12" onSubmit={sendForm}>
+            <div className="row">
+              <div className="input-field col s6">
+                <i className="material-icons colored prefix">mail</i>
                 <input
                   id="email"
                   type="email"
@@ -86,12 +108,13 @@ function Inscription() {
                   placeholder="Entrez votre adresse e-mail"
                   value={fields.email}
                   onChange={e => handleChange(e)}
-                  class="validate"
+                  className="validate"
+                  required
                 />
                 <label htmlFor="email">Adresse e-mail *</label>
               </div>
-              <div class="input-field col s6">
-                <i class="material-icons colored prefix">message</i>
+              <div className="input-field col s6">
+                <i className="material-icons colored prefix">message</i>
                 <input
                   id="username"
                   type="text"
@@ -99,14 +122,15 @@ function Inscription() {
                   value={fields.username}
                   onChange={e => handleChange(e)}
                   placeholder="Entrez votre pseudo"
-                  class="validate"
+                  className="validate"
+                  required
                 />
                 <label htmlFor="username">Pseudo *</label>
               </div>
             </div>
-            <div class="row">
-              <div class="input-field col s6">
-                <i class="material-icons colored prefix">contacts</i>
+            <div className="row">
+              <div className="input-field col s6">
+                <i className="material-icons colored prefix">contacts</i>
                 <input
                   placeholder="Entrez votre prénom"
                   id="firstname"
@@ -114,12 +138,13 @@ function Inscription() {
                   type="text"
                   value={fields.firstname}
                   onChange={e => handleChange(e)}
-                  class="validate"
+                  className="validate"
+                  required
                 />
                 <label htmlFor="firstname">Prénom *</label>
               </div>
-              <div class="input-field col s6">
-                <i class="material-icons colored prefix">contacts</i>
+              <div className="input-field col s6">
+                <i className="material-icons colored prefix">contacts</i>
                 <input
                   id="lastname"
                   type="text"
@@ -127,21 +152,23 @@ function Inscription() {
                   placeholder="Entrez votre nom"
                   value={fields.lastname}
                   onChange={e => handleChange(e)}
-                  class="validate"
+                  className="validate"
+                  required
                 />
                 <label htmlFor="lastname">Nom *</label>
               </div>
             </div>
-            <div class="row">
-              <div class="input-field col s6">
-                <i class="material-icons colored prefix">wc</i>
+            <div className="row">
+              <div className="input-field col s6">
+                <i className="material-icons colored prefix">wc</i>
                 <select
                   name="sexe"
                   id="sexe"
                   onChange={e => handleChange(e)}
                   value={fields.sexe}
+                  required
                 >
-                  <option value="" disabled selectedValue>
+                  <option value="" disabled selectedvalue="true">
                     Sélectionnez votre sexe
                   </option>
                   <option value="homme">Homme</option>
@@ -149,8 +176,8 @@ function Inscription() {
                 </select>
                 <label htmlFor="sexe">Sexe *</label>
               </div>
-              <div class="input-field col s6">
-                <i class="material-icons colored prefix">phone</i>
+              <div className="input-field col s6">
+                <i className="material-icons colored prefix">phone</i>
                 <input
                   id="mobilePhone"
                   type="text"
@@ -158,14 +185,14 @@ function Inscription() {
                   placeholder="Entrez votre numéro de téléphone mobile"
                   value={fields.mobilePhone}
                   onChange={e => handleChange(e)}
-                  class="validate"
+                  className="validate"
                 />
                 <label htmlFor="mobilePhone">Téléphone mobile</label>
               </div>
             </div>
-            <div class="row">
-              <div class="input-field col s6">
-                <i class="material-icons colored prefix">place</i>
+            <div className="row">
+              <div className="input-field col s6">
+                <i className="material-icons colored prefix">place</i>
                 <input
                   id="postalCode"
                   type="text"
@@ -173,12 +200,12 @@ function Inscription() {
                   placeholder="Entrez votre code postal"
                   value={fields.postalCode}
                   onChange={e => handleChange(e)}
-                  class="validate"
+                  className="validate"
                 />
                 <label htmlFor="postalCode">Code postal</label>
               </div>
-              <div class="input-field col s6">
-                <i class="material-icons colored prefix">location_city</i>
+              <div className="input-field col s6">
+                <i className="material-icons colored prefix">location_city</i>
                 <input
                   id="city"
                   type="text"
@@ -186,14 +213,17 @@ function Inscription() {
                   placeholder="Sélectionnez votre ville"
                   value={fields.city}
                   onChange={e => handleChange(e)}
-                  class="validate"
+                  className="validate"
                 />
                 <label htmlFor="city">Ville</label>
               </div>
             </div>
-            <div class="row">
-              <div class="input-field col s6" style={{ position: "relative" }}>
-                <i class="material-icons colored prefix">fingerprint</i>
+            <div className="row">
+              <div
+                className="input-field col s6"
+                style={{ position: "relative" }}
+              >
+                <i className="material-icons colored prefix">fingerprint</i>
                 <input
                   placeholder="Entrez votre mot de passe"
                   id="password"
@@ -201,10 +231,11 @@ function Inscription() {
                   type={passwordVisible ? "text" : "password"}
                   value={fields.password}
                   onChange={e => handleChange(e)}
-                  class="validate"
+                  className="validate"
+                  required
                 />
                 <i
-                  class="tiny material-icons right tooltipped"
+                  className="tiny material-icons right tooltipped"
                   id="password"
                   data-position="bottom"
                   data-tooltip={
@@ -221,12 +252,15 @@ function Inscription() {
                     color: "white"
                   }}
                 >
-                  {passwordVisible ? "visibility" : "visibility_off"}
+                  {passwordVisible ? "visibility_off" : "visibility"}
                 </i>
                 <label htmlFor="password">Mot de passe *</label>
               </div>
-              <div class="input-field col s6" style={{ position: "relative" }}>
-                <i class="material-icons colored prefix">fingerprint</i>
+              <div
+                className="input-field col s6"
+                style={{ position: "relative" }}
+              >
+                <i className="material-icons colored prefix">fingerprint</i>
                 <input
                   id="confirmPassword"
                   name="confirmPassword"
@@ -234,10 +268,11 @@ function Inscription() {
                   value={fields.confirmPassword}
                   onChange={e => handleChange(e)}
                   placeholder="Confirmez votre mot de passe"
-                  class="validate"
+                  className="validate"
+                  required
                 />
                 <i
-                  class="tiny material-icons right tooltipped"
+                  className="tiny material-icons right tooltipped"
                   id="confirmPassword"
                   data-position="bottom"
                   data-tooltip={
@@ -254,7 +289,7 @@ function Inscription() {
                     color: "white"
                   }}
                 >
-                  {confirmPasswordVisible ? "visibility" : "visibility_off"}
+                  {confirmPasswordVisible ? "visibility_off" : "visibility"}
                 </i>
                 <label htmlFor="confirmPassword">
                   Confirmation du mot de passe *
@@ -263,12 +298,12 @@ function Inscription() {
             </div>
             <div className="row">
               <div className="input-field col s6">
-                <label for="check">
+                <label htmlFor="check">
                   <input
                     type="checkbox"
                     id="check"
                     name="localisation"
-                    class="filled-in"
+                    className="filled-in"
                     value={fields.localisation}
                     onChange={e => handleChange(e)}
                   />
@@ -280,9 +315,15 @@ function Inscription() {
               </div>
             </div>
             <div className="row center" style={{ marginTop: "40px" }}>
-              <button class="btn waves-effect waves-light" type="submit">
+              <button
+                // className={`btn waves-effect waves-light ${
+                //   !submittable ? "disabled" : ""
+                // }`}
+                className="btn waves-effect waves-light"
+                type="submit"
+              >
                 M'inscrire
-                <i class="material-icons right">send</i>
+                <i className="material-icons right">send</i>
               </button>
             </div>
           </form>

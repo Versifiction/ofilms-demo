@@ -4,6 +4,7 @@ import "../../App.css";
 
 import Nav from "../../components/Nav";
 import HeaderBanner from "../../components/HeaderBanner";
+import FloatingChat from "../../components/FloatingChat";
 
 function Accueil() {
   useEffect(() => {
@@ -14,6 +15,7 @@ function Accueil() {
     <div className="App">
       <Nav />
       <HeaderBanner />
+      <FloatingChat />
     </div>
   );
 }

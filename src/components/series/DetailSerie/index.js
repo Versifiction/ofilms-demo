@@ -309,7 +309,7 @@ function DetailSerie({ match }) {
                 </p>
               </div>
               <div className="col s12 m8">
-                <div id="test1" class="col s12">
+                <div id="test1" className="col s12">
                   <div className="row">
                     <div className="col s12 col m4">
                       <div
