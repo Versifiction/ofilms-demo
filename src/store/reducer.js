@@ -1,7 +1,9 @@
-const user = {};
+import { combineReducers } from "redux";
 
-const initialState = {};
+import authReducer from "./reducers/auth-reducer";
+import errorReducer from "./reducers/error-reducer";
 
-const reducer = (currentState = initialState, action = {}) => {};
-
-export default reducer;
+export default combineReducers({
+  auth: authReducer,
+  errors: errorReducer
+});

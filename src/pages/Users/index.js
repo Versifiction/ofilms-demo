@@ -19,7 +19,7 @@ function Users() {
 
   async function loadAllUsers() {
     try {
-      const dataAllUsers = await axios.get(`http://localhost:4000/user`);
+      const dataAllUsers = await axios.get("/user");
       console.log("data ", dataAllUsers);
       setUsersList(dataAllUsers.data);
       console.log("usersList ", usersList);
@@ -32,9 +32,11 @@ function Users() {
 
   function deleteUser(id) {
     axios
-      .get(`http://localhost:4000/user/delete/${id}`)
+      .get(`/user/delete/${id}`)
       .then(console.log("Deleted"))
       .catch(err => console.log(err));
+
+    window.location.reload();
   }
 
   return (
@@ -80,7 +82,13 @@ function Users() {
                       <td>{user.firstname}</td>
                       <td>{user.lastname}</td>
                       <td>{user.username}</td>
-                      <td>{user.sexe}</td>
+                      <td>
+                        {user.sexe === "H" ? (
+                          <i class="fas fa-male"></i>
+                        ) : (
+                          <i class="fa fa-female"></i>
+                        )}
+                      </td>
                       <td>{user.mobilePhone}</td>
                       <td>{user.city}</td>
                       <td>{user.postalCode}</td>

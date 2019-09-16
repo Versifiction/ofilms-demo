@@ -121,7 +121,6 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 
 input {
   color: white;
-  background-color: transparent !important;
 }
 
 ul.right,
@@ -932,6 +931,12 @@ p {
 
   table {
     color: white;
+  }
+
+  input:-internal-autofill-selected,
+  input:-webkit-autofill,
+  input:focus:-webkit-autofill {
+    background-color: transparent !important;
   }
 
   @media only screen and (max-width: 992px) {

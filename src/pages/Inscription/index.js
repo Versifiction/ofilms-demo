@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import useForceUpdate from "use-force-update";
 import M from "materialize-css";
 import axios from "axios";
+import { withRouter } from "react-router-dom";
+import classnames from "classnames";
+import { registerUser } from "../../store/actions/authActions";
+import { connect } from "react-redux";
 
 import "../../App.css";
 import Nav from "../../components/Nav";
-import API from "../../utils/API";
 
-function Inscription() {
+function Inscription(props) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const forceUpdate = useForceUpdate();
@@ -24,13 +27,24 @@ function Inscription() {
     mobilePhone: "",
     postalCode: "",
     city: "",
-    creationDate: ""
+    creationDate: "",
+    errors: {}
   });
 
   useEffect(() => {
     document.title = "O'Films | Inscription";
     M.AutoInit();
-  });
+    console.log("props ", props);
+    if (props.auth.isAuthenticated) {
+      props.history.push("/");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (props.errors) {
+      setFields({ ...fields, errors: props.errors });
+    }
+  }, [props.errors]);
 
   function togglePasswordVisibility() {
     setPasswordVisible(!passwordVisible);
@@ -72,9 +86,8 @@ function Inscription() {
     if (!password || password.length === 0 || password !== confirmPassword) {
       return;
     }
-    axios
-      .post(`${process.env.SERVER_BASE_URL}/user/add`, fields)
-      .then(res => console.log(res.data));
+    // axios.post("/user/register", fields).then(res => console.log(res.data));
+    this.props.registerUser(fields, this.props.history);
   }
 
   return (
@@ -83,7 +96,7 @@ function Inscription() {
       <h2 className="media-type">Inscription</h2>
       <div className="row container">
         <div className="row">
-          <form className="col s12" onSubmit={sendForm}>
+          <form className="col s12" onSubmit={sendForm} autocomplete="off">
             <div className="row">
               <div className="input-field col s6">
                 <i className="material-icons colored prefix">mail</i>
@@ -94,6 +107,7 @@ function Inscription() {
                   placeholder="Entrez votre adresse e-mail"
                   value={fields.email}
                   onChange={e => handleChange(e)}
+                  style={{ backgroundColor: "transparent !important" }}
                   className="validate"
                   required
                 />
@@ -107,6 +121,7 @@ function Inscription() {
                   name="username"
                   value={fields.username}
                   onChange={e => handleChange(e)}
+                  style={{ backgroundColor: "transparent" }}
                   placeholder="Entrez votre pseudo"
                   className="validate"
                   required
@@ -124,6 +139,7 @@ function Inscription() {
                   type="text"
                   value={fields.firstname}
                   onChange={e => handleChange(e)}
+                  style={{ backgroundColor: "transparent" }}
                   className="validate"
                   required
                 />
@@ -138,6 +154,7 @@ function Inscription() {
                   placeholder="Entrez votre nom"
                   value={fields.lastname}
                   onChange={e => handleChange(e)}
+                  style={{ backgroundColor: "transparent" }}
                   className="validate"
                   required
                 />
@@ -157,8 +174,8 @@ function Inscription() {
                   <option value="" disabled selectedvalue="true">
                     Sélectionnez votre sexe
                   </option>
-                  <option value="homme">Homme</option>
-                  <option value="femme">Femme</option>
+                  <option value="H">Homme</option>
+                  <option value="F">Femme</option>
                 </select>
                 <label htmlFor="sexe">Sexe *</label>
               </div>
@@ -171,6 +188,7 @@ function Inscription() {
                   placeholder="Entrez votre numéro de téléphone mobile"
                   value={fields.mobilePhone}
                   onChange={e => handleChange(e)}
+                  style={{ backgroundColor: "transparent" }}
                   className="validate"
                 />
                 <label htmlFor="mobilePhone">Téléphone mobile</label>
@@ -186,6 +204,7 @@ function Inscription() {
                   placeholder="Entrez votre code postal"
                   value={fields.postalCode}
                   onChange={e => handleChange(e)}
+                  style={{ backgroundColor: "transparent" }}
                   className="validate"
                 />
                 <label htmlFor="postalCode">Code postal</label>
@@ -199,6 +218,7 @@ function Inscription() {
                   placeholder="Sélectionnez votre ville"
                   value={fields.city}
                   onChange={e => handleChange(e)}
+                  style={{ backgroundColor: "transparent" }}
                   className="validate"
                 />
                 <label htmlFor="city">Ville</label>
@@ -217,6 +237,7 @@ function Inscription() {
                   type={passwordVisible ? "text" : "password"}
                   value={fields.password}
                   onChange={e => handleChange(e)}
+                  style={{ backgroundColor: "transparent" }}
                   className="validate"
                   required
                 />
@@ -253,6 +274,7 @@ function Inscription() {
                   type={confirmPasswordVisible ? "text" : "password"}
                   value={fields.confirmPassword}
                   onChange={e => handleChange(e)}
+                  style={{ backgroundColor: "transparent" }}
                   placeholder="Confirmez votre mot de passe"
                   className="validate"
                   required
@@ -292,6 +314,7 @@ function Inscription() {
                     className="filled-in"
                     value={fields.localisation}
                     onChange={e => handleChange(e)}
+                    style={{ backgroundColor: "transparent" }}
                   />
                   <span>
                     J'accepte de partager la localisation de ma ville et
@@ -319,4 +342,12 @@ function Inscription() {
   );
 }
 
-export default Inscription;
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(withRouter(Inscription));

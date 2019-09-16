@@ -101,7 +101,8 @@ function Nav() {
                       autocomplete="off"
                       aria-label="Search box"
                       style={{
-                        borderBottom: searchActive ? "2px solid #0cd0fc" : ""
+                        borderBottom: searchActive ? "2px solid #0cd0fc" : "",
+                        backgroundColor: "transparent"
                       }}
                       onFocus={() => {
                         setSearchActive(true);
@@ -109,6 +110,7 @@ function Nav() {
                       onBlur={() => {
                         setSearchActive(false);
                         setSearchInputValue("");
+                        setSearchResult();
                       }}
                       onChange={e => handleChange(e)}
                     />

@@ -3,7 +3,6 @@ import useForceUpdate from "use-force-update";
 
 import "../../App.css";
 import Nav from "../../components/Nav";
-import API from "../../utils/API";
 
 function Connexion() {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -11,7 +10,8 @@ function Connexion() {
   const [submittable, setSubmittable] = useState(false);
   const [fields, setFields] = useState({
     email: "",
-    password: ""
+    password: "",
+    errors: {}
   });
 
   useEffect(() => {
@@ -43,16 +43,6 @@ function Connexion() {
     if (!password || password.length === 0) {
       return;
     }
-    try {
-      const { data } = await API.login({
-        email,
-        password
-      });
-      localStorage.setItem("token", data.token);
-      window.location = "/dashboard";
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   return (
@@ -61,7 +51,11 @@ function Connexion() {
       <h2 className="media-type">Connexion</h2>
       <div className="row container">
         <div className="row">
-          <form className="col s12 m6 push-m3" onSubmit={sendForm}>
+          <form
+            className="col s12 m6 push-m3"
+            onSubmit={sendForm}
+            autocomplete="off"
+          >
             <div className="row">
               <div className="input-field col s12">
                 <input

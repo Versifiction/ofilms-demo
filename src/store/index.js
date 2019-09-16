@@ -1,20 +1,14 @@
-import { createStore, compose, applyMiddleware } from "redux";
-
-import reducer from "./reducer";
-import testMiddleware from "./middlewares/test-middleware";
-
-const devTools = [];
-if (window.devToolsExtension) {
-  devTools.push(window.devToolsExtension());
-}
-
-const preventDuplicatesMW = applyMiddleware(testMiddleware);
-
-const enhancers = compose(
-  preventDuplicatesMW,
-  ...devTools
+import { createStore, applyMiddleware, compose } from "redux";
+import thunk from "redux-thunk";
+import rootReducer from "./reducer";
+const initialState = {};
+const middleware = [thunk];
+const store = createStore(
+  rootReducer,
+  initialState,
+  compose(
+    applyMiddleware(...middleware),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
 );
-
-const store = createStore(reducer, enhancers);
-
 export default store;
