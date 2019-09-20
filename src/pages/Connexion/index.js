@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import useForceUpdate from "use-force-update";
+import classnames from "classnames";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { loginUser } from "../../store/actions/authActions";
 
 import "../../App.css";
 import Nav from "../../components/Nav";
 
-function Connexion() {
+function Connexion(props) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const forceUpdate = useForceUpdate();
   const [submittable, setSubmittable] = useState(false);
@@ -16,7 +20,18 @@ function Connexion() {
 
   useEffect(() => {
     document.title = "O'Films | Connexion";
-  });
+    console.log("props ", props);
+
+    if (props.auth.isAuthenticated) {
+      props.history.push("/");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (props.errors) {
+      setFields({ ...fields, errors: props.errors });
+    }
+  }, [fields, props.errors]);
 
   function togglePasswordVisibility() {
     setPasswordVisible(!passwordVisible);
@@ -33,16 +48,18 @@ function Connexion() {
   async function sendForm(e) {
     e.preventDefault();
     console.log("submit");
+    console.log("props ", props);
 
     setFields({ ...fields, lastConnection: new Date() });
 
     const { email, password } = fields;
-    if (!email || email.length === 0) {
-      return;
-    }
-    if (!password || password.length === 0) {
-      return;
-    }
+
+    const userData = {
+      email,
+      password
+    };
+
+    props.loginUser(userData);
   }
 
   return (
@@ -65,9 +82,12 @@ function Connexion() {
                   value={fields.email}
                   onChange={e => handleChange(e)}
                   placeholder="Entrez votre adresse e-mail"
-                  className="validate"
+                  className={classnames("validate", {
+                    invalid: fields.errors.email
+                  })}
                 />
                 <label htmlFor="email">Adresse e-mail</label>
+                <span className="red-text">{fields.errors.email}</span>
               </div>
             </div>
             <div className="row">
@@ -82,10 +102,13 @@ function Connexion() {
                   value={fields.password}
                   onChange={e => handleChange(e)}
                   type={passwordVisible ? "text" : "password"}
-                  className="validate"
+                  className={classnames("validate", {
+                    invalid: fields.errors.password
+                  })}
                 />
+
                 <i
-                  className="tiny material-icons colored right tooltipped"
+                  className="tiny material-icons right tooltipped"
                   data-position="bottom"
                   data-tooltip={
                     passwordVisible
@@ -96,20 +119,22 @@ function Connexion() {
                   style={{
                     position: "absolute",
                     right: "10px",
-                    bottom: "22.5px",
-                    cursor: "pointer"
+                    top: "18px",
+                    cursor: "pointer",
+                    color: "#95878B"
                   }}
                 >
                   {passwordVisible ? "visibility_off" : "visibility"}
                 </i>
                 <label htmlFor="password">Mot de passe</label>
+                <span className="red-text">{fields.errors.password}</span>
               </div>
               <div className="row center" style={{ marginTop: "40px" }}>
                 <button
                   // className={`btn waves-effect waves-light ${
                   //   !submittable ? "disabled" : ""
                   // }`}
-                  className="btn waves-effect waves-light"
+                  className="btn btn-large waves-effect waves-light"
                 >
                   Me connecter
                   <i className="material-icons right">send</i>
@@ -130,4 +155,11 @@ function Connexion() {
   );
 }
 
-export default Connexion;
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+export default connect(
+  mapStateToProps,
+  { loginUser }
+)(withRouter(Connexion));

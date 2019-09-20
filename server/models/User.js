@@ -44,7 +44,8 @@ const UserSchema = new Schema({
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    lowercase: true
   },
   password: {
     type: String,
@@ -54,7 +55,7 @@ const UserSchema = new Schema({
   lastname: String,
   sexe: String,
   mobilePhone: Number,
-  postalCode: Number,
+  departement: Number,
   city: String,
   creationDate: {
     type: Date,

@@ -13,6 +13,8 @@ import Nav from "../../components/Nav";
 function Inscription(props) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [citiesList, setCitiesList] = useState(false);
+  const [departementsList, setDepartementsList] = useState(false);
   const forceUpdate = useForceUpdate();
   const [submittable, setSubmittable] = useState(false);
   const [fields, setFields] = useState({
@@ -25,26 +27,72 @@ function Inscription(props) {
     sexe: "",
     localisation: true,
     mobilePhone: "",
-    postalCode: "",
+    departement: "",
     city: "",
-    creationDate: "",
+    creationDate: null,
     errors: {}
   });
+  const citiesUrl = `https://geo.api.gouv.fr/departements/${fields.departement}/communes`;
+  const departementsUrl = `https://geo.api.gouv.fr/departements/`;
 
   useEffect(() => {
     document.title = "O'Films | Inscription";
     M.AutoInit();
-    console.log("props ", props);
     if (props.auth.isAuthenticated) {
       props.history.push("/");
     }
+
+    loadDepartements();
+
+    console.log("fields.departement ", fields.departement);
   }, []);
+
+  // useEffect(() => {
+  //   document.getElementsByClassName("dropdown-content")[1].style.overflow =
+  //     "scroll";
+
+  //   document.getElementsByClassName("dropdown-content")[2].style.overflow =
+  //     "scroll";
+  // });
+
+  useEffect(() => {
+    loadCities();
+  }, [fields.departement]);
 
   useEffect(() => {
     if (props.errors) {
       setFields({ ...fields, errors: props.errors });
     }
   }, [props.errors]);
+
+  useEffect(() => {
+    setFields(fields);
+    forceUpdate();
+  }, [fields]);
+
+  async function loadCities() {
+    try {
+      const dataCities = await axios.get(citiesUrl);
+      console.log("data ", dataCities.data);
+      setCitiesList(dataCities.data);
+      console.log("citiesList ", citiesList);
+      forceUpdate();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function loadDepartements() {
+    try {
+      const dataDepartements = await axios.get(departementsUrl);
+      console.log("data ", dataDepartements.data);
+      setDepartementsList(dataDepartements.data);
+      console.log("departementsList ", departementsList);
+      forceUpdate();
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   function togglePasswordVisibility() {
     setPasswordVisible(!passwordVisible);
@@ -62,32 +110,26 @@ function Inscription(props) {
     console.log("fields ", fields);
   }
 
-  async function sendForm(e) {
+  function sendForm(e) {
     e.preventDefault();
     console.log("submit");
 
     setFields({ ...fields, creationDate: new Date() });
 
-    const {
-      email,
-      password,
-      username,
-      firstname,
-      lastname,
-      sexe,
-      mobilePhone,
-      postalCode,
-      city,
-      confirmPassword
-    } = fields;
-    if (!email || email.length === 0) {
-      return;
-    }
-    if (!password || password.length === 0 || password !== confirmPassword) {
-      return;
-    }
-    // axios.post("/user/register", fields).then(res => console.log(res.data));
-    this.props.registerUser(fields, this.props.history);
+    const newUser = {
+      email: fields.email,
+      password: fields.password,
+      username: fields.username,
+      firstname: fields.firstname,
+      lastname: fields.lastname,
+      sexe: fields.sexe,
+      mobilePhone: fields.mobilePhone,
+      departement: fields.departement,
+      city: fields.city,
+      confirmPassword: fields.confirmPassword
+    };
+
+    props.registerUser(newUser, props.history);
   }
 
   return (
@@ -96,7 +138,12 @@ function Inscription(props) {
       <h2 className="media-type">Inscription</h2>
       <div className="row container">
         <div className="row">
-          <form className="col s12" onSubmit={sendForm} autocomplete="off">
+          <form
+            className="col s12"
+            autocomplete="off"
+            onSubmit={sendForm}
+            method="post"
+          >
             <div className="row">
               <div className="input-field col s6">
                 <i className="material-icons colored prefix">mail</i>
@@ -108,10 +155,15 @@ function Inscription(props) {
                   value={fields.email}
                   onChange={e => handleChange(e)}
                   style={{ backgroundColor: "transparent !important" }}
-                  className="validate"
+                  className={classnames("validate", {
+                    invalid: fields.errors.email
+                  })}
                   required
                 />
                 <label htmlFor="email">Adresse e-mail *</label>
+                <span className="red-text" style={{ marginLeft: "3rem" }}>
+                  {fields.errors.email}
+                </span>
               </div>
               <div className="input-field col s6">
                 <i className="material-icons colored prefix">message</i>
@@ -119,14 +171,20 @@ function Inscription(props) {
                   id="username"
                   type="text"
                   name="username"
+                  error={fields.errors.username}
                   value={fields.username}
                   onChange={e => handleChange(e)}
                   style={{ backgroundColor: "transparent" }}
                   placeholder="Entrez votre pseudo"
-                  className="validate"
+                  className={classnames("validate", {
+                    invalid: fields.errors.username
+                  })}
                   required
                 />
                 <label htmlFor="username">Pseudo *</label>
+                <span className="red-text" style={{ marginLeft: "3rem" }}>
+                  {fields.errors.username}
+                </span>
               </div>
             </div>
             <div className="row">
@@ -140,10 +198,15 @@ function Inscription(props) {
                   value={fields.firstname}
                   onChange={e => handleChange(e)}
                   style={{ backgroundColor: "transparent" }}
-                  className="validate"
+                  className={classnames("validate", {
+                    invalid: fields.errors.firstname
+                  })}
                   required
                 />
                 <label htmlFor="firstname">Prénom *</label>
+                <span className="red-text" style={{ marginLeft: "3rem" }}>
+                  {fields.errors.firstname}
+                </span>
               </div>
               <div className="input-field col s6">
                 <i className="material-icons colored prefix">contacts</i>
@@ -155,10 +218,15 @@ function Inscription(props) {
                   value={fields.lastname}
                   onChange={e => handleChange(e)}
                   style={{ backgroundColor: "transparent" }}
-                  className="validate"
+                  className={classnames("validate", {
+                    invalid: fields.errors.lastname
+                  })}
                   required
                 />
                 <label htmlFor="lastname">Nom *</label>
+                <span className="red-text" style={{ marginLeft: "3rem" }}>
+                  {fields.errors.lastname}
+                </span>
               </div>
             </div>
             <div className="row">
@@ -169,6 +237,9 @@ function Inscription(props) {
                   id="sexe"
                   onChange={e => handleChange(e)}
                   value={fields.sexe}
+                  className={classnames("validate", {
+                    invalid: fields.errors.sexe
+                  })}
                   required
                 >
                   <option value="" disabled selectedvalue="true">
@@ -178,6 +249,9 @@ function Inscription(props) {
                   <option value="F">Femme</option>
                 </select>
                 <label htmlFor="sexe">Sexe *</label>
+                <span className="red-text" style={{ marginLeft: "3rem" }}>
+                  {fields.errors.sexe}
+                </span>
               </div>
               <div className="input-field col s6">
                 <i className="material-icons colored prefix">phone</i>
@@ -189,39 +263,86 @@ function Inscription(props) {
                   value={fields.mobilePhone}
                   onChange={e => handleChange(e)}
                   style={{ backgroundColor: "transparent" }}
-                  className="validate"
+                  className={classnames("validate", {
+                    invalid: fields.errors.sexe
+                  })}
                 />
                 <label htmlFor="mobilePhone">Téléphone mobile</label>
+                <span className="red-text" style={{ marginLeft: "3rem" }}>
+                  {fields.errors.mobilePhone}
+                </span>
               </div>
             </div>
-            <div className="row">
+            <div className="row" style={{ position: "relative" }}>
+              <i
+                className="material-icons tooltipped"
+                data-position="bottom"
+                data-tooltip="Vous devez renseigner votre département avant de sélectionner la ville"
+                style={{
+                  position: "absolute",
+                  right: "0.75rem",
+                  top: "0",
+                  cursor: "pointer",
+                  color: "#95878B",
+                  fontSize: "15px",
+                  zIndex: "1"
+                }}
+              >
+                error
+              </i>
               <div className="input-field col s6">
                 <i className="material-icons colored prefix">place</i>
-                <input
-                  id="postalCode"
-                  type="text"
-                  name="postalCode"
-                  placeholder="Entrez votre code postal"
-                  value={fields.postalCode}
+                <select
+                  name="departement"
+                  id="departement"
                   onChange={e => handleChange(e)}
-                  style={{ backgroundColor: "transparent" }}
-                  className="validate"
-                />
-                <label htmlFor="postalCode">Code postal</label>
+                  value={fields.departement}
+                  className={classnames("validate", {
+                    invalid: fields.errors.departement
+                  })}
+                  style={{ overflowY: "auto" }}
+                >
+                  <option value="" disabled selectedvalue="true">
+                    Sélectionnez votre département
+                  </option>
+                  {departementsList &&
+                    departementsList.map(departement => (
+                      <option value={departement.code} key={departement.code}>
+                        {departement.nom} ({departement.code})
+                      </option>
+                    ))}
+                </select>
+                <label htmlFor="departement">Département</label>
+                <span className="red-text" style={{ marginLeft: "3rem" }}>
+                  {fields.errors.departement}
+                </span>
               </div>
               <div className="input-field col s6">
                 <i className="material-icons colored prefix">location_city</i>
-                <input
-                  id="city"
-                  type="text"
+                <select
                   name="city"
-                  placeholder="Sélectionnez votre ville"
-                  value={fields.city}
+                  id="city"
+                  disabled={fields.departement === ""}
                   onChange={e => handleChange(e)}
-                  style={{ backgroundColor: "transparent" }}
-                  className="validate"
-                />
+                  value={fields.city}
+                  className={classnames("validate", {
+                    invalid: fields.errors.city
+                  })}
+                >
+                  <option value="" disabled selectedvalue="true">
+                    Sélectionnez votre ville
+                  </option>
+                  {citiesList &&
+                    citiesList.map(city => (
+                      <option value={city.nom} key={city.nom}>
+                        {city.nom}
+                      </option>
+                    ))}
+                </select>
                 <label htmlFor="city">Ville</label>
+                <span className="red-text" style={{ marginLeft: "3rem" }}>
+                  {fields.errors.city}
+                </span>
               </div>
             </div>
             <div className="row">
@@ -238,7 +359,9 @@ function Inscription(props) {
                   value={fields.password}
                   onChange={e => handleChange(e)}
                   style={{ backgroundColor: "transparent" }}
-                  className="validate"
+                  className={classnames("validate", {
+                    invalid: fields.errors.password
+                  })}
                   required
                 />
                 <i
@@ -254,14 +377,17 @@ function Inscription(props) {
                   style={{
                     position: "absolute",
                     right: "10px",
-                    bottom: "22.5px",
+                    top: "18px",
                     cursor: "pointer",
-                    color: "white"
+                    color: "#95878B"
                   }}
                 >
                   {passwordVisible ? "visibility_off" : "visibility"}
                 </i>
                 <label htmlFor="password">Mot de passe *</label>
+                <span className="red-text" style={{ marginLeft: "3rem" }}>
+                  {fields.errors.password}
+                </span>
               </div>
               <div
                 className="input-field col s6"
@@ -276,7 +402,9 @@ function Inscription(props) {
                   onChange={e => handleChange(e)}
                   style={{ backgroundColor: "transparent" }}
                   placeholder="Confirmez votre mot de passe"
-                  className="validate"
+                  className={classnames("validate", {
+                    invalid: fields.errors.confirmPassword
+                  })}
                   required
                 />
                 <i
@@ -292,9 +420,9 @@ function Inscription(props) {
                   style={{
                     position: "absolute",
                     right: "10px",
-                    bottom: "22.5px",
+                    top: "18px",
                     cursor: "pointer",
-                    color: "white"
+                    color: "#95878B"
                   }}
                 >
                   {confirmPasswordVisible ? "visibility_off" : "visibility"}
@@ -302,6 +430,9 @@ function Inscription(props) {
                 <label htmlFor="confirmPassword">
                   Confirmation du mot de passe *
                 </label>
+                <span className="red-text" style={{ marginLeft: "3rem" }}>
+                  {fields.errors.confirmPassword}
+                </span>
               </div>
             </div>
             <div className="row">
@@ -324,16 +455,11 @@ function Inscription(props) {
               </div>
             </div>
             <div className="row center" style={{ marginTop: "40px" }}>
-              <button
-                // className={`btn waves-effect waves-light ${
-                //   !submittable ? "disabled" : ""
-                // }`}
-                className="btn waves-effect waves-light"
+              <input
                 type="submit"
-              >
-                M'inscrire
-                <i className="material-icons right">send</i>
-              </button>
+                value="M'inscrire"
+                style={{ zIndex: "-1", cursor: "pointer" }}
+              />
             </div>
           </form>
         </div>

@@ -19,7 +19,9 @@ function Users() {
 
   async function loadAllUsers() {
     try {
-      const dataAllUsers = await axios.get("/user");
+      const dataAllUsers = await axios.get(
+        "http://localhost:5000/api/users/allUsers"
+      );
       console.log("data ", dataAllUsers);
       setUsersList(dataAllUsers.data);
       console.log("usersList ", usersList);
@@ -61,7 +63,7 @@ function Users() {
                 <th>Sexe</th>
                 <th>Téléphone mobile</th>
                 <th>Ville</th>
-                <th>Code postal</th>
+                <th>Département</th>
                 <th>Admin</th>
                 <th>Modérateur</th>
                 <th>Connecté</th>
@@ -91,7 +93,7 @@ function Users() {
                       </td>
                       <td>{user.mobilePhone}</td>
                       <td>{user.city}</td>
-                      <td>{user.postalCode}</td>
+                      <td>{user.departement}</td>
                       <td>
                         {user.isAdmin ? (
                           <i class="material-icons" style={{ color: "green" }}>

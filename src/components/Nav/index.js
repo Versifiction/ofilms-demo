@@ -275,8 +275,8 @@ function Nav() {
           <NavLink
             className="waves-effect waves-light"
             activeClassName="active"
-            href="/movies"
-            to="/movies"
+            href="/films"
+            to="/films"
           >
             <i className="material-icons colored">local_movies</i>Films
           </NavLink>
@@ -285,60 +285,10 @@ function Nav() {
           <NavLink
             className="waves-effect waves-light"
             activeClassName="active"
-            href="/films/affiche"
-            to="/films/affiche"
-          >
-            Films à l'affiche
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            className="waves-effect waves-light"
-            activeClassName="active"
-            href="/films/tendances"
-            to="/films/tendances"
-          >
-            Films en tendances
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            className="waves-effect waves-light"
-            activeClassName="active"
-            href="/films/mieux-notes"
-            to="/films/mieux-notes"
-          >
-            Films les mieux notés
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            className="waves-effect waves-light"
-            activeClassName="active"
-            href="/tv"
-            to="/tv"
+            href="/series"
+            to="/series"
           >
             <i className="material-icons colored">tv</i>Séries
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            className="waves-effect waves-light"
-            activeClassName="active"
-            href="/series/tendances"
-            to="/series/tendances"
-          >
-            Séries en tendances
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            className="waves-effect waves-light"
-            activeClassName="active"
-            href="/series/mieux-notees"
-            to="/series/mieux-notees"
-          >
-            Séries les mieux notées
           </NavLink>
         </li>
         <li>

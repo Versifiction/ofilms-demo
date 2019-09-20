@@ -4,10 +4,35 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 const passport = require("passport");
+const isEmpty = require("is-empty");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
+const mongo = require("mongodb").MongoClient;
+const url = "mongodb://localhost:27017/";
 
 let User = require("../../models/user");
+
+router.get("/allUsers", function(req, res) {
+  mongo.connect(
+    url,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    },
+    (err, client) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      const db = client.db("ofilms-demo");
+      const collection = db.collection("users");
+      collection.find().toArray((err, items) => {
+        res.json(items);
+      });
+      client.close();
+    }
+  );
+});
 
 router.post("/register", (req, res) => {
   // Form validation
@@ -19,29 +44,53 @@ router.post("/register", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  User.findOne({ email: req.body.email }).then(user => {
-    if (user) {
-      return res.status(400).json({ email: "Email already exists" });
-    } else {
-      const newUser = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password
-      });
-
-      // Hash password before saving in database
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
-          if (err) throw err;
-          newUser.password = hash;
-          newUser
-            .save()
-            .then(user => res.json(user))
-            .catch(err => console.log(err));
+  User.find(
+    {
+      $or: [{ email: req.body.email }, { username: req.body.username }]
+    },
+    function(err, docs) {
+      if (docs.length !== 0) {
+        if (docs[0].email === req.body.email) {
+          errors.email = "L'adresse email est déjà prise";
+          return res
+            .status(400)
+            .json({ email: "L'adresse email est déjà prise" });
+        } else if (docs[0].username === req.body.username) {
+          errors.username = "Le pseudo est déjà pris";
+          return res.status(400).json({ username: "Le pseudo est déjà pris" });
+        }
+      } else {
+        const newUser = new User({
+          email: req.body.email,
+          username: req.body.username,
+          firstname: req.body.firstname,
+          lastname: req.body.lastname,
+          sexe: req.body.sexe,
+          mobilePhone: req.body.mobilePhone,
+          departement: req.body.departement,
+          city: req.body.city,
+          password: req.body.password
         });
-      });
+
+        // Hash password before saving in database
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if (err) throw err;
+            newUser.password = hash;
+            newUser
+              .save()
+              .then(user => res.json(user))
+              .catch(err => console.log(err));
+          });
+        });
+      }
     }
-  });
+  );
+
+  return {
+    errors,
+    isValid: isEmpty(errors)
+  };
 });
 
 // @route POST api/users/login
