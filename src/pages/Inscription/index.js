@@ -43,8 +43,6 @@ function Inscription(props) {
     }
 
     loadDepartements();
-
-    console.log("fields.departement ", fields.departement);
   }, []);
 
   // useEffect(() => {
@@ -110,9 +108,8 @@ function Inscription(props) {
     console.log("fields ", fields);
   }
 
-  function sendForm(e) {
+  function register(e) {
     e.preventDefault();
-    console.log("submit");
 
     setFields({ ...fields, creationDate: new Date() });
 
@@ -141,7 +138,7 @@ function Inscription(props) {
           <form
             className="col s12"
             autocomplete="off"
-            onSubmit={sendForm}
+            onSubmit={register}
             method="post"
           >
             <div className="row">

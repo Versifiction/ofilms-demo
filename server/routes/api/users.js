@@ -8,11 +8,12 @@ const isEmpty = require("is-empty");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 const mongo = require("mongodb").MongoClient;
+const ObjectId = require("mongodb").ObjectId;
 const url = "mongodb://localhost:27017/";
 
 let User = require("../../models/user");
 
-router.get("/allUsers", function(req, res) {
+router.get("/getAll", function(req, res) {
   mongo.connect(
     url,
     {
@@ -27,6 +28,30 @@ router.get("/allUsers", function(req, res) {
       const db = client.db("ofilms-demo");
       const collection = db.collection("users");
       collection.find().toArray((err, items) => {
+        res.json(items);
+      });
+      client.close();
+    }
+  );
+});
+
+router.get("/user/:id", function(req, res) {
+  mongo.connect(
+    url,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    },
+    (err, client) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      const db = client.db("ofilms-demo");
+      const collection = db.collection("users");
+      const id = req.params.id;
+      const o_id = new ObjectId(id);
+      collection.find({ _id: o_id }).toArray((err, items) => {
         res.json(items);
       });
       client.close();
@@ -113,7 +138,7 @@ router.post("/login", (req, res) => {
   User.findOne({ email }).then(user => {
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ emailnotfound: "Email not found" });
+      errors.email = "L'adresse email existe déjà";
     }
 
     // Check password
@@ -147,6 +172,11 @@ router.post("/login", (req, res) => {
       }
     });
   });
+
+  return {
+    errors,
+    isValid: isEmpty(errors)
+  };
 });
 
 // Defined delete | remove | destroy route

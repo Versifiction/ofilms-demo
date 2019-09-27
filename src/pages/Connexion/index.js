@@ -20,7 +20,6 @@ function Connexion(props) {
 
   useEffect(() => {
     document.title = "O'Films | Connexion";
-    console.log("props ", props);
 
     if (props.auth.isAuthenticated) {
       props.history.push("/");
@@ -45,10 +44,8 @@ function Connexion(props) {
     console.log("fields ", fields);
   }
 
-  async function sendForm(e) {
+  async function login(e) {
     e.preventDefault();
-    console.log("submit");
-    console.log("props ", props);
 
     setFields({ ...fields, lastConnection: new Date() });
 
@@ -70,7 +67,7 @@ function Connexion(props) {
         <div className="row">
           <form
             className="col s12 m6 push-m3"
-            onSubmit={sendForm}
+            onSubmit={login}
             autocomplete="off"
           >
             <div className="row">

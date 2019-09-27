@@ -5,10 +5,21 @@ module.exports = function validateRegisterInput(data) {
   let errors = {};
 
   // Convert empty fields to an empty string so we can use validator functions
+  data.email = !isEmpty(data.email) ? data.email : "";
   data.username = !isEmpty(data.username) ? data.username : "";
   data.firstname = !isEmpty(data.firstname) ? data.firstname : "";
   data.lastname = !isEmpty(data.lastname) ? data.lastname : "";
-  data.email = !isEmpty(data.email) ? data.email : "";
+  data.sexe = !isEmpty(data.sexe) ? data.sexe : "";
+  data.mobilePhone = !isEmpty(data.mobilePhone) ? data.mobilePhone : "";
+  data.city = !isEmpty(data.city) ? data.city : "";
+  data.departement = !isEmpty(data.departement) ? data.departement : "";
+  data.isAdmin = !isEmpty(data.isAdmin) ? data.isAdmin : "";
+  data.isModerator = !isEmpty(data.isModerator) ? data.isModerator : "";
+  data.isConnected = !isEmpty(data.isConnected) ? data.isConnected : "";
+  data.creationDate = !isEmpty(data.creationDate) ? data.creationDate : "";
+  data.lastConnection = !isEmpty(data.lastConnection)
+    ? data.lastConnection
+    : "";
   data.password = !isEmpty(data.password) ? data.password : "";
   data.confirmPassword = !isEmpty(data.confirmPassword)
     ? data.confirmPassword

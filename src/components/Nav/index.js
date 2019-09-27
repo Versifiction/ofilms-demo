@@ -6,10 +6,13 @@ import axios from "axios";
 import useForceUpdate from "use-force-update";
 import M from "materialize-css";
 import $ from "jquery";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { logoutUser } from "../../store/actions/authActions";
 
 import "../../App.css";
 
-function Nav() {
+function Nav(props) {
   const [sideNavActive, setSideNavActive] = useState(false);
   const [searchActive, setSearchActive] = useState(false);
   const [searchInputValue, setSearchInputValue] = useState("");
@@ -37,6 +40,12 @@ function Nav() {
     console.log("searchActive ", searchActive);
     console.log("searchInputValue ", searchInputValue);
   }, [searchActive, searchInputValue]);
+
+  function logout(e) {
+    e.preventDefault();
+    props.logoutUser();
+    M.toast({ html: "Vous vous êtes déconnecté" });
+  }
 
   function toggleSideNav() {
     setSideNavActive(!sideNavActive);
@@ -243,16 +252,43 @@ function Nav() {
                     )}
                   </form>
                 </li>
-                <li>
-                  <a
-                    className="waves-effect waves-light tooltipped"
-                    data-position="bottom"
-                    data-tooltip="Se connecter / S'inscrire"
-                    href="/connexion"
-                  >
-                    <i className="material-icons colored">person</i>
-                  </a>
-                </li>
+                {props.auth.isAuthenticated ? (
+                  <>
+                    <li>
+                      <a
+                        className="waves-effect waves-light tooltipped"
+                        data-position="bottom"
+                        data-tooltip="Accéder à mon profil"
+                        href="/mon-compte"
+                      >
+                        <i className="material-icons colored">person</i>
+                        Mon compte
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        className="waves-effect waves-light tooltipped"
+                        data-position="bottom"
+                        data-tooltip="Se déconnecter"
+                        href="/"
+                        onClick={logout}
+                      >
+                        <i className="material-icons colored">exit_to_app</i>
+                      </a>
+                    </li>
+                  </>
+                ) : (
+                  <li>
+                    <a
+                      className="waves-effect waves-light tooltipped"
+                      data-position="bottom"
+                      data-tooltip="Se connecter / S'inscrire"
+                      href="/connexion"
+                    >
+                      <i className="material-icons colored">person</i>
+                    </a>
+                  </li>
+                )}
               </ul>
             </div>
           </div>
@@ -407,4 +443,11 @@ function Nav() {
   );
 }
 
-export default Nav;
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+export default connect(
+  mapStateToProps,
+  { logoutUser }
+)(withRouter(Nav));

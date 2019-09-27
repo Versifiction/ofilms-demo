@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import useForceUpdate from "use-force-update";
 import moment from "moment";
+import M from "materialize-css";
 
 import "../../App.css";
 import Spinner from "../../components/Molecules/Spinner";
@@ -15,12 +16,13 @@ function Users() {
 
   useEffect(() => {
     loadAllUsers();
+    M.AutoInit();
   }, []);
 
   async function loadAllUsers() {
     try {
       const dataAllUsers = await axios.get(
-        "http://localhost:5000/api/users/allUsers"
+        "http://localhost:5000/api/users/getAll"
       );
       console.log("data ", dataAllUsers);
       setUsersList(dataAllUsers.data);
@@ -34,8 +36,8 @@ function Users() {
 
   function deleteUser(id) {
     axios
-      .get(`/user/delete/${id}`)
-      .then(console.log("Deleted"))
+      .get(`http://localhost:5000/api/users/delete/${id}`)
+      .then()
       .catch(err => console.log(err));
 
     window.location.reload();
@@ -50,16 +52,16 @@ function Users() {
       ) : (
         <>
           <table
-            className="striped responsive-table"
+            className="striped responsive-table centered highlight"
             style={{ color: "white" }}
           >
             <thead style={{ borderBottom: "1px solid white" }}>
               <tr>
                 <th>ID</th>
                 <th>E-mail</th>
+                <th>Pseudo</th>
                 <th>Prénom</th>
                 <th>Nom</th>
-                <th>Pseudo</th>
                 <th>Sexe</th>
                 <th>Téléphone mobile</th>
                 <th>Ville</th>
@@ -81,14 +83,20 @@ function Users() {
                     >
                       <td>{user._id}</td>
                       <td>{user.email}</td>
+                      <td>{user.username}</td>
                       <td>{user.firstname}</td>
                       <td>{user.lastname}</td>
-                      <td>{user.username}</td>
                       <td>
                         {user.sexe === "H" ? (
-                          <i class="fas fa-male"></i>
+                          <i
+                            class="fas fa-male"
+                            style={{ fontSize: "30px", color: "#95878B" }}
+                          ></i>
                         ) : (
-                          <i class="fa fa-female"></i>
+                          <i
+                            class="fa fa-female"
+                            style={{ fontSize: "30px", color: "#0CD0FC" }}
+                          ></i>
                         )}
                       </td>
                       <td>{user.mobilePhone}</td>
@@ -96,13 +104,21 @@ function Users() {
                       <td>{user.departement}</td>
                       <td>
                         {user.isAdmin ? (
-                          <i class="material-icons" style={{ color: "green" }}>
-                            check
-                          </i>
+                          <div class="switch">
+                            <label>
+                              N
+                              <input type="checkbox" />
+                              <span class="lever"></span>O
+                            </label>
+                          </div>
                         ) : (
-                          <i class="material-icons" style={{ color: "red" }}>
-                            close
-                          </i>
+                          <div class="switch">
+                            <label>
+                              N
+                              <input type="checkbox" />
+                              <span class="lever"></span>O
+                            </label>
+                          </div>
                         )}
                       </td>
                       <td>
@@ -138,26 +154,29 @@ function Users() {
                         )}
                       </td>
                       <td>
-                        <div
+                        <button
+                          data-target="modal1"
                           className="waves-effect waves-light btn modal-trigger"
-                          href="#modal1"
                           style={{
                             backgroundColor: "red",
                             marginTop: "inherit"
                           }}
+                          onClick={() => {
+                            deleteUser(user._id);
+                          }}
                         >
                           Supprimer
-                        </div>
+                        </button>
                       </td>
                     </tr>
-                    <div id="modal1" class="modal">
+                    {/* <div id="modal1" class="modal">
                       <div class="modal-content">
                         <h4 style={{ color: "black" }}>
                           Suppression d'utilisateur
                         </h4>
                         <p>
-                          Vous êtes sur le point de supprimer l'utilisateur.
-                          Voulez-vous le supprimer ?
+                          Vous êtes sur le point de supprimer l'utilisateur{" "}
+                          {user._id}. Voulez-vous le supprimer ?
                         </p>
                       </div>
                       <div class="modal-footer" style={{ textAlign: "center" }}>
@@ -181,7 +200,7 @@ function Users() {
                           Non
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </>
                 ))}
             </tbody>
